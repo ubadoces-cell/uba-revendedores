@@ -1263,8 +1263,7 @@ function docType(btn,type){
 }
 function finishDemo(){
   if(!getCustomer()){showPanel('step1');setAuthMessage('É necessário um login aprovado para pagar.','warn');return}
-  const orderQty=getOrderCount();
-  if(orderQty>0)registerConfirmedOrderInStock();
+  // A tela atual simula o pagamento; somente um webhook real confirmado movimentará o estoque.
   ['step1','pendingPanel','customerAccount','adminLogin','step2','step3','step4'].forEach(id=>{
     const el=document.getElementById(id);if(el)el.classList.remove('active')
   });
@@ -1721,5 +1720,6 @@ applyTheme(localStorage.getItem('uba-rev-theme')||'dark');
 renderAll();
 maybeShowPurposeGate();
 </script>
+<script src="shared-stock-sync.js?v=1"></script>
 </body>
 </html>
