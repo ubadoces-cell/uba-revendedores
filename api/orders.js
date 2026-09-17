@@ -32,6 +32,7 @@ function db() {
 }
 function sha256(value) { return createHash("sha256").update(value).digest("hex"); }
 function clean(value, max = 180) { return String(value || "").trim().slice(0, max); }
+function digits(value) { return String(value || "").replace(/\D/g, ""); }
 function int(value) {
   const number = Number(value);
   return Number.isFinite(number) ? Math.max(0, Math.trunc(number)) : 0;
@@ -69,6 +70,16 @@ async function ensureSchema(sql) {
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
   )`, []);
+  await sql.query(`ALTER TABLE reseller_orders
+    ADD COLUMN IF NOT EXISTS payment_status TEXT NOT NULL DEFAULT 'aguardando_pagamento',
+    ADD COLUMN IF NOT EXISTS asaas_customer_id TEXT,
+    ADD COLUMN IF NOT EXISTS asaas_payment_id TEXT,
+    ADD COLUMN IF NOT EXISTS pix_payload TEXT,
+    ADD COLUMN IF NOT EXISTS pix_encoded_image TEXT,
+    ADD COLUMN IF NOT EXISTS pix_expiration_at TIMESTAMPTZ,
+    ADD COLUMN IF NOT EXISTS public_token_hash TEXT,
+    ADD COLUMN IF NOT EXISTS paid_at TIMESTAMPTZ,
+    ADD COLUMN IF NOT EXISTS stock_applied BOOLEAN NOT NULL DEFAULT FALSE`, []);
 }
 function normalizeItems(rawItems) {
   const merged = new Map();
@@ -96,11 +107,13 @@ function calculate(items, purpose) {
   });
   return { units, totalCents, items: pricedItems };
 }
-function serialize(row) {
-  return {
+function serialize(row, includePix = false) {
+  const order = {
     id: row.id,
     code: row.code,
     status: row.status,
+    paymentStatus: row.payment_status || "aguardando_pagamento",
+    paidAt: row.paid_at || null,
     customer: {
       name: row.customer_name,
       email: row.customer_email,
@@ -116,14 +129,77 @@ function serialize(row) {
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
+  if (includePix) {
+    order.payment = {
+      status: order.paymentStatus,
+      payload: row.pix_payload || "",
+      encodedImage: row.pix_encoded_image || "",
+      expirationAt: row.pix_expiration_at || null,
+    };
+  }
+  return order;
+}
+function asaasConfig() {
+  const apiKey = String(process.env.ASAAS_API_KEY || "").trim();
+  const environment = String(process.env.ASAAS_ENV || "sandbox").trim().toLowerCase();
+  if (!apiKey) throw Object.assign(new Error("ASAAS_API_KEY não configurada na Vercel."), { statusCode: 503 });
+  if (!["sandbox", "production"].includes(environment)) {
+    throw Object.assign(new Error("ASAAS_ENV deve ser sandbox ou production."), { statusCode: 503 });
+  }
+  return {
+    apiKey,
+    baseUrl: environment === "production" ? "https://api.asaas.com/v3" : "https://api-sandbox.asaas.com/v3",
+  };
+}
+async function asaas(path, options = {}) {
+  const { apiKey, baseUrl } = asaasConfig();
+  const response = await fetch(baseUrl + path, {
+    ...options,
+    headers: {
+      accept: "application/json",
+      access_token: apiKey,
+      "content-type": "application/json",
+      ...(options.headers || {}),
+    },
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    const details = Array.isArray(data.errors) ? data.errors.map((item) => item.description).filter(Boolean).join(" ") : "";
+    throw Object.assign(new Error(details || data.message || "O Asaas recusou a solicitação."), { statusCode: 502 });
+  }
+  return data;
+}
+async function findOrCreateCustomer(customer) {
+  const found = await asaas(`/customers?cpfCnpj=${encodeURIComponent(customer.doc)}&limit=1`);
+  if (Array.isArray(found.data) && found.data[0]?.id) return found.data[0].id;
+  const created = await asaas("/customers", {
+    method: "POST",
+    body: JSON.stringify({
+      name: customer.name,
+      cpfCnpj: customer.doc,
+      email: customer.email || undefined,
+      mobilePhone: customer.phone || undefined,
+      externalReference: customer.reference,
+      notificationDisabled: false,
+    }),
+  });
+  if (!created.id) throw Object.assign(new Error("O Asaas não retornou o cliente criado."), { statusCode: 502 });
+  return created.id;
+}
+function dueDateTomorrow() {
+  const date = new Date();
+  date.setUTCDate(date.getUTCDate() + 1);
+  return date.toISOString().slice(0, 10);
 }
 
 export default async function handler(req, res) {
+  let insertedOrderId = "";
   try {
     const sql = db();
     await ensureSchema(sql);
 
     if (req.method === "POST") {
+      asaasConfig();
       const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : (req.body || {});
       const purpose = body.purpose === "event" ? "event" : "commerce";
       const calculated = calculate(normalizeItems(body.items), purpose);
@@ -133,9 +209,15 @@ export default async function handler(req, res) {
       const buyer = body.buyer && typeof body.buyer === "object" ? body.buyer : {};
       const delivery = body.delivery && typeof body.delivery === "object" ? body.delivery : {};
       const customerName = clean(buyer.name || customer.name, 140);
+      const customerDoc = digits(buyer.doc || customer.doc);
       if (!customerName) return res.status(400).json({ error: "Informe o nome do comprador." });
+      if (![11, 14].includes(customerDoc.length)) {
+        return res.status(400).json({ error: "Informe um CPF ou CNPJ válido para gerar o Pix." });
+      }
 
       const id = randomBytes(16).toString("hex");
+      insertedOrderId = id;
+      const publicToken = randomBytes(24).toString("hex");
       const code = `UBA-${Date.now().toString(36).toUpperCase()}-${randomBytes(2).toString("hex").toUpperCase()}`;
       const safeDelivery = {
         cep: clean(delivery.cep, 20),
@@ -144,15 +226,40 @@ export default async function handler(req, res) {
         number: clean(delivery.number, 30),
         complement: clean(delivery.complement, 120),
       };
-      const rows = await sql.query(`INSERT INTO reseller_orders
-        (id, code, status, customer_name, customer_email, customer_phone, customer_store, customer_doc, purpose, delivery, items, units, total_cents)
-        VALUES ($1,$2,'novo',$3,$4,$5,$6,$7,$8,$9::jsonb,$10::jsonb,$11,$12)
-        RETURNING *`, [
-        id, code, customerName, clean(customer.email, 180), clean(customer.phone, 60),
-        clean(buyer.store || customer.store, 140), clean(buyer.doc || customer.doc, 40), purpose,
+      const email = clean(customer.email, 180);
+      const phone = clean(customer.phone, 60);
+      await sql.query(`INSERT INTO reseller_orders
+        (id, code, status, payment_status, public_token_hash, customer_name, customer_email, customer_phone,
+         customer_store, customer_doc, purpose, delivery, items, units, total_cents)
+        VALUES ($1,$2,'novo','aguardando_pagamento',$3,$4,$5,$6,$7,$8,$9,$10::jsonb,$11::jsonb,$12,$13)`, [
+        id, code, sha256(publicToken), customerName, email, phone,
+        clean(buyer.store || customer.store, 140), customerDoc, purpose,
         JSON.stringify(safeDelivery), JSON.stringify(calculated.items), calculated.units, calculated.totalCents,
       ]);
-      return res.status(201).json({ order: serialize(rows[0]) });
+
+      const asaasCustomerId = await findOrCreateCustomer({
+        name: customerName, doc: customerDoc, email, phone, reference: code,
+      });
+      const payment = await asaas("/payments", {
+        method: "POST",
+        body: JSON.stringify({
+          customer: asaasCustomerId,
+          billingType: "PIX",
+          value: calculated.totalCents / 100,
+          dueDate: dueDateTomorrow(),
+          description: `Pedido UBA Doces ${code}`,
+          externalReference: code,
+        }),
+      });
+      if (!payment.id) throw Object.assign(new Error("O Asaas não retornou a cobrança Pix."), { statusCode: 502 });
+      const qr = await asaas(`/payments/${encodeURIComponent(payment.id)}/pixQrCode`);
+      const rows = await sql.query(`UPDATE reseller_orders SET
+        asaas_customer_id=$1, asaas_payment_id=$2, pix_payload=$3, pix_encoded_image=$4,
+        pix_expiration_at=$5, updated_at=NOW() WHERE id=$6 RETURNING *`, [
+        asaasCustomerId, payment.id, clean(qr.payload, 2000), clean(qr.encodedImage, 2000000),
+        qr.expirationDate || null, id,
+      ]);
+      return res.status(201).json({ order: serialize(rows[0], true), publicToken });
     }
 
     const admin = await requireAdmin(req, sql);
@@ -160,7 +267,7 @@ export default async function handler(req, res) {
 
     if (req.method === "GET") {
       const rows = await sql.query("SELECT * FROM reseller_orders ORDER BY created_at DESC LIMIT 200", []);
-      return res.status(200).json({ orders: rows.map(serialize) });
+      return res.status(200).json({ orders: rows.map((row) => serialize(row, false)) });
     }
 
     if (req.method === "PATCH") {
@@ -171,12 +278,22 @@ export default async function handler(req, res) {
       const rows = await sql.query(`UPDATE reseller_orders SET status = $1, updated_at = NOW()
         WHERE id = $2 RETURNING *`, [status, id]);
       if (!rows[0]) return res.status(404).json({ error: "Pedido não encontrado." });
-      return res.status(200).json({ order: serialize(rows[0]) });
+      return res.status(200).json({ order: serialize(rows[0], false) });
     }
 
     return res.status(405).json({ error: "Método não permitido." });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Não foi possível processar os pedidos." });
+    if (insertedOrderId) {
+      try {
+        const sql = db();
+        const rows = await sql.query("SELECT asaas_payment_id FROM reseller_orders WHERE id=$1", [insertedOrderId]);
+        if (!rows[0]?.asaas_payment_id) await sql.query("DELETE FROM reseller_orders WHERE id=$1", [insertedOrderId]);
+        else await sql.query("UPDATE reseller_orders SET payment_status='erro_pagamento', updated_at=NOW() WHERE id=$1", [insertedOrderId]);
+      } catch { /* preserve original error */ }
+    }
+    return res.status(error.statusCode || 500).json({
+      error: error.statusCode ? error.message : "Não foi possível gerar a cobrança Pix.",
+    });
   }
 }
