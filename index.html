@@ -456,6 +456,185 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
   .stock-card strong{font-size:23px}
 }
 
+
+/* ===== Painel CEO no padrão visual do Controle UBA ===== */
+.admin-shell{
+  --bg:#05040B;--bg2:#030307;--surface:#12101D;--surface2:#191626;--surface3:#201C2E;
+  --line:#2E2942;--text:#F8F6FF;--muted:#AFA8C5;--field:#0C0A14;--roxo:#6424D2;
+  color-scheme:dark;color:var(--text);
+  background:
+    radial-gradient(circle at 12% 4%,rgba(102,46,215,.13),transparent 25%),
+    radial-gradient(circle at 92% 42%,rgba(76,24,174,.11),transparent 27%),
+    linear-gradient(160deg,#05040B 0%,#080611 52%,#030307 100%)
+}
+.admin-wrap{max-width:1120px;min-height:100vh;margin:0 auto;padding:14px 16px 80px}
+.admin-top{position:sticky;top:0;z-index:8;padding:0 0 18px;background:linear-gradient(180deg,#05040B 70%,transparent);backdrop-filter:none}
+.admin-head{
+  min-height:116px;padding:20px 22px;border:1px solid #332557;border-radius:28px;
+  background:
+    radial-gradient(ellipse at 88% 120%,rgba(126,53,245,.26) 0 34%,transparent 35%),
+    radial-gradient(ellipse at 102% 70%,rgba(83,35,172,.22) 0 40%,transparent 41%),
+    linear-gradient(120deg,#100D20 0%,#161027 58%,#25104B 100%);
+  box-shadow:0 18px 46px rgba(0,0,0,.5),inset 0 0 0 1px rgba(153,92,255,.06)
+}
+.admin-head img{
+  width:76px;height:76px;border-radius:22px;background:#15111F;border:1px solid #49356D;
+  box-shadow:0 10px 28px rgba(0,0,0,.5)
+}
+.admin-brand-copy{min-width:0}
+.admin-head h2{font-size:28px;letter-spacing:-.7px;color:#fff}
+.admin-head p{margin-top:7px;font-size:14px;color:#BDA7EE}
+.admin-session-tools{margin-left:auto;display:flex;align-items:center;gap:10px;position:relative;z-index:1}
+.admin-session-badge{
+  display:inline-flex;align-items:center;min-height:36px;padding:0 14px;border-radius:999px;
+  color:#D6B8FF;background:rgba(126,62,231,.17);border:1px solid rgba(148,82,241,.26);
+  font-size:12px;font-weight:900
+}
+.admin-logout-btn{
+  width:44px;height:44px;padding:0;border-radius:14px;color:#B875FF;background:#221339;
+  border:1px solid #3B1F65;font-size:21px;font-weight:900
+}
+.admin-view{margin-top:10px}
+.admin-view[hidden]{display:none!important}
+.admin-dashboard-summary{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 14px
+}
+.admin-dashboard-summary .metric{
+  min-height:116px;padding:18px;border:1px solid #2E2942;border-radius:22px;
+  background:linear-gradient(145deg,rgba(21,18,34,.98),rgba(12,11,23,.98));
+  box-shadow:0 12px 30px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.025);
+  display:flex;align-items:center;gap:15px
+}
+.admin-dashboard-summary .metric small{
+  display:block;color:#AFA8C5;font-size:13px;font-weight:500;text-transform:none;letter-spacing:0
+}
+.admin-dashboard-summary .metric strong{display:block;margin-top:7px;color:#fff;font-size:25px}
+.admin-metric-icon{
+  flex:0 0 54px;width:54px;height:54px;border-radius:18px;display:grid;place-items:center;
+  color:#C48AFF;background:linear-gradient(145deg,#2D135B,#20103D);
+  box-shadow:inset 0 0 0 1px rgba(181,119,255,.14),0 8px 20px rgba(0,0,0,.25);
+  font-size:25px;font-weight:900
+}
+.admin-quick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.admin-quick button{
+  min-height:64px;padding:14px 18px;border:1px solid #3D2861;border-radius:16px;
+  color:#C88CFF;background:linear-gradient(145deg,#181525,#100E1B);
+  display:flex;align-items:center;justify-content:center;gap:12px;font-size:16px;font-weight:900
+}
+.admin-quick button:hover{background:linear-gradient(145deg,#211B34,#171225)}
+.admin-quick button.primary{
+  color:#fff;border-color:transparent;background:linear-gradient(135deg,#8A36F4,#5815D5);
+  box-shadow:0 10px 26px rgba(104,40,224,.32),inset 0 1px 0 rgba(255,255,255,.16)
+}
+.admin-quick button span{font-size:22px}
+.admin-dashboard-note{
+  margin-top:20px;padding:16px 18px;border:1px solid #2E2942;border-radius:18px;
+  background:linear-gradient(145deg,rgba(21,18,34,.98),rgba(12,11,23,.98));
+  display:flex;flex-direction:column;gap:5px
+}
+.admin-dashboard-note strong{color:#F8F6FF}.admin-dashboard-note span{color:#AFA8C5;font-size:13px}
+.admin-page-head{
+  display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;
+  margin:2px 0 14px
+}
+.admin-page-title h3{margin:0;color:#fff;font-size:23px;letter-spacing:-.4px}
+.admin-page-title p{margin:5px 0 0;color:#AFA8C5;font-size:13px}
+.admin-back,.admin-products-tools button,.admin-footer button{
+  min-height:44px;border:1px solid #2E2942;border-radius:14px;
+  color:#C88CFF;background:linear-gradient(145deg,#181525,#100E1B);font-weight:900
+}
+.admin-back{padding:10px 14px}
+.admin-products-tools{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.admin-products-tools button{padding:10px 14px}
+.admin-products-tools .primary,.admin-footer .save{
+  color:#fff;border-color:transparent;background:linear-gradient(135deg,#742EEB,#4B16B3)
+}
+.admin-note,.admin-section-card,.stock-explain,.stock-table-wrap,.stock-movements{
+  border-color:#2E2942;background:linear-gradient(145deg,rgba(21,18,34,.98),rgba(12,11,23,.98));
+  box-shadow:0 12px 30px rgba(0,0,0,.30)
+}
+.admin-note{color:#AFA8C5;padding:15px 17px;border-radius:18px}
+.admin-grid{display:grid;grid-template-columns:1fr;gap:12px}
+.admin-row{
+  display:grid!important;grid-template-columns:116px minmax(0,1fr)!important;gap:16px!important;
+  align-items:start!important;padding:16px!important;border:1px solid #2E2942!important;border-radius:22px!important;
+  background:linear-gradient(145deg,rgba(21,18,34,.98),rgba(12,11,23,.98))!important;
+  box-shadow:0 12px 30px rgba(0,0,0,.28)
+}
+.admin-photo img{height:104px!important;border-radius:17px!important}
+.admin-product-content{min-width:0;display:grid;gap:11px}
+.admin-product-main{display:grid;grid-template-columns:1.2fr 1fr .85fr auto;gap:10px;align-items:end}
+.admin-product-description textarea{min-height:70px!important}
+.admin-managed-note{
+  padding:10px 12px;border:1px dashed #3A3150;border-radius:12px;color:#AFA8C5;background:#0C0A14;font-size:11px
+}
+.admin-row .field label{display:block;margin:0 0 6px;color:#AFA8C5;font-size:11px;font-weight:800}
+.admin-row .field input,.admin-row .field select,.admin-row .field textarea{
+  color:#F8F6FF!important;background:#0C0A14!important;border-color:#39314E!important;border-radius:13px!important
+}
+.admin-row .field input:focus,.admin-row .field select:focus,.admin-row .field textarea:focus{
+  border-color:#8D4BF2!important;box-shadow:0 0 0 3px rgba(126,62,231,.2)
+}
+.status-toggle{min-width:96px;color:#FFBAC4!important;background:#3B1823!important;border-color:#5B2534!important}
+.status-toggle.on{color:#8BE0B4!important;background:#123724!important;border-color:#275F45!important}
+.admin-section-card{border-radius:22px;padding:18px;margin-top:14px}
+.admin-footer{
+  position:sticky;bottom:12px;margin-top:14px;padding:10px;border:1px solid #2E2942;border-radius:18px;
+  background:rgba(12,10,20,.9);backdrop-filter:blur(12px)
+}
+.stock-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:0 0 14px}
+.stock-card{
+  min-height:126px;padding:18px;border:1px solid #2E2942;border-radius:22px;
+  background:linear-gradient(145deg,rgba(21,18,34,.98),rgba(12,11,23,.98));
+  box-shadow:0 12px 30px rgba(0,0,0,.30)
+}
+.stock-card strong{font-size:30px;color:#fff}.stock-card small{color:#AFA8C5}.stock-card span{font-size:12px}
+.stock-card.sellers{border-color:rgba(53,194,116,.38)}
+.stock-card.reseller{border-color:rgba(178,118,255,.38)}
+.stock-card.reserved{border-color:rgba(245,184,75,.38)}
+.stock-table th{background:#191626;color:#AFA8C5}
+.stock-table td{background:transparent}
+.stock-movements-head span{display:block;margin-top:4px;color:#AFA8C5;font-size:11px}
+.stock-sync-badge{justify-self:end}
+.login-shell{
+  --bg:#05040B;--surface:#12101D;--surface2:#191626;--line:#2E2942;--text:#F8F6FF;--muted:#AFA8C5;--field:#0C0A14;
+  background:
+    radial-gradient(circle at 12% 4%,rgba(102,46,215,.13),transparent 25%),
+    linear-gradient(160deg,#05040B 0%,#080611 52%,#030307 100%)
+}
+.login-wrap{max-width:1120px;padding:14px 16px 80px}
+.login-top{
+  min-height:108px;padding:20px 22px;border:1px solid #332557;border-radius:28px;
+  background:
+    radial-gradient(ellipse at 88% 120%,rgba(126,53,245,.26) 0 34%,transparent 35%),
+    linear-gradient(120deg,#100D20 0%,#161027 58%,#25104B 100%);
+  box-shadow:0 18px 46px rgba(0,0,0,.5)
+}
+.login-tabs button{background:#12101D;border-color:#2E2942}.login-tabs button.active{color:#fff;background:linear-gradient(135deg,#792EF0,#5019BC)}
+.account-row,.login-form{background:linear-gradient(145deg,#151222,#0C0B17);border-color:#2E2942}
+@media(max-width:820px){
+  .admin-dashboard-summary{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .admin-page-head{grid-template-columns:1fr}
+  .admin-products-tools{justify-content:flex-start}
+  .admin-product-main{grid-template-columns:1fr 1fr}
+  .status-toggle{min-height:43px}
+  .stock-sync-badge{justify-self:start}
+}
+@media(max-width:600px){
+  .admin-wrap{padding:10px 10px 60px}
+  .admin-top{padding-bottom:12px}
+  .admin-head{min-height:94px;padding:14px;border-radius:22px}
+  .admin-head img{width:58px;height:58px;border-radius:18px}
+  .admin-head h2{font-size:20px}.admin-head p{font-size:11px}
+  .admin-session-badge{display:none}
+  .admin-dashboard-summary{grid-template-columns:1fr}
+  .admin-quick{grid-template-columns:1fr}
+  .admin-row{grid-template-columns:1fr!important}
+  .admin-photo{display:grid;grid-template-columns:88px 1fr;align-items:center}
+  .admin-photo img{height:76px!important}
+  .admin-product-main{grid-template-columns:1fr}
+  .stock-summary{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
@@ -589,73 +768,88 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
 <section class="admin-shell values-hidden" id="adminShell">
   <div class="admin-wrap">
     <div class="admin-top">
-      <div class="admin-head">
-        <img src="logo.jpg" alt="">
-        <div>
-          <h2>Painel CEO — UBA Revendedores</h2>
-          <p>Administração da loja em um painel separado. O cliente nunca vê estes controles.</p>
+      <header class="admin-head">
+        <img src="logo.jpg" alt="UBA DOCES">
+        <div class="admin-brand-copy">
+          <h2>UBA Revendedores</h2>
+          <p>Produtos • estoques • clientes e pedidos</p>
         </div>
-        <div class="admin-actions">
-          <button class="admin-btn admin-nav-btn active" id="adminNavProducts" onclick="setAdminView('products')">Produtos</button>
-          <button class="admin-btn admin-nav-btn" id="adminNavStocks" onclick="setAdminView('stocks')">Estoques</button>
-          <button class="admin-btn" onclick="openLogins()">Logins <span class="pending-pill" id="pendingBarCount">0</span></button>
-          <button class="admin-btn" id="adminThemeBtn" onclick="toggleTheme()">☀︎ Tema</button>
-          <button class="admin-btn" onclick="closeAdmin()">Ver loja</button>
-          <button class="admin-btn" style="border-color:#8c434c;color:#ffd0d4" onclick="logoutAdmin()">Sair CEO</button>
+        <div class="admin-session-tools">
+          <span class="admin-session-badge">CEO • UBA</span>
+          <button class="admin-logout-btn" onclick="logoutAdmin()" aria-label="Sair do painel CEO" title="Sair">↪</button>
         </div>
-      </div>
+      </header>
     </div>
 
-    <section class="admin-view" id="adminProductsView">
-    <div class="admin-summary">
-      <div class="metric"><small>Produtos ativos</small><strong id="mActive">0</strong></div>
-      <div class="metric"><small>Estoque total</small><strong id="mStock">0</strong></div>
-      <div class="metric"><small>Destaques</small><strong id="mFeatured">0</strong></div>
-      <div class="metric"><small>Valor médio interno</small><strong class="sensitive" id="mAvg">R$ 0,00</strong></div>
-    </div>
-
-    <div class="admin-products-head">
-      <div>
-        <h3>Produtos</h3>
-        <p>Edite foto, nome, descrição, grupo de preço, estoque, destaque e status por tabela.</p>
+    <section class="admin-view" id="adminDashboardView">
+      <div class="admin-summary admin-dashboard-summary">
+        <div class="metric"><span class="admin-metric-icon">◇</span><div><small>Produtos ativos</small><strong id="mActive">0</strong></div></div>
+        <div class="metric"><span class="admin-metric-icon">□</span><div><small>Estoque total</small><strong id="mStock">0</strong></div></div>
+        <div class="metric"><span class="admin-metric-icon">♙</span><div><small>Estoque Vendedores</small><strong id="mSellers">0</strong></div></div>
+        <div class="metric"><span class="admin-metric-icon">◆</span><div><small>Revendedores/Eventos</small><strong id="mReseller">0</strong></div></div>
+        <div class="metric"><span class="admin-metric-icon">▣</span><div><small>Reservado Rev./Eventos</small><strong id="mReserved">0</strong></div></div>
+        <div class="metric"><span class="admin-metric-icon">○</span><div><small>Cadastros pendentes</small><strong id="pendingDashboardCount">0</strong></div></div>
       </div>
-      <div class="admin-products-tools">
-        <button onclick="toggleAdminValues()" id="privacyBtn">◉ Mostrar valores</button>
-        <button class="primary" onclick="addProduct()">+ Novo produto</button>
+
+      <div class="admin-quick">
+        <button class="primary" onclick="setAdminView('products')"><span>＋</span>Produtos e preços</button>
+        <button onclick="setAdminView('stocks')"><span>□</span>Estoques</button>
+        <button onclick="openLogins()"><span>⌕</span>Logins de clientes</button>
+        <button onclick="closeAdmin()"><span>⌂</span>Ver loja</button>
+        <button onclick="toggleTheme()"><span>☀</span>Alterar aparência</button>
+        <button onclick="logoutAdmin()"><span>↪</span>Sair do painel</button>
       </div>
-    </div>
 
-    <div class="admin-note">💡 Os preços são definidos por <b>faixa de quantidade total</b>. Cada produto usa um grupo de preço: Chocolate 50%, Branco/Caramelo/Morango ou Pistache.</div>
-
-    <div class="admin-grid" id="adminGrid"></div>
-
-    <section class="admin-section-card">
-      <div class="section-label">
-        <div>
-          <h3>Preços por quantidade</h3>
-          <p>As duas tabelas ficam dentro de Produtos para você editar tudo no mesmo lugar.</p>
-        </div>
-      </div>
-      <div class="pricing-editor">
-        <div id="pricingEditor"></div>
-        <div class="pricing-help">ℹ️ A faixa considera a soma de todos os sabores do carrinho. Ex.: 50 Chocolate 50% + 30 Branco + 20 Pistache = faixa de 100 a 199.</div>
+      <div class="admin-dashboard-note">
+        <strong>Painel exclusivo do CEO</strong>
+        <span>A loja continua separada. Clientes e revendedores nunca veem estes controles.</span>
       </div>
     </section>
 
-    <div class="admin-footer">
-      <button class="ghost" onclick="resetCatalog()">Restaurar prévia</button>
-      <span class="spacer"></span>
-      <button class="save" onclick="saveCatalog()">Salvar alterações</button>
-    </div>
+    <section class="admin-view" id="adminProductsView" hidden>
+      <div class="admin-page-head">
+        <button class="admin-back" onclick="setAdminView('dashboard')">← Início</button>
+        <div class="admin-page-title">
+          <h3>Produtos e preços</h3>
+          <p>Organize os sabores, fotos, descrições e tabelas comerciais.</p>
+        </div>
+        <div class="admin-products-tools">
+          <button onclick="toggleAdminValues()" id="privacyBtn">◉ Mostrar valores</button>
+          <button class="primary" onclick="addProduct()">+ Novo produto</button>
+        </div>
+      </div>
+
+      <div class="admin-note">Os preços são definidos por <b>faixa de quantidade total</b>. O estoque é administrado separadamente na área Estoques.</div>
+      <div class="admin-grid" id="adminGrid"></div>
+
+      <section class="admin-section-card">
+        <div class="section-label">
+          <div>
+            <h3>Preços por quantidade</h3>
+            <p>Tabelas para revendedores/comércio e festas/eventos.</p>
+          </div>
+        </div>
+        <div class="pricing-editor">
+          <div id="pricingEditor"></div>
+          <div class="pricing-help">A faixa considera a soma de todos os sabores do carrinho.</div>
+        </div>
+      </section>
+
+      <div class="admin-footer">
+        <button class="ghost" onclick="resetCatalog()">Restaurar prévia</button>
+        <span class="spacer"></span>
+        <button class="save" onclick="saveCatalog()">Salvar alterações</button>
+      </div>
     </section>
 
     <section class="admin-view" id="adminStocksView" hidden>
-      <div class="admin-products-head">
-        <div>
+      <div class="admin-page-head">
+        <button class="admin-back" onclick="setAdminView('dashboard')">← Início</button>
+        <div class="admin-page-title">
           <h3>Estoques UBA</h3>
-          <p>Os mesmos quatro saldos aparecem para o CEO nos dois web apps.</p>
+          <p>Os mesmos saldos aparecem para o CEO nos dois web apps.</p>
         </div>
-        <span class="stock-sync-badge">● BASE ÚNICA DE ESTOQUE</span>
+        <span class="stock-sync-badge">● BASE ÚNICA</span>
       </div>
 
       <div class="stock-summary">
@@ -667,53 +861,37 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
         <div class="stock-card sellers">
           <small>Estoque Vendedores</small>
           <strong id="stockSellersTotal">0</strong>
-          <span>Saldo exclusivo dos vendedores e do fechamento de caixa.</span>
+          <span>Saldo exclusivo do fechamento de caixa.</span>
         </div>
         <div class="stock-card reseller">
           <small>Estoque Revendedores/Eventos</small>
           <strong id="stockResellerTotal">0</strong>
-          <span>Saldo próprio para vendas a revendedores e eventos.</span>
+          <span>Saldo próprio deste canal.</span>
         </div>
-        <div class="stock-card fabricar">
+        <div class="stock-card reserved">
           <small>Reservado Revendedores/Eventos</small>
           <strong id="stockReservedTotal">0</strong>
-          <span>Unidades físicas já reservadas para pedidos desse canal.</span>
+          <span>Unidades físicas reservadas para pedidos.</span>
         </div>
       </div>
 
       <div class="stock-explain">
-        <b>Estrutura atual:</b> o estoque usado no fechamento de caixa é o <b>Estoque Vendedores</b> e permanece separado do
-        <b>Estoque Revendedores/Eventos</b>. As regras de movimentação serão configuradas na próxima etapa.
+        <b>Estrutura atual:</b> o Estoque Vendedores permanece separado do Estoque Revendedores/Eventos. As regras de movimentação serão configuradas na próxima etapa.
       </div>
 
       <div class="stock-table-wrap">
         <table class="stock-table">
-          <thead>
-            <tr>
-              <th>Produto</th>
-              <th>Estoque total</th>
-              <th>Vendedores</th>
-              <th>Revendedores/Eventos</th>
-              <th>Reservado Revendedores/Eventos</th>
-            </tr>
-          </thead>
+          <thead><tr><th>Produto</th><th>Estoque total</th><th>Vendedores</th><th>Revendedores/Eventos</th><th>Reservado Revendedores/Eventos</th></tr></thead>
           <tbody id="stockTableBody"></tbody>
           <tfoot id="stockTableFoot"></tfoot>
         </table>
       </div>
 
       <div class="stock-movements">
-        <div class="stock-movements-head">
-          <div>
-            <h3>Histórico de movimentações</h3>
-            <span style="font-size:10px;color:var(--muted)">Histórico compartilhado entre os dois painéis do CEO.</span>
-          </div>
-        </div>
+        <div class="stock-movements-head"><div><h3>Histórico de movimentações</h3><span>Histórico compartilhado entre os dois painéis do CEO.</span></div></div>
         <div class="stock-movements-list" id="stockMovementsList"></div>
       </div>
-
     </section>
-
   </div>
 </section>
 
@@ -1270,12 +1448,12 @@ function resetDemo(){
 }
 
 /* Painel de valores antigo: mantido */
-let adminView='products';
+let adminView='dashboard';
 function openAdmin(){
   if(!ceoSession){openCheckout(1);showAdminLogin();return}
   updateCeoBar();
   document.getElementById('adminShell').classList.add('show');
-  setAdminView(adminView);
+  setAdminView('dashboard');
   document.body.style.overflow='hidden'
 }
 function closeAdmin(){
@@ -1287,17 +1465,17 @@ function closeAdmin(){
 
 
 function setAdminView(view){
-  adminView=view==='stocks'?'stocks':'products';
+  adminView=['dashboard','products','stocks'].includes(view)?view:'dashboard';
+  const dashboard=document.getElementById('adminDashboardView');
   const products=document.getElementById('adminProductsView');
   const stocks=document.getElementById('adminStocksView');
-  const btnProducts=document.getElementById('adminNavProducts');
-  const btnStocks=document.getElementById('adminNavStocks');
+  if(dashboard)dashboard.hidden=adminView!=='dashboard';
   if(products)products.hidden=adminView!=='products';
   if(stocks)stocks.hidden=adminView!=='stocks';
-  btnProducts?.classList.toggle('active',adminView==='products');
-  btnStocks?.classList.toggle('active',adminView==='stocks');
   if(adminView==='stocks')renderStockPanel();
-  else renderAdmin()
+  else if(adminView==='products')renderAdmin();
+  else updateAdminMetrics();
+  document.getElementById('adminShell')?.scrollTo({top:0,behavior:'smooth'})
 }
 function renderStockPanel(){
   const totals=stockTotals();
@@ -1452,30 +1630,34 @@ function editPricing(purpose,index,key,value){
 
 function renderAdmin(){
   const grid=document.getElementById('adminGrid');
+  if(!grid)return;
   grid.innerHTML=catalog.map((p,i)=>`<div class="admin-row">
     <div class="admin-photo">
       <img src="${p.img}" alt="${escapeHtml(p.name)}">
       <label>Trocar foto<input type="file" accept="image/*" onchange="adminPhotoChange(${i},this)"></label>
     </div>
-    <div class="field wide"><label>Produto</label><input data-i="${i}" data-k="name" value="${escapeHtml(p.name)}" oninput="editField(this)"></div>
-    <div class="field wide"><label>Descrição</label><textarea data-i="${i}" data-k="desc" oninput="editField(this)">${escapeHtml(p.desc)}</textarea></div>
-    <div class="field">
-      <label>Grupo de preço</label>
-      <select data-i="${i}" data-k="priceGroup" onchange="editField(this)">
-        <option value="chocolate50" ${productPriceGroup(p)==='chocolate50'?'selected':''}>Chocolate 50%</option>
-        <option value="standard" ${productPriceGroup(p)==='standard'?'selected':''}>Branco / Caramelo / Morango</option>
-        <option value="pistache" ${productPriceGroup(p)==='pistache'?'selected':''}>Pistache</option>
-      </select>
-      <small class="group-help">Define qual coluna da tabela de preços este produto usa.</small>
+    <div class="admin-product-content">
+      <div class="admin-product-main">
+        <div class="field"><label>Produto</label><input data-i="${i}" data-k="name" value="${escapeHtml(p.name)}" oninput="editField(this)"></div>
+        <div class="field">
+          <label>Grupo de preço</label>
+          <select data-i="${i}" data-k="priceGroup" onchange="editField(this)">
+            <option value="chocolate50" ${productPriceGroup(p)==='chocolate50'?'selected':''}>Chocolate 50%</option>
+            <option value="standard" ${productPriceGroup(p)==='standard'?'selected':''}>Branco / Caramelo / Morango</option>
+            <option value="pistache" ${productPriceGroup(p)==='pistache'?'selected':''}>Pistache</option>
+          </select>
+        </div>
+        <div class="field"><label>Destaque</label><select data-i="${i}" data-k="tag" onchange="editField(this)">
+          <option value="" ${!p.tag?'selected':''}>Nenhum</option>
+          <option ${p.tag==='Destaque'?'selected':''}>Destaque</option>
+          <option ${p.tag==='Mais vendido'?'selected':''}>Mais vendido</option>
+          <option ${p.tag==='Novo'?'selected':''}>Novo</option>
+        </select></div>
+        <button class="status-toggle ${p.active?'on':''}" onclick="toggleProduct(${i},this)">${p.active?'ATIVO':'INATIVO'}</button>
+      </div>
+      <div class="field admin-product-description"><label>Descrição</label><textarea data-i="${i}" data-k="desc" oninput="editField(this)">${escapeHtml(p.desc)}</textarea></div>
+      <div class="admin-managed-note">O estoque deste produto é gerenciado na área <b>Estoques</b>.</div>
     </div>
-    <div class="field"><label>Estoque</label><input value="Gerenciado em Estoques" disabled></div>
-    <div class="field"><label>Destaque</label><select data-i="${i}" data-k="tag" onchange="editField(this)">
-      <option value="" ${!p.tag?'selected':''}>Nenhum</option>
-      <option ${p.tag==='Destaque'?'selected':''}>Destaque</option>
-      <option ${p.tag==='Mais vendido'?'selected':''}>Mais vendido</option>
-      <option ${p.tag==='Novo'?'selected':''}>Novo</option>
-    </select></div>
-    <button class="status-toggle ${p.active?'on':''}" onclick="toggleProduct(${i},this)">${p.active?'ATIVO':'INATIVO'}</button>
   </div>`).join('');
   renderPricingEditor();
   updateAdminMetrics()
@@ -1524,16 +1706,14 @@ function toggleProduct(i,btn){
   updateAdminMetrics()
 }
 function updateAdminMetrics(){
-  const active=catalog.filter(p=>p.active).length;
-  const stock=stockTotals().general;
-  const feat=catalog.filter(p=>p.tag).length;
-  const vals=[];
-  Object.values(pricing).forEach(rows=>rows.forEach(t=>vals.push(t.chocolate50,t.standard,t.pistache)));
-  const avg=vals.length?vals.reduce((s,v)=>s+Number(v||0),0)/vals.length:0;
-  document.getElementById('mActive').textContent=active;
-  document.getElementById('mStock').textContent=stock;
-  document.getElementById('mFeatured').textContent=feat;
-  document.getElementById('mAvg').textContent=money(avg)
+  const totals=stockTotals();
+  const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=String(value)};
+  set('mActive',catalog.filter(p=>p.active).length);
+  set('mStock',totals.general);
+  set('mSellers',totals.sellers);
+  set('mReseller',totals.reseller);
+  set('mReserved',totals.separated);
+  set('pendingDashboardCount',accounts.filter(a=>a.status==='pending').length)
 }
 function toggleAdminValues(){
   const shell=document.getElementById('adminShell');
@@ -1592,7 +1772,7 @@ function setLoginTab(tab){
 }
 function updatePendingCounts(){
   const n=accounts.filter(a=>a.status==='pending').length;
-  ['pendingHeaderCount','pendingBarCount','pendingPanelCount'].forEach(id=>{
+  ['pendingHeaderCount','pendingBarCount','pendingPanelCount','pendingDashboardCount'].forEach(id=>{
     const el=document.getElementById(id);if(el)el.textContent=n
   })
 }
