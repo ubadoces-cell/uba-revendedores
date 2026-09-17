@@ -18,7 +18,8 @@
   function orderPurpose(value){return value==='event'?'Festa ou evento':'Revendedor / comércio'}
   function updateOrderCount(){
     const count=orders.filter(order=>order.status==='novo').length;
-    const el=document.getElementById('mOrders');if(el)el.textContent=String(count)
+    const metric=document.getElementById('mOrders');if(metric)metric.textContent=String(count);
+    const quick=document.getElementById('ordersQuickCount');if(quick)quick.textContent=count?String(count):''
   }
   window.renderOrdersPanel=function(){
     const root=document.getElementById('ordersList');if(!root)return;
@@ -114,6 +115,11 @@
   window.setAdminView=function(view){
     previousSetAdminView(view);
     if(view==='orders')loadOrdersRemote(true)
+  };
+  const previousOpenAdmin=window.openAdmin;
+  window.openAdmin=function(){
+    previousOpenAdmin();
+    if(ceoSession)loadOrdersRemote(true)
   };
   setInterval(()=>{if(ceoSession&&adminView==='orders'&&!document.hidden)loadOrdersRemote(true)},20000);
 })();
