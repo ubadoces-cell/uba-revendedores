@@ -134,7 +134,7 @@ function publicState(state) {
 }
 function movement(type, productId, quantity, note, actor) {
   const key = REVERSE_MAP[productId];
-  return { id: randomBytes(16).toString("hex"), type, productId: key, productName: PRODUCT_MAP[key]?.name || key, qty: quantity, note, at: new Date().toISOString(), actor };
+  return { id: randomBytes(16).toString("hex"), type, productId, productName: PRODUCT_MAP[key]?.name || key, qty: quantity, note, at: new Date().toISOString(), actor };
 }
 
 export default async function handler(req, res) {
