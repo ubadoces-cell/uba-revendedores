@@ -48,10 +48,18 @@
     document.getElementById('loginShell').classList.remove('show');
     document.body.style.overflow='';renderAll()
   };
-  window.useSellerStock=async function(productId){
-    const input=document.getElementById('useSeller-'+productId);
-    const quantity=Math.max(0,Math.trunc(Number(input?.value||0)));if(!quantity)return;
-    try{await stockAction('seller_to_order',{productId,quantity});if(input)input.value=''}catch(error){alert(error.message)}
+  window.reserveSellerStock=async function(productId){
+    const input=document.getElementById('reserveSeller-'+productId);
+    const quantity=Math.max(0,Math.trunc(Number(input?.value||0)));
+    if(!quantity){alert('Informe a quantidade que deseja reservar.');return}
+    const item=sharedStock?.[productId]||{};
+    const available=Math.max(0,Math.trunc(Number(item.sellers||0)));
+    if(quantity>available){alert(`Há apenas ${available} unidades deste sabor no estoque dos vendedores.`);return}
+    if(!confirm(`Reservar ${quantity} unidade(s) do estoque dos vendedores para Revendedores/Eventos?`))return;
+    try{
+      await stockAction('reserve_seller_stock',{productId,quantity});
+      if(input)input.value=''
+    }catch(error){alert(error.message)}
   };
   window.registerProduction=async function(productId){
     const input=document.getElementById('produce-'+productId);
