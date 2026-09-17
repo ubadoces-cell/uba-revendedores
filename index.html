@@ -775,11 +775,11 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
 
 <script>
 const defaultCatalog=[
- {id:'pistache',name:'Pistache',price:8.50,stock:120,img:'IMG_5400.jpeg',desc:'Cremoso e marcante, com sabor característico de pistache.',tag:'Destaque',active:true},
- {id:'chocolate50',name:'Chocolate 50%',price:7.00,stock:180,img:'IMG_5403.jpeg',desc:'Chocolate intenso e equilibrado com recheio cremoso.',tag:'Mais vendido',active:true},
- {id:'branco',name:'Chocolate Branco',price:7.50,stock:95,img:'IMG_5399.jpeg',desc:'Delicado, cremoso e doce na medida certa.',tag:'',active:true},
- {id:'caramelo',name:'Caramelo',price:7.50,stock:72,img:'IMG_5404.jpeg',desc:'Recheio cremoso de caramelo com sabor envolvente.',tag:'',active:true},
- {id:'morango',name:'Morango',price:7.50,stock:0,img:'IMG_5402.jpeg',desc:'Cremoso e frutado, com sabor marcante de morango.',tag:'',active:true}
+ {id:'pistache',name:'Pistache',price:8.50,stock:120,img:'pistache.jpg',desc:'Cremoso e marcante, com sabor característico de pistache.',tag:'Destaque',active:true},
+ {id:'chocolate50',name:'Chocolate 50%',price:7.00,stock:180,img:'chocolate50.jpg',desc:'Chocolate intenso e equilibrado com recheio cremoso.',tag:'Mais vendido',active:true},
+ {id:'branco',name:'Chocolate Branco',price:7.50,stock:95,img:'branco.jpg',desc:'Delicado, cremoso e doce na medida certa.',tag:'',active:true},
+ {id:'caramelo',name:'Caramelo',price:7.50,stock:72,img:'caramelo.jpg',desc:'Recheio cremoso de caramelo com sabor envolvente.',tag:'',active:true},
+ {id:'morango',name:'Morango',price:7.50,stock:0,img:'morango.jpg',desc:'Cremoso e frutado, com sabor marcante de morango.',tag:'',active:true}
 ];
 
 const defaultPricing={
@@ -800,11 +800,11 @@ const defaultPricing={
 let catalog=readJson('uba-rev-catalog')||structuredClone(defaultCatalog);
 let pricing=readJson('uba-rev-pricing-v1')||structuredClone(defaultPricing);
 const defaultImageMap={
-  pistache:'IMG_5400.jpeg',
-  chocolate50:'IMG_5403.jpeg',
-  branco:'IMG_5399.jpeg',
-  caramelo:'IMG_5404.jpeg',
-  morango:'IMG_5402.jpeg'
+  pistache:'pistache.jpg',
+  chocolate50:'chocolate50.jpg',
+  branco:'branco.jpg',
+  caramelo:'caramelo.jpg',
+  morango:'morango.jpg'
 };
 catalog=catalog.map(p=>{
   const wanted=defaultImageMap[p.id];
