@@ -457,6 +457,41 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
 }
 
 
+
+.orders-help{
+  margin-bottom:14px;padding:14px 16px;border:1px solid #3D2861;border-radius:16px;
+  color:#AFA8C5;background:linear-gradient(145deg,#181525,#100E1B);font-size:12px;line-height:1.5
+}
+.orders-help b{color:#F8F6FF}
+.orders-list{display:grid;gap:12px}
+.orders-empty{
+  padding:34px 18px;text-align:center;border:1px solid #2E2942;border-radius:20px;
+  color:#AFA8C5;background:linear-gradient(145deg,#151222,#0C0B17)
+}
+.order-card{
+  padding:17px;border:1px solid #2E2942;border-radius:22px;
+  background:linear-gradient(145deg,#151222,#0C0B17);box-shadow:0 12px 30px rgba(0,0,0,.28)
+}
+.order-card-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+.order-card h4{margin:7px 0 4px;font-size:18px;color:#fff}
+.order-card small,.order-card span{color:#AFA8C5}
+.order-code{display:inline-flex!important;padding:5px 8px;border-radius:999px;background:#2D135B;color:#C88CFF!important;font-size:10px;font-weight:900}
+.order-total{text-align:right}.order-total strong{display:block;color:#fff;font-size:20px}.order-total span{display:block;margin-top:4px;font-size:11px}
+.order-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:13px;padding:11px 12px;border-radius:13px;background:#0C0A14;font-size:11px}
+.order-meta b{color:#fff}.order-items{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}
+.order-items span{padding:7px 9px;border:1px solid #392C50;border-radius:10px;background:#171323;font-size:11px}
+.order-items b{color:#fff}.order-address{margin-top:11px;color:#AFA8C5;font-size:11px}.order-address b{color:#fff}
+.order-status-row{display:flex;justify-content:space-between;gap:12px;align-items:end;margin-top:14px}
+.order-status-row label{display:grid;gap:5px;color:#AFA8C5;font-size:10px;font-weight:800}
+.order-status-row select{min-width:180px;padding:9px 11px;border:1px solid #39314E;border-radius:11px;background:#0C0A14;color:#fff}
+.order-status{padding:7px 10px;border-radius:999px;font-size:10px;font-weight:900;background:#2D135B;color:#C88CFF!important}
+.order-status.concluido{background:#123724;color:#8BE0B4!important}.order-status.cancelado{background:#3B1823;color:#FFBAC4!important}
+.quick-count:empty{display:none}.quick-count{padding:3px 7px;border-radius:999px;background:#FEF2E4;color:#4A388E;font-size:10px}
+@media(max-width:600px){
+  .order-card-head,.order-status-row{align-items:stretch;flex-direction:column}
+  .order-total{text-align:left}.order-status-row select{min-width:0;width:100%}
+}
+
 /* ===== Painel CEO no padrão visual do Controle UBA ===== */
 .admin-shell{
   --bg:#05040B;--bg2:#030307;--surface:#12101D;--surface2:#191626;--surface3:#201C2E;
@@ -756,11 +791,11 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
 
       <section class="panel" id="step2"><h4>Dados do comprador</h4><p class="hint">Esses dados ficam vinculados à conta para agilizar os próximos pedidos.</p><div class="doc-type"><button class="active" onclick="docType(this,'CPF')">CPF</button><button onclick="docType(this,'CNPJ')">CNPJ</button></div><div class="fields"><div class="field"><label id="docLabel">CPF</label><input id="buyerDoc" placeholder="000.000.000-00" /></div><div class="field"><label>Nome / Razão social</label><input id="buyerName" placeholder="Nome do comprador ou empresa" /></div><div class="field full"><label>Nome da loja (opcional)</label><input id="buyerStore" placeholder="Como sua loja é conhecida" /></div></div><div class="checkout-nav"><button class="back" onclick="goStep(1)">Voltar</button><button class="next" onclick="goStep(3)">Continuar</button></div></section>
 
-      <section class="panel" id="step3"><h4>Entrega</h4><p class="hint">Defina onde o pedido deve ser entregue ou retirado.</p><div class="fields"><div class="field"><label>CEP</label><input placeholder="00000-000" /></div><div class="field"><label>Cidade</label><input placeholder="Cidade" /></div><div class="field full"><label>Rua / Avenida</label><input placeholder="Endereço" /></div><div class="field"><label>Número</label><input placeholder="123" /></div><div class="field"><label>Complemento</label><input placeholder="Loja, sala..." /></div></div><div class="checkout-nav"><button class="back" onclick="goStep(2)">Voltar</button><button class="next" onclick="goStep(4)">Ir para o Pix</button></div></section>
+      <section class="panel" id="step3"><h4>Entrega</h4><p class="hint">Defina onde o pedido deve ser entregue ou retirado.</p><div class="fields"><div class="field"><label>CEP</label><input id="deliveryCep" placeholder="00000-000" /></div><div class="field"><label>Cidade</label><input id="deliveryCity" placeholder="Cidade" /></div><div class="field full"><label>Rua / Avenida</label><input id="deliveryStreet" placeholder="Endereço" /></div><div class="field"><label>Número</label><input id="deliveryNumber" placeholder="123" /></div><div class="field"><label>Complemento</label><input id="deliveryComplement" placeholder="Loja, sala..." /></div></div><div class="checkout-nav"><button class="back" onclick="goStep(2)">Voltar</button><button class="next" onclick="goStep(4)">Ir para o Pix</button></div></section>
 
-      <section class="panel" id="step4"><h4>Pagamento via Pix</h4><p class="hint">Pagamento disponível somente para uma conta aprovada. O Pix será gerado automaticamente pelo Asaas.</p><div class="pix-box"><div class="qr"></div><div class="pix-info"><small style="color:var(--muted);font-weight:900">TOTAL DO PEDIDO</small><br><b id="pixTotal">R$ 0,00</b><p>Pagamento identificado automaticamente. Assim que o Asaas confirmar, o pedido muda para <strong>Pago</strong> sem precisar enviar comprovante.</p><div class="copy-line">000201... CÓDIGO PIX GERADO PELO ASAAS ...6304</div><div class="sandbox">Prévia visual — nenhum Pix real é gerado nesta versão.</div></div></div><div class="checkout-nav"><button class="back" onclick="goStep(3)">Voltar</button><button class="next" onclick="finishDemo()">Simular pagamento confirmado</button></div></section>
+      <section class="panel" id="step4"><h4>Revisar e enviar pedido</h4><p class="hint">O pedido será enviado para o painel do CEO. A confirmação automática do Pix será integrada com o Asaas em uma próxima etapa.</p><div class="pix-box"><div class="qr"></div><div class="pix-info"><small style="color:var(--muted);font-weight:900">TOTAL DO PEDIDO</small><br><b id="pixTotal">R$ 0,00</b><p>Ao enviar, o pedido ficará com status <strong>Novo</strong> para conferência da UBA Doces.</p><div class="copy-line">PAGAMENTO PIX — AGUARDANDO INTEGRAÇÃO ASAAS</div><div class="sandbox">Nenhuma cobrança Pix real é gerada nesta versão.</div></div></div><div class="checkout-nav"><button class="back" onclick="goStep(3)">Voltar</button><button class="next" onclick="finishDemo()">Enviar pedido</button></div></section>
 
-      <section class="panel" id="success"><div class="success"><div class="check">✓</div><h4>Pedido recebido</h4><p>Na versão integrada, esta tela aparece depois do webhook do Asaas confirmar o pagamento.</p><button class="next" onclick="resetDemo()">Voltar ao catálogo</button></div></section>
+      <section class="panel" id="success"><div class="success"><div class="check">✓</div><h4>Pedido recebido</h4><p>Seu pedido <strong id="successOrderCode"></strong> foi enviado para a UBA Doces e já aparece no painel do CEO.</p><button class="next" onclick="resetDemo()">Voltar ao catálogo</button></div></section>
     </div>
   </div>
 </div>
@@ -788,12 +823,14 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
         <div class="metric"><span class="admin-metric-icon">♙</span><div><small>Estoque Vendedores</small><strong id="mSellers">0</strong></div></div>
         <div class="metric"><span class="admin-metric-icon">◆</span><div><small>Revendedores/Eventos</small><strong id="mReseller">0</strong></div></div>
         <div class="metric"><span class="admin-metric-icon">▣</span><div><small>Reservado Rev./Eventos</small><strong id="mReserved">0</strong></div></div>
+        <div class="metric"><span class="admin-metric-icon">☷</span><div><small>Pedidos novos</small><strong id="mOrders">0</strong></div></div>
         <div class="metric"><span class="admin-metric-icon">○</span><div><small>Cadastros pendentes</small><strong id="pendingDashboardCount">0</strong></div></div>
       </div>
 
       <div class="admin-quick">
         <button class="primary" onclick="setAdminView('products')"><span>＋</span>Produtos e preços</button>
         <button onclick="setAdminView('stocks')"><span>□</span>Estoques</button>
+        <button onclick="setAdminView('orders')"><span>☷</span>Pedidos <b class="quick-count" id="ordersQuickCount"></b></button>
         <button onclick="openLogins()"><span>⌕</span>Logins de clientes</button>
         <button onclick="closeAdmin()"><span>⌂</span>Ver loja</button>
         <button onclick="toggleTheme()"><span>☀</span>Alterar aparência</button>
@@ -840,6 +877,19 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
         <span class="spacer"></span>
         <button class="save" onclick="saveCatalog()">Salvar alterações</button>
       </div>
+    </section>
+
+    <section class="admin-view" id="adminOrdersView" hidden>
+      <div class="admin-page-head">
+        <button class="admin-back" onclick="setAdminView('dashboard')">← Início</button>
+        <div class="admin-page-title">
+          <h3>Pedidos de clientes</h3>
+          <p>Pedidos enviados pela loja de Revendedores/Eventos.</p>
+        </div>
+        <button class="admin-back" onclick="loadOrdersRemote()">↻ Atualizar</button>
+      </div>
+      <div class="orders-help"><b>Importante:</b> enquanto o Asaas não estiver integrado, novos pedidos aparecem como <b>Novo</b> e não como pagos.</div>
+      <div class="orders-list" id="ordersList"><div class="orders-empty">Carregando pedidos...</div></div>
     </section>
 
     <section class="admin-view" id="adminStocksView" hidden>
@@ -1465,15 +1515,18 @@ function closeAdmin(){
 
 
 function setAdminView(view){
-  adminView=['dashboard','products','stocks'].includes(view)?view:'dashboard';
+  adminView=['dashboard','products','stocks','orders'].includes(view)?view:'dashboard';
   const dashboard=document.getElementById('adminDashboardView');
   const products=document.getElementById('adminProductsView');
   const stocks=document.getElementById('adminStocksView');
+  const ordersView=document.getElementById('adminOrdersView');
   if(dashboard)dashboard.hidden=adminView!=='dashboard';
   if(products)products.hidden=adminView!=='products';
   if(stocks)stocks.hidden=adminView!=='stocks';
+  if(ordersView)ordersView.hidden=adminView!=='orders';
   if(adminView==='stocks')renderStockPanel();
   else if(adminView==='products')renderAdmin();
+  else if(adminView==='orders'&&typeof renderOrdersPanel==='function')renderOrdersPanel();
   else updateAdminMetrics();
   document.getElementById('adminShell')?.scrollTo({top:0,behavior:'smooth'})
 }
@@ -1719,6 +1772,7 @@ function updateAdminMetrics(){
   set('mSellers',totals.sellers);
   set('mReseller',totals.reseller);
   set('mReserved',totals.separated);
+  if(!document.getElementById('mOrders')?.textContent) set('mOrders',0);
   set('pendingDashboardCount',accounts.filter(a=>a.status==='pending').length)
 }
 function toggleAdminValues(){
@@ -1885,5 +1939,6 @@ renderAll();
 maybeShowPurposeGate();
 </script>
 <script src="shared-stock-sync.js?v=2"></script>
+<script src="orders-sync.js?v=1"></script>
 </body>
 </html>
