@@ -652,39 +652,38 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
     <section class="admin-view" id="adminStocksView" hidden>
       <div class="admin-products-head">
         <div>
-          <h3>Estoque UBA</h3>
-          <p>Visão completa do estoque compartilhado entre UBA Controles e UBA Revendedores.</p>
+          <h3>Estoques UBA</h3>
+          <p>Os mesmos quatro saldos aparecem para o CEO nos dois web apps.</p>
         </div>
         <span class="stock-sync-badge">● BASE ÚNICA DE ESTOQUE</span>
       </div>
 
       <div class="stock-summary">
         <div class="stock-card">
-          <small>Estoque Geral UBA</small>
+          <small>Estoque total</small>
           <strong id="stockGeneralTotal">0</strong>
-          <span>Tudo que existe fisicamente pronto, inclusive o que já está separado para pedidos.</span>
+          <span>Soma de todo o estoque físico.</span>
         </div>
         <div class="stock-card sellers">
           <small>Estoque Vendedores</small>
           <strong id="stockSellersTotal">0</strong>
-          <span>Mercadoria destinada às vendas normais e ao fechamento de caixa.</span>
+          <span>Saldo exclusivo dos vendedores e do fechamento de caixa.</span>
         </div>
         <div class="stock-card reseller">
           <small>Estoque Revendedores/Eventos</small>
           <strong id="stockResellerTotal">0</strong>
-          <span>Estoque livre desse canal. Pode permanecer zerado enquanto não houver espaço para armazenar.</span>
+          <span>Saldo próprio para vendas a revendedores e eventos.</span>
         </div>
         <div class="stock-card fabricar">
-          <small>A Fabricar Revendedores/Eventos</small>
-          <strong id="stockToMakeTotal">0</strong>
-          <span>Necessidade de produção dos pedidos que ainda não está pronta.</span>
+          <small>Reservado Revendedores/Eventos</small>
+          <strong id="stockReservedTotal">0</strong>
+          <span>Unidades físicas já reservadas para pedidos desse canal.</span>
         </div>
       </div>
 
       <div class="stock-explain">
-        <b>Regra da UBA:</b> pedidos de revendedores/eventos entram em <b>A Fabricar</b>. Nada é retirado automaticamente do estoque dos vendedores.
-        Quando você quiser aproveitar uma parte do estoque dos vendedores, faça a transferência manual abaixo. A quantidade transferida fica
-        <b>separada diretamente para os pedidos</b> e reduz somente o que ainda falta fabricar.
+        <b>Estrutura atual:</b> o estoque usado no fechamento de caixa é o <b>Estoque Vendedores</b> e permanece separado do
+        <b>Estoque Revendedores/Eventos</b>. As regras de movimentação serão configuradas na próxima etapa.
       </div>
 
       <div class="stock-table-wrap">
@@ -692,12 +691,10 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
           <thead>
             <tr>
               <th>Produto</th>
-              <th>Geral físico</th>
+              <th>Estoque total</th>
               <th>Vendedores</th>
-              <th>Rev./Eventos</th>
-              <th>Separado p/ pedidos</th>
-              <th>A fabricar</th>
-              <th>Movimentação manual</th>
+              <th>Revendedores/Eventos</th>
+              <th>Reservado Revendedores/Eventos</th>
             </tr>
           </thead>
           <tbody id="stockTableBody"></tbody>
@@ -705,21 +702,16 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
         </table>
       </div>
 
-      <div class="stock-order-note">
-        <b>Separado para pedidos</b> não é estoque livre para venda: são unidades físicas que já têm destino. Elas continuam dentro do
-        <b>Estoque Geral UBA</b> até o pedido ser entregue.
-      </div>
-
       <div class="stock-movements">
         <div class="stock-movements-head">
           <div>
             <h3>Histórico de movimentações</h3>
-            <span style="font-size:10px;color:var(--muted)">Transferências e produção registradas pelo CEO.</span>
+            <span style="font-size:10px;color:var(--muted)">Histórico compartilhado entre os dois painéis do CEO.</span>
           </div>
-          <div style="display:flex;gap:6px;flex-wrap:wrap"><button class="ghost" style="padding:8px 10px;font-size:10px" onclick="resetSharedStock()">Restaurar estoque da prévia</button><button class="ghost" style="padding:8px 10px;font-size:10px" onclick="clearStockHistory()">Limpar histórico</button></div>
         </div>
         <div class="stock-movements-list" id="stockMovementsList"></div>
       </div>
+
     </section>
 
   </div>
@@ -1312,30 +1304,18 @@ function renderStockPanel(){
   document.getElementById('stockGeneralTotal').textContent=totals.general;
   document.getElementById('stockSellersTotal').textContent=totals.sellers;
   document.getElementById('stockResellerTotal').textContent=totals.reseller;
-  document.getElementById('stockToMakeTotal').textContent=totals.toMake;
+  document.getElementById('stockReservedTotal').textContent=totals.separated;
 
   const tbody=document.getElementById('stockTableBody');
   tbody.innerHTML=catalog.map(p=>{
     const s=stockItem(p.id);
     const general=stockGeneralItem(p.id);
-    const needClass=Number(s.toMake||0)>0?'needs':'zero';
     return `<tr>
       <td class="product-name">${escapeHtml(p.name)}</td>
       <td class="num">${general}</td>
       <td class="num">${Number(s.sellers||0)}</td>
       <td class="num ${Number(s.reseller||0)===0?'zero':''}">${Number(s.reseller||0)}</td>
       <td class="num ${Number(s.separated||0)>0?'ready':'zero'}">${Number(s.separated||0)}</td>
-      <td class="num ${needClass}">${Number(s.toMake||0)}</td>
-      <td class="stock-actions-cell">
-        <div class="stock-action">
-          <input id="useSeller-${p.id}" type="number" min="0" step="1" placeholder="Qtd. dos vendedores">
-          <button onclick="useSellerStock('${p.id}')">Usar vendedores</button>
-        </div>
-        <div class="stock-action">
-          <input id="produce-${p.id}" type="number" min="0" step="1" placeholder="Qtd. produzida">
-          <button class="primary" onclick="registerProduction('${p.id}')">Registrar produção</button>
-        </div>
-      </td>
     </tr>`
   }).join('');
 
@@ -1346,8 +1326,6 @@ function renderStockPanel(){
     <td>${totals.sellers}</td>
     <td>${totals.reseller}</td>
     <td>${totals.separated}</td>
-    <td>${totals.toMake}</td>
-    <td></td>
   </tr>`;
 
   renderStockHistory();
