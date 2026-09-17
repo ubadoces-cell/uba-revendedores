@@ -876,12 +876,12 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
       </div>
 
       <div class="stock-explain">
-        <b>Estrutura atual:</b> o Estoque Vendedores permanece separado do Estoque Revendedores/Eventos. As regras de movimentação serão configuradas na próxima etapa.
+        <b>Reserva manual:</b> informe a quantidade do sabor e clique em <b>Reservar</b>. As unidades saem do Estoque Vendedores e entram em Reservado Revendedores/Eventos. O Estoque total não muda.
       </div>
 
       <div class="stock-table-wrap">
         <table class="stock-table">
-          <thead><tr><th>Produto</th><th>Estoque total</th><th>Vendedores</th><th>Revendedores/Eventos</th><th>Reservado Revendedores/Eventos</th></tr></thead>
+          <thead><tr><th>Produto</th><th>Estoque total</th><th>Vendedores</th><th>Revendedores/Eventos</th><th>Reservado Revendedores/Eventos</th><th>Reservar dos vendedores</th></tr></thead>
           <tbody id="stockTableBody"></tbody>
           <tfoot id="stockTableFoot"></tfoot>
         </table>
@@ -1494,6 +1494,13 @@ function renderStockPanel(){
       <td class="num">${Number(s.sellers||0)}</td>
       <td class="num ${Number(s.reseller||0)===0?'zero':''}">${Number(s.reseller||0)}</td>
       <td class="num ${Number(s.separated||0)>0?'ready':'zero'}">${Number(s.separated||0)}</td>
+      <td class="stock-actions-cell">
+        <div class="stock-action">
+          <input id="reserveSeller-${p.id}" type="number" min="1" max="${Number(s.sellers||0)}" step="1" inputmode="numeric" placeholder="Quantidade">
+          <button class="primary" onclick="reserveSellerStock('${p.id}')">Reservar</button>
+        </div>
+        <small>${Number(s.toMake||0)>0?`${Number(s.toMake||0)} un. em A Fabricar`:'Reserva manual livre'}</small>
+      </td>
     </tr>`
   }).join('');
 
@@ -1504,6 +1511,7 @@ function renderStockPanel(){
     <td>${totals.sellers}</td>
     <td>${totals.reseller}</td>
     <td>${totals.separated}</td>
+    <td>—</td>
   </tr>`;
 
   renderStockHistory();
@@ -1519,6 +1527,7 @@ function renderStockHistory(){
   const labels={
     order:'Pedido confirmado',
     sellers_to_order:'Vendedores → pedido',
+    seller_reservation:'Vendedores → reservado',
     production:'Produção → pedido',
     adjustment:'Ajuste'
   };
@@ -1531,24 +1540,21 @@ function renderStockHistory(){
     </div>`
   }).join('')
 }
-function useSellerStock(productId){
-  const input=document.getElementById('useSeller-'+productId);
-  const qtyToUse=Math.max(0,parseInt(input?.value||0));
-  if(!qtyToUse)return;
+function reserveSellerStock(productId){
+  const input=document.getElementById('reserveSeller-'+productId);
+  const quantity=Math.max(0,parseInt(input?.value||0));
+  if(!quantity){alert('Informe a quantidade que deseja reservar.');return}
   const s=stockItem(productId);
-  if(qtyToUse>Number(s.sellers||0)){
-    alert(`Você tem apenas ${Number(s.sellers||0)} unidades no estoque dos vendedores.`);
+  const available=Number(s.sellers||0);
+  if(quantity>available){
+    alert(`Você tem apenas ${available} unidades no estoque dos vendedores.`);
     return
   }
-  const usable=Math.min(qtyToUse,Number(s.toMake||0));
-  if(usable<=0){
-    alert('Não há quantidade a fabricar deste sabor para cobrir com o estoque dos vendedores.');
-    return
-  }
-  s.sellers-=usable;
-  s.separated+=usable;
-  s.toMake-=usable;
-  pushStockHistory('sellers_to_order',productId,usable,'Transferência manual pelo CEO');
+  const coveredToMake=Math.min(quantity,Number(s.toMake||0));
+  s.sellers-=quantity;
+  s.separated+=quantity;
+  s.toMake-=coveredToMake;
+  pushStockHistory('seller_reservation',productId,quantity,coveredToMake?`Reserva manual; ${coveredToMake} un. abatidas de A Fabricar`:'Reserva manual para Revendedores/Eventos');
   if(input)input.value='';
   renderStockPanel()
 }
