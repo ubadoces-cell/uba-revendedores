@@ -155,15 +155,22 @@ export default async function handler(req, res) {
     if (!admin && !paidOrder) return res.status(401).json({ error: "Acesso administrativo necessário." });
     const state = await loadState(sql);
     const actor = admin?.username || "pagamento-confirmado";
-    if (body.action === "seller_to_order") {
+    if (body.action === "reserve_seller_stock") {
       const mapped = PRODUCT_MAP[body.productId];
       const amount = int(body.quantity);
       if (!mapped || !amount) return res.status(400).json({ error: "Produto ou quantidade inválida." });
       const item = state.products[mapped.id];
-      const usable = Math.min(amount, item.sellers, item.toMake);
-      if (!usable) return res.status(400).json({ error: "Não há saldo suficiente para essa transferência." });
-      item.sellers -= usable; item.separated += usable; item.toMake -= usable;
-      state.history.unshift(movement("sellers_to_order", mapped.id, usable, "Transferência manual pelo CEO", actor));
+      if (amount > item.sellers) {
+        return res.status(400).json({ error: `Há apenas ${item.sellers} unidades deste sabor no estoque dos vendedores.` });
+      }
+      const coveredToMake = Math.min(amount, item.toMake);
+      item.sellers -= amount;
+      item.separated += amount;
+      item.toMake -= coveredToMake;
+      const note = coveredToMake
+        ? `Reserva manual pelo CEO; ${coveredToMake} un. abatidas de A Fabricar`
+        : "Reserva manual pelo CEO para Revendedores/Eventos";
+      state.history.unshift(movement("seller_reservation", mapped.id, amount, note, actor));
     } else if (body.action === "production") {
       const mapped = PRODUCT_MAP[body.productId];
       const amount = int(body.quantity);
