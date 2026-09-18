@@ -4,7 +4,10 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#4A388E" />
-<title>UBA Revendedores — Prévia</title>
+<title>UBA Revendedores</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
   --roxo:#4A388E; --lavanda:#CDC6E4; --uva:#5C5CA6; --creme:#FEF2E4; --indigo:#13132A;
@@ -25,11 +28,11 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}.app{max-width:1
 .header:after{content:"";position:absolute;right:-55px;bottom:-66px;width:230px;height:135px;background:rgba(254,242,228,.08);border-radius:60% 40% 0 0;transform:rotate(-9deg)}
 .brand{display:flex;align-items:center;gap:12px;min-width:0}.logo{width:58px;height:58px;border-radius:18px;object-fit:cover;border:2px solid rgba(255,255,255,.28);background:var(--creme)}
 .brand h1{font-size:21px;margin:0;letter-spacing:-.4px}.brand p{margin:4px 0 0;font-size:12px;color:#eee6ff}.header-actions{margin-left:auto;display:flex;gap:9px;z-index:1}
-.icon-btn,.login-btn{border:1px solid rgba(255,255,255,.24);background:rgba(255,255,255,.10);color:white;border-radius:15px;padding:11px 13px;font-weight:800}.icon-btn{min-width:44px}.cart-count{display:inline-grid;place-items:center;min-width:22px;height:22px;border-radius:999px;background:var(--creme);color:var(--roxo);font-size:12px;margin-left:5px}
+.icon-btn,.login-btn{border:1px solid rgba(255,255,255,.24);background:rgba(255,255,255,.10);color:white;border-radius:15px;padding:11px 13px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:8px}.icon-btn{min-width:44px}.ui-icon{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}.cart-count{display:inline-grid;place-items:center;min-width:22px;height:22px;border-radius:999px;background:var(--creme);color:var(--roxo);font-size:12px;margin-left:5px}.pending-pill:empty{display:none}.ghost-autofill{position:fixed;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
 .hero{margin:18px 0 14px;border:1px solid var(--line);border-radius:30px;padding:26px;background:linear-gradient(130deg,var(--surface2) 0,var(--surface) 70%);display:grid;grid-template-columns:1.3fr .7fr;gap:22px;overflow:hidden;position:relative}
 .hero:before{content:"";position:absolute;width:260px;height:260px;border-radius:50%;right:-60px;top:-80px;background:radial-gradient(circle,rgba(178,118,255,.22),transparent 66%)}
-.hero small{display:inline-block;color:#a99aff;font-weight:900;letter-spacing:.09em;text-transform:uppercase;margin-bottom:10px}.hero h2{font-size:clamp(30px,5vw,54px);line-height:.98;letter-spacing:-1.8px;margin:0 0 14px;max-width:680px}.hero p{color:var(--muted);margin:0 0 18px;max-width:620px;line-height:1.55}.hero-note{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px}.hero-side{display:flex;align-items:center;justify-content:center}.hero-card{width:100%;max-width:280px;background:var(--creme);color:var(--indigo);border-radius:26px;padding:20px;transform:rotate(2deg);box-shadow:0 24px 55px rgba(0,0,0,.18)}.hero-card b{font-size:20px}.hero-card span{display:block;margin-top:8px;color:#5e5868;font-size:13px;line-height:1.45}.hero-card .bubble{display:inline-block;margin-bottom:14px;border-radius:999px;background:var(--lavanda);color:var(--roxo);padding:7px 10px;font-size:11px;font-weight:900}
-.toolbar{display:grid;grid-template-columns:1fr auto;gap:10px;margin:18px 2px}.search{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:17px;padding:0 14px}.search input{width:100%;background:transparent;border:0;outline:none;color:var(--text);padding:14px 0}.filters{display:flex;gap:8px}.filter{border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:15px;padding:10px 14px;font-weight:800}.filter.active{background:var(--lavanda);color:var(--indigo);border-color:transparent}
+.hero small{display:inline-block;color:#a99aff;font-weight:900;letter-spacing:.09em;text-transform:uppercase;margin-bottom:10px}.hero h2{font-size:clamp(30px,5vw,54px);line-height:.98;letter-spacing:-1.8px;margin:0 0 14px;max-width:680px}.hero p{color:var(--muted);margin:0 0 18px;max-width:620px;line-height:1.55}.hero-note{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px}.hero-side{display:flex;align-items:center;justify-content:center}.hero-card{width:100%;max-width:330px;background:var(--creme);color:var(--indigo);border-radius:28px;padding:16px;transform:rotate(1.2deg);box-shadow:0 24px 55px rgba(0,0,0,.18)}.hero-card img{display:block;width:100%;height:176px;object-fit:cover;object-position:center 38%;border-radius:20px;margin:0 0 15px}.hero-card b{display:block;font-family:"Montserrat",system-ui,sans-serif;font-size:clamp(25px,2.8vw,36px);line-height:.96;letter-spacing:-.055em;font-weight:900}.hero-card span{display:block;margin-top:9px;color:#5e5868;font-size:13px;line-height:1.45}.hero-card .bubble{display:inline-block;margin-bottom:12px;margin-top:0;border-radius:999px;background:var(--lavanda);color:var(--roxo);padding:7px 10px;font-size:11px;font-weight:900}.hero-team-note{display:flex!important;align-items:center;gap:8px;margin-top:12px!important;font-weight:800}.hero-team-note .hero-check{display:grid;place-items:center;width:26px;height:26px;margin:0!important;border-radius:9px;background:#ece4f8;color:var(--roxo);font-weight:1000}
+.toolbar{display:grid;grid-template-columns:1fr auto;gap:10px;margin:18px 2px}.search{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:17px;padding:0 14px}.search .ui-icon{color:var(--muted)}.search input{width:100%;background:transparent;border:0;outline:none;color:var(--text);padding:14px 0}.search input:-webkit-autofill,.search input:-webkit-autofill:hover,.search input:-webkit-autofill:focus{-webkit-text-fill-color:var(--text);transition:background-color 99999s ease-out 0s;box-shadow:0 0 0 1000px transparent inset}.filters{display:flex;gap:8px}.filter{border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:15px;padding:10px 14px;font-weight:800}.filter.active{background:var(--lavanda);color:var(--indigo);border-color:transparent}
 .section-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:24px 2px 12px}.section-head h3{margin:0;font-size:22px}.section-head p{margin:4px 0 0;color:var(--muted);font-size:13px}.private-note{color:#a99aff;font-size:12px;font-weight:800;text-align:right;max-width:290px}
 .products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.product{background:var(--product-grad);border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:0 12px 34px rgba(0,0,0,.12);display:flex;flex-direction:column}.product-img{height:210px;background:#f2eef9;overflow:hidden;position:relative}.product-img img{width:100%;height:100%;object-fit:cover;transition:.25s ease}.product:hover .product-img img{transform:scale(1.035)}.tag{position:absolute;left:12px;top:12px;padding:7px 10px;border-radius:999px;background:rgba(19,19,42,.86);color:white;font-size:11px;font-weight:900}.tag.pop{background:#4a388e}.tag.new{background:#1E8B57}.out-tag{position:absolute;right:12px;top:12px;padding:7px 10px;border-radius:999px;background:#6b2730;color:#fff;font-size:11px;font-weight:900}.product-body{padding:17px;display:flex;flex-direction:column;gap:9px;flex:1}.product h4{font-size:18px;margin:0}.desc{font-size:13px;color:var(--muted);line-height:1.45;min-height:38px}.product-meta{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:auto}.private-price{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:12px;font-weight:800}.lock-dot{width:28px;height:28px;border-radius:10px;background:var(--surface2);display:grid;place-items:center;border:1px solid var(--line)}.qty{display:flex;align-items:center;gap:8px}.qty button{width:36px;height:36px;border-radius:12px;border:1px solid var(--line);background:var(--surface2);color:var(--text);font-size:18px;font-weight:900}.qty button:disabled{opacity:.35;cursor:not-allowed}.qty span{min-width:22px;text-align:center;font-weight:900}.add{width:100%;margin-top:4px;border:0;border-radius:15px;background:var(--roxo);color:white;padding:12px;font-weight:900;box-shadow:0 8px 18px rgba(74,56,142,.20)}.add:disabled{opacity:.5;cursor:not-allowed}
 .mobile-cart{display:none;position:fixed;z-index:22;left:12px;right:12px;bottom:12px;border:1px solid #655692;background:#241f33;color:white;border-radius:20px;padding:12px 14px;box-shadow:var(--shadow);align-items:center;justify-content:space-between;gap:12px}.mobile-cart.active{display:flex}.mobile-cart strong{display:block}.mobile-cart small{color:#c8c1d2}.mobile-cart button{border:0;border-radius:14px;padding:11px 15px;background:var(--creme);color:var(--roxo);font-weight:900}
@@ -37,7 +40,7 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}.app{max-width:1
 .modal{position:fixed;z-index:50;inset:0;display:none;place-items:center;padding:14px}.modal.show{display:grid}.checkout{width:min(900px,100%);max-height:92vh;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow)}.checkout-top{position:sticky;top:0;z-index:2;background:var(--surface);border-bottom:1px solid var(--line);padding:18px 20px}.checkout-title{display:flex;align-items:center;justify-content:space-between;gap:12px}.checkout-title h3{margin:0}.steps{display:flex;gap:6px;margin-top:14px}.step-dot{flex:1;height:5px;border-radius:99px;background:var(--line)}.step-dot.on{background:var(--lavanda)}.checkout-body{padding:20px}.panel{display:none}.panel.active{display:block}.panel h4{font-size:22px;margin:0 0 6px}.panel>.hint{margin:0 0 18px;color:var(--muted);font-size:13px}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}.tab{border:1px solid var(--line);background:var(--surface2);color:var(--text);border-radius:14px;padding:11px;font-weight:900}.tab.active{background:var(--lavanda);color:var(--indigo);border-color:transparent}.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field.full{grid-column:1/-1}.field label{display:block;font-size:12px;font-weight:900;margin:0 0 6px;color:var(--text)}.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);background:var(--field);color:var(--text);border-radius:14px;padding:13px;outline:none}.field input:focus,.field select:focus,.field textarea:focus{border-color:#8d7bd0;box-shadow:0 0 0 3px rgba(141,123,208,.13)}.doc-type{display:flex;gap:8px;margin-bottom:12px}.doc-type button{border:1px solid var(--line);background:var(--surface2);color:var(--text);border-radius:13px;padding:9px 12px;font-weight:900}.doc-type button.active{background:var(--roxo);color:white}.checkout-nav{display:flex;justify-content:space-between;gap:10px;margin-top:20px}.back,.next{border:0;border-radius:15px;padding:12px 18px;font-weight:900}.back{background:var(--surface3);color:var(--text)}.next{background:var(--roxo);color:white;margin-left:auto}.admin-link{display:flex;justify-content:center;margin-top:18px}.admin-link button{border:0;background:transparent;color:var(--muted);font-size:12px;text-decoration:underline;text-underline-offset:4px;padding:6px}.privacy-box{padding:12px 14px;border:1px dashed var(--line);border-radius:16px;background:var(--surface2);color:var(--muted);font-size:12px;margin-top:14px;display:flex;gap:9px;align-items:flex-start}.pix-box{border:1px solid var(--line);border-radius:22px;padding:18px;background:linear-gradient(145deg,var(--surface2),var(--surface));display:grid;grid-template-columns:180px 1fr;gap:18px}.qr{width:180px;height:180px;border-radius:16px;background:repeating-linear-gradient(45deg,#fff 0 8px,#171717 8px 16px);border:12px solid white}.pix-info b{font-size:28px}.pix-info p{color:var(--muted);line-height:1.5}.copy-line{padding:12px;border-radius:13px;background:var(--surface3);border:1px solid var(--line);font-size:12px;word-break:break-all}.sandbox{margin-top:10px;font-size:11px;color:#aa9be5}.pix-payment-area{display:none}.pix-payment-area.show{display:block}.generate-pix-area.hidden{display:none}.pix-copy-wrap{margin-top:12px}.copy-pix-btn{width:100%;margin-top:9px;border:0;border-radius:13px;background:var(--roxo);color:#fff;padding:11px;font-weight:900}.pix-waiting{margin-top:12px;padding:10px 12px;border:1px solid #4f3e78;border-radius:13px;background:rgba(74,56,142,.18);color:#cdbcf7;font-size:12px;font-weight:900}.order-payment{margin-top:10px;padding:9px 11px;border-radius:12px;font-size:12px}.order-payment.waiting{background:rgba(212,154,53,.12);color:#f0c56f}.order-payment.paid{background:rgba(43,165,107,.14);color:#82ddb0}.success{text-align:center;padding:30px 10px}.check{width:76px;height:76px;border-radius:24px;background:#1E8B57;color:white;display:grid;place-items:center;font-size:38px;font-weight:900;margin:0 auto 18px}
 /* Admin */
 .admin-shell{position:fixed;inset:0;z-index:70;display:none;background:var(--bg);overflow:auto}.admin-shell.show{display:block}.admin-wrap{max-width:1280px;margin:0 auto;padding:16px 16px 70px}.admin-top{position:sticky;top:0;z-index:3;padding:10px 0;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(14px)}.admin-head{display:flex;align-items:center;gap:12px;background:var(--roxo);color:white;padding:16px 18px;border-radius:24px;box-shadow:0 14px 36px rgba(74,56,142,.25)}.admin-head img{width:48px;height:48px;border-radius:15px;object-fit:cover}.admin-head h2{margin:0;font-size:20px}.admin-head p{margin:3px 0 0;font-size:12px;opacity:.85}.admin-actions{margin-left:auto;display:flex;gap:8px}.admin-btn{border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.1);color:#fff;border-radius:13px;padding:10px 12px;font-weight:900}.admin-btn.primary{background:var(--creme);color:var(--roxo);border-color:transparent}.admin-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}.metric{border:1px solid var(--line);background:var(--surface);border-radius:20px;padding:16px}.metric small{color:var(--muted);font-size:11px;font-weight:900;text-transform:uppercase}.metric strong{display:block;font-size:25px;margin-top:8px}.admin-grid{display:grid;gap:12px}.admin-row{display:grid;grid-template-columns:76px 1.3fr 1.3fr .72fr .72fr .9fr .6fr;gap:10px;align-items:end;border:1px solid var(--line);background:var(--surface);border-radius:20px;padding:12px}.admin-row img{width:76px;height:76px;border-radius:16px;object-fit:cover;background:white}.admin-row .field label{font-size:10px}.admin-row .field input,.admin-row .field select{padding:10px 11px;font-size:13px}.status-toggle{height:43px;border-radius:13px;border:1px solid var(--line);background:var(--surface2);color:var(--text);font-weight:900}.status-toggle.on{background:#173f2b;color:#aaf0cb;border-color:#275f45}.sensitive{transition:.18s}.values-hidden .sensitive{filter:blur(6px);user-select:none;pointer-events:none}.values-hidden .price-input{color:transparent;text-shadow:0 0 9px var(--text)}.admin-note{padding:13px 15px;border:1px solid var(--line);border-radius:17px;background:var(--surface);color:var(--muted);font-size:12px;margin-bottom:12px}.admin-footer{display:flex;justify-content:flex-end;gap:10px;margin-top:14px}.save{border:0;border-radius:15px;background:var(--roxo);color:white;padding:12px 18px;font-weight:900}.ghost{border:1px solid var(--line);border-radius:15px;background:var(--surface2);color:var(--text);padding:12px 18px;font-weight:900}
-@media(max-width:900px){.products{grid-template-columns:repeat(2,1fr)}.hero{grid-template-columns:1fr}.hero-side{display:none}.admin-summary{grid-template-columns:repeat(2,1fr)}.admin-row{grid-template-columns:70px 1fr 1fr}.admin-row .wide{grid-column:span 2}.admin-row .field{min-width:0}}
+@media(max-width:900px){.products{grid-template-columns:repeat(2,1fr)}.hero{grid-template-columns:1fr}.hero-side{display:flex}.hero-card{max-width:560px;transform:none}.admin-summary{grid-template-columns:repeat(2,1fr)}.admin-row{grid-template-columns:70px 1fr 1fr}.admin-row .wide{grid-column:span 2}.admin-row .field{min-width:0}}
 @media(max-width:640px){.app{padding-left:10px;padding-right:10px}.header{padding:14px}.brand p{display:none}.brand h1{font-size:17px}.logo{width:48px;height:48px}.login-btn{display:none}.hero{padding:20px}.products{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr}.filters{overflow:auto}.section-head{align-items:start}.private-note{max-width:160px}.fields{grid-template-columns:1fr}.field.full{grid-column:auto}.pix-box{grid-template-columns:1fr}.qr{margin:auto}.checkout{border-radius:22px}.admin-wrap{padding:10px 10px 50px}.admin-head p{display:none}.admin-actions{gap:5px}.admin-btn{padding:9px}.admin-summary{grid-template-columns:1fr 1fr}.admin-row{grid-template-columns:64px 1fr}.admin-row img{width:64px;height:64px}.admin-row .field,.admin-row .wide{grid-column:1/-1}.admin-row .image-cell{grid-row:span 2}.admin-footer{position:sticky;bottom:8px;background:var(--bg);padding:10px 0}}
 
 /* ===== V5: sessão aprovada, edição na loja e gestão de logins ===== */
@@ -550,18 +553,18 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
   box-shadow:inset 0 0 0 1px rgba(181,119,255,.14),0 8px 20px rgba(0,0,0,.25);
   font-size:25px;font-weight:900
 }
-.admin-quick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.admin-quick-label{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:20px 2px 8px}.admin-quick-label strong{font-size:16px;color:#fff}.admin-quick-label span{font-size:11px;color:#AFA8C5}.admin-f1-hint{color:#9E8ABF;font-size:10px;font-weight:800;white-space:nowrap}.admin-quick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
 .admin-quick button{
   min-height:64px;padding:14px 18px;border:1px solid #3D2861;border-radius:16px;
   color:#C88CFF;background:linear-gradient(145deg,#181525,#100E1B);
   display:flex;align-items:center;justify-content:center;gap:12px;font-size:16px;font-weight:900
 }
+.admin-quick button .ui-icon{width:22px;height:22px}.admin-metric-icon .ui-icon{width:25px;height:25px}.shortcut-key{margin-left:auto;padding:4px 7px;border:1px solid rgba(200,140,255,.28);border-radius:8px;color:#C8A1F5;background:#0C0A14;font-size:9px}
 .admin-quick button:hover{background:linear-gradient(145deg,#211B34,#171225)}
 .admin-quick button.primary{
   color:#fff;border-color:transparent;background:linear-gradient(135deg,#8A36F4,#5815D5);
   box-shadow:0 10px 26px rgba(104,40,224,.32),inset 0 1px 0 rgba(255,255,255,.16)
 }
-.admin-quick button span{font-size:22px}
 .admin-dashboard-note{
   margin-top:20px;padding:16px 18px;border:1px solid #2E2942;border-radius:18px;
   background:linear-gradient(145deg,rgba(21,18,34,.98),rgba(12,11,23,.98));
@@ -687,15 +690,17 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
   </div>
 </section>
 
+<form class="ghost-autofill" autocomplete="on" aria-hidden="true"><input type="text" name="username" autocomplete="username"><input type="password" name="password" autocomplete="current-password"></form>
+
 <div class="app">
   <div class="topbar">
     <header class="header">
       <div class="brand"><img class="logo" src="logo.jpg" alt="UBA DOCES"><div><h1>UBA Revendedores</h1><p>Pedidos para parceiros e comerciantes</p></div></div>
       <div class="header-actions">
-        <button class="login-btn ceo-header-login" onclick="openAdmin()">Painel CEO <span class="pending-pill" id="pendingHeaderCount">0</span></button>
-        <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Alternar tema">☀︎</button>
-        <button class="login-btn" id="customerHeaderBtn" onclick="openCustomerEntry()">Entrar</button>
-        <button class="icon-btn" onclick="openCart()">Carrinho <span class="cart-count" id="cartCount">0</span></button>
+        <button class="login-btn ceo-header-login" onclick="openAdmin()"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 4v5c0 4.5-2.9 7.8-7 9-4.1-1.2-7-4.5-7-9V7l7-4z"></path><path d="M9.5 12.5l1.6 1.6 3.4-3.8"></path></svg><span class="btn-label">Painel CEO</span></button>
+        <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Alternar tema" aria-label="Alternar tema"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"></path></svg></button>
+        <button class="login-btn" id="customerHeaderBtn" onclick="openCustomerEntry()"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg><span class="btn-label">Entrar</span></button>
+        <button class="icon-btn" onclick="openCart()"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="20" r="1"></circle><circle cx="17" cy="20" r="1"></circle><path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 2-1.7L21 7H7"></path></svg><span class="btn-label">Carrinho</span><span class="cart-count" id="cartCount">0</span></button>
       </div>
     </header>
   </div>
@@ -703,10 +708,10 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
 
   <section class="hero">
     <div><small>Catálogo para revendedores</small><h2>Escolha seus sabores. A UBA cuida do resto.</h2><p>Monte o pedido primeiro sem precisar criar conta. Os preços ficam protegidos até seu cadastro ser aprovado pela UBA.</p><div class="hero-note">🔒 Preços de revenda aparecem somente para contas aprovadas e conectadas.</div></div>
-    <div class="hero-side"><div class="hero-card"><span class="bubble">PEDIDO B2B</span><b>Venda mais com UBA DOCES.</b><span>Escolha sabores, quantidades e finalize com Pix. Seus dados ficam salvos para os próximos pedidos.</span></div></div>
+    <div class="hero-side"><div class="hero-card"><span class="bubble">PEDIDO B2B</span><img src="equipe-uba.jpg" alt="Equipe UBA DOCES"><b>Venda mais com UBA DOCES.</b><span>Escolha sabores, quantidades e finalize com Pix. Seus dados ficam salvos para os próximos pedidos.</span><span class="hero-team-note"><span class="hero-check">✓</span>Equipe UBA pronta para atender seu comércio, festa ou evento.</span></div></div>
   </section>
 
-  <div class="toolbar"><div class="search">⌕ <input id="search" placeholder="Buscar sabor..." oninput="filterProducts()"></div><div class="filters"><button class="filter active" onclick="setFilter(this,'all')">Todos</button><button class="filter" onclick="setFilter(this,'featured')">Destaques</button><button class="filter" onclick="setFilter(this,'available')">Disponíveis</button></div></div>
+  <div class="toolbar"><div class="search"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.4-3.4"></path></svg><input id="search" name="catalog-search" type="search" inputmode="search" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" readonly onfocus="this.removeAttribute('readonly')" placeholder="Buscar sabor..." oninput="filterProducts()"></div><div class="filters"><button class="filter active" onclick="setFilter(this,'all')">Todos</button><button class="filter" onclick="setFilter(this,'featured')">Destaques</button><button class="filter" onclick="setFilter(this,'available')">Disponíveis</button></div></div>
   <div class="section-head"><div><h3>Alfajores artesanais</h3><p>Escolha a quantidade de cada sabor.</p></div><div class="private-note" id="priceVisibilityNote">🔐 Entre com uma conta aprovada para ver os preços</div></div>
   <section class="products" id="products"></section>
 </div>
@@ -744,16 +749,16 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
           </div>
 
           <div id="loginFields" class="fields">
-            <div class="field full"><label>E-mail ou telefone</label><input id="customerLogin" autocomplete="username" placeholder="voce@empresa.com" /></div>
-            <div class="field full"><label>Senha</label><input id="customerPass" type="password" autocomplete="current-password" placeholder="••••••••" /></div>
+            <div class="field full"><label>E-mail ou telefone</label><input id="customerLogin" name="uba-customer-login" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="voce@empresa.com" /></div>
+            <div class="field full"><label>Senha</label><input id="customerPass" name="uba-customer-password" type="password" autocomplete="current-password" placeholder="••••••••" /></div>
           </div>
 
           <div id="createFields" class="fields" style="display:none">
-            <div class="field full"><label>Nome do responsável</label><input id="regName" placeholder="Seu nome" /></div>
-            <div class="field"><label>E-mail</label><input id="regEmail" type="email" placeholder="voce@empresa.com" /></div>
-            <div class="field"><label>WhatsApp</label><input id="regPhone" placeholder="(00) 00000-0000" /></div>
-            <div class="field"><label>CPF ou CNPJ</label><input id="regDoc" placeholder="Documento do comprador/empresa" /></div>
-            <div class="field"><label>Nome da loja</label><input id="regStore" placeholder="Nome comercial" /></div>
+            <div class="field full"><label>Nome do responsável</label><input id="regName" autocomplete="name" placeholder="Seu nome" /></div>
+            <div class="field"><label>E-mail</label><input id="regEmail" name="uba-register-email" type="email" autocomplete="email" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="voce@empresa.com" /></div>
+            <div class="field"><label>WhatsApp</label><input id="regPhone" autocomplete="tel" inputmode="tel" placeholder="(00) 00000-0000" /></div>
+            <div class="field"><label>CPF ou CNPJ</label><input id="regDoc" autocomplete="off" inputmode="numeric" placeholder="Documento do comprador/empresa" /></div>
+            <div class="field"><label>Nome da loja</label><input id="regStore" autocomplete="organization" placeholder="Nome comercial" /></div>
             <div class="field full"><label>Crie uma senha</label><input id="regPass" type="password" autocomplete="new-password" placeholder="Mínimo 6 caracteres" /></div>
             <div class="field full"><label>Tipo de atendimento</label><select id="regPurpose"><option value="commerce">Fornecimento para comércio</option><option value="event">Festa ou evento</option></select><div class="purpose-summary" id="regPurposeSummary"></div></div>
           </div>
@@ -787,11 +792,11 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
         </div>
       </section>
 
-      <section class="panel" id="adminLogin"><h4>Painel CEO</h4><p class="hint">Acesso reservado para administração da loja.</p><div class="fields"><div class="field full"><label>Login CEO</label><input id="adminUser" autocomplete="username" placeholder="Digite seu login" /></div><div class="field full"><label>Senha</label><input id="adminPass" type="password" autocomplete="current-password" placeholder="••••••••" /></div></div><div class="privacy-box">🛡️ <span>Esta prévia valida o acesso do CEO apenas para teste. Na versão real, a autenticação ficará no servidor, com senha protegida e sessão segura.</span></div><div class="checkout-nav"><button class="back" onclick="goStep(1)">Voltar</button><button class="next" onclick="adminSignIn()">Entrar no painel</button></div></section>
+      <section class="panel" id="adminLogin"><h4>Painel CEO</h4><p class="hint">Acesso reservado para administração da loja.</p><div class="fields"><div class="field full"><label>Login CEO</label><input id="adminUser" name="uba-admin-login" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="Digite seu login" /></div><div class="field full"><label>Senha</label><input id="adminPass" name="uba-admin-password" type="password" autocomplete="current-password" placeholder="••••••••" /></div></div><div class="privacy-box">🛡️ <span>Esta prévia valida o acesso do CEO apenas para teste. Na versão real, a autenticação ficará no servidor, com senha protegida e sessão segura.</span></div><div class="checkout-nav"><button class="back" onclick="goStep(1)">Voltar</button><button class="next" onclick="adminSignIn()">Entrar no painel</button></div></section>
 
-      <section class="panel" id="step2"><h4>Dados do comprador</h4><p class="hint">Esses dados ficam vinculados à conta para agilizar os próximos pedidos.</p><div class="doc-type"><button class="active" onclick="docType(this,'CPF')">CPF</button><button onclick="docType(this,'CNPJ')">CNPJ</button></div><div class="fields"><div class="field"><label id="docLabel">CPF</label><input id="buyerDoc" placeholder="000.000.000-00" /></div><div class="field"><label>Nome / Razão social</label><input id="buyerName" placeholder="Nome do comprador ou empresa" /></div><div class="field full"><label>Nome da loja (opcional)</label><input id="buyerStore" placeholder="Como sua loja é conhecida" /></div></div><div class="checkout-nav"><button class="back" onclick="goStep(1)">Voltar</button><button class="next" onclick="goStep(3)">Continuar</button></div></section>
+      <section class="panel" id="step2"><h4>Dados do comprador</h4><p class="hint">Esses dados ficam vinculados à conta para agilizar os próximos pedidos.</p><div class="doc-type"><button class="active" onclick="docType(this,'CPF')">CPF</button><button onclick="docType(this,'CNPJ')">CNPJ</button></div><div class="fields"><div class="field"><label id="docLabel">CPF</label><input id="buyerDoc" autocomplete="off" inputmode="numeric" placeholder="000.000.000-00" /></div><div class="field"><label>Nome / Razão social</label><input id="buyerName" autocomplete="name" placeholder="Nome do comprador ou empresa" /></div><div class="field full"><label>Nome da loja (opcional)</label><input id="buyerStore" autocomplete="organization" placeholder="Como sua loja é conhecida" /></div></div><div class="checkout-nav"><button class="back" onclick="goStep(1)">Voltar</button><button class="next" onclick="goStep(3)">Continuar</button></div></section>
 
-      <section class="panel" id="step3"><h4>Entrega</h4><p class="hint">Defina onde o pedido deve ser entregue ou retirado.</p><div class="fields"><div class="field"><label>CEP</label><input id="deliveryCep" placeholder="00000-000" /></div><div class="field"><label>Cidade</label><input id="deliveryCity" placeholder="Cidade" /></div><div class="field full"><label>Rua / Avenida</label><input id="deliveryStreet" placeholder="Endereço" /></div><div class="field"><label>Número</label><input id="deliveryNumber" placeholder="123" /></div><div class="field"><label>Complemento</label><input id="deliveryComplement" placeholder="Loja, sala..." /></div></div><div class="checkout-nav"><button class="back" onclick="goStep(2)">Voltar</button><button class="next" onclick="goStep(4)">Ir para o Pix</button></div></section>
+      <section class="panel" id="step3"><h4>Entrega</h4><p class="hint">Defina onde o pedido deve ser entregue ou retirado.</p><div class="fields"><div class="field"><label>CEP</label><input id="deliveryCep" autocomplete="postal-code" inputmode="numeric" placeholder="00000-000" /></div><div class="field"><label>Cidade</label><input id="deliveryCity" autocomplete="address-level2" placeholder="Cidade" /></div><div class="field full"><label>Rua / Avenida</label><input id="deliveryStreet" autocomplete="street-address" placeholder="Endereço" /></div><div class="field"><label>Número</label><input id="deliveryNumber" autocomplete="address-line2" inputmode="numeric" placeholder="123" /></div><div class="field"><label>Complemento</label><input id="deliveryComplement" autocomplete="address-line3" placeholder="Loja, sala..." /></div></div><div class="checkout-nav"><button class="back" onclick="goStep(2)">Voltar</button><button class="next" onclick="goStep(4)">Ir para o Pix</button></div></section>
 
       <section class="panel" id="step4">
         <h4>Pagamento Pix</h4>
@@ -821,30 +826,32 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
         </div>
         <div class="admin-session-tools">
           <span class="admin-session-badge">CEO • UBA</span>
-          <button class="admin-logout-btn" onclick="logoutAdmin()" aria-label="Sair do painel CEO" title="Sair">↪</button>
+          <span class="admin-f1-hint">F1 alterna loja / painel</span>
+          <button class="admin-logout-btn" onclick="logoutAdmin()" aria-label="Sair do painel CEO" title="Sair"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5"></path><path d="M15 12H3"></path><path d="M14 3h6v18h-6"></path></svg></button>
         </div>
       </header>
     </div>
 
     <section class="admin-view" id="adminDashboardView">
       <div class="admin-summary admin-dashboard-summary">
-        <div class="metric"><span class="admin-metric-icon">◇</span><div><small>Produtos ativos</small><strong id="mActive">0</strong></div></div>
-        <div class="metric"><span class="admin-metric-icon">□</span><div><small>Estoque total</small><strong id="mStock">0</strong></div></div>
-        <div class="metric"><span class="admin-metric-icon">♙</span><div><small>Estoque Vendedores</small><strong id="mSellers">0</strong></div></div>
-        <div class="metric"><span class="admin-metric-icon">◆</span><div><small>Revendedores/Eventos</small><strong id="mReseller">0</strong></div></div>
-        <div class="metric"><span class="admin-metric-icon">▣</span><div><small>Reservado Rev./Eventos</small><strong id="mReserved">0</strong></div></div>
-        <div class="metric"><span class="admin-metric-icon">☷</span><div><small>Pedidos novos</small><strong id="mOrders">0</strong></div></div>
-        <div class="metric"><span class="admin-metric-icon">○</span><div><small>Cadastros pendentes</small><strong id="pendingDashboardCount">0</strong></div></div>
+        <div class="metric"><span class="admin-metric-icon"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M4 7h16v13H4z"></path><path d="M8 7V4h8v3"></path></svg></span><div><small>Produtos ativos</small><strong id="mActive">0</strong></div></div>
+        <div class="metric"><span class="admin-metric-icon"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M4 7l8-4 8 4-8 4-8-4z"></path><path d="M4 7v10l8 4 8-4V7"></path><path d="M12 11v10"></path></svg></span><div><small>Estoque total</small><strong id="mStock">0</strong></div></div>
+        <div class="metric"><span class="admin-metric-icon"><svg class="ui-icon" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"></circle><path d="M3 20a6 6 0 0 1 12 0"></path><circle cx="17" cy="9" r="2"></circle><path d="M16 14a5 5 0 0 1 5 5"></path></svg></span><div><small>Estoque Vendedores</small><strong id="mSellers">0</strong></div></div>
+        <div class="metric"><span class="admin-metric-icon"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M3 10l2-5h14l2 5"></path><path d="M5 10v10h14V10"></path><path d="M9 20v-6h6v6"></path></svg></span><div><small>Revendedores/Eventos</small><strong id="mReseller">0</strong></div></div>
+        <div class="metric"><span class="admin-metric-icon"><svg class="ui-icon" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"></rect><path d="M8 3v4M16 3v4M8 12l2 2 5-5"></path></svg></span><div><small>Reservado Rev./Eventos</small><strong id="mReserved">0</strong></div></div>
+        <div class="metric"><span class="admin-metric-icon"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3z"></path><path d="M9 8h6M9 12h6"></path></svg></span><div><small>Pedidos novos</small><strong id="mOrders">0</strong></div></div>
+        <div class="metric"><span class="admin-metric-icon"><svg class="ui-icon" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"></circle><path d="M3 20a6 6 0 0 1 12 0M18 8v6M15 11h6"></path></svg></span><div><small>Cadastros pendentes</small><strong id="pendingDashboardCount">0</strong></div></div>
       </div>
 
+      <div class="admin-quick-label"><strong>Acesso rápido</strong><span>Atalhos principais do painel CEO</span></div>
       <div class="admin-quick">
-        <button class="primary" onclick="setAdminView('products')"><span>＋</span>Produtos e preços</button>
-        <button onclick="setAdminView('stocks')"><span>□</span>Estoques</button>
-        <button onclick="setAdminView('orders')"><span>☷</span>Pedidos <b class="quick-count" id="ordersQuickCount"></b></button>
-        <button onclick="openLogins()"><span>⌕</span>Logins de clientes</button>
-        <button onclick="closeAdmin()"><span>⌂</span>Ver loja</button>
-        <button onclick="toggleTheme()"><span>☀</span>Alterar aparência</button>
-        <button onclick="logoutAdmin()"><span>↪</span>Sair do painel</button>
+        <button class="primary" onclick="setAdminView('products')"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>Produtos e preços</button>
+        <button onclick="setAdminView('stocks')"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M4 7l8-4 8 4-8 4-8-4z"></path><path d="M4 7v10l8 4 8-4V7"></path></svg>Estoques</button>
+        <button onclick="setAdminView('orders')"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3z"></path><path d="M9 8h6M9 12h6"></path></svg>Pedidos <b class="quick-count" id="ordersQuickCount"></b></button>
+        <button onclick="openLogins()"><svg class="ui-icon" viewBox="0 0 24 24"><circle cx="10" cy="8" r="3"></circle><path d="M4 20a6 6 0 0 1 12 0M17 11l4 4M21 11l-4 4"></path></svg>Logins de clientes</button>
+        <button onclick="closeAdmin()"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"></path><path d="M5 10v11h14V10"></path></svg>Ver loja <small class="shortcut-key">F1</small></button>
+        <button onclick="toggleTheme()"><svg class="ui-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2"></path></svg>Alterar aparência</button>
+        <button onclick="logoutAdmin()"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M10 17l5-5-5-5"></path><path d="M15 12H3"></path><path d="M14 3h6v18h-6"></path></svg>Sair do painel</button>
       </div>
 
       <div class="admin-dashboard-note">
@@ -1196,7 +1203,7 @@ function maybeShowPurposeGate(){
 function applyTheme(theme){
   document.documentElement.dataset.theme=theme;
   localStorage.setItem('uba-rev-theme',theme);
-  const t=document.getElementById('themeBtn'); if(t)t.textContent=theme==='dark'?'☀︎':'☾';
+  const t=document.getElementById('themeBtn');if(t){t.title=theme==='dark'?'Usar modo claro':'Usar modo escuro';t.setAttribute('aria-label',t.title)}
   const at=document.getElementById('adminThemeBtn'); if(at)at.textContent=(theme==='dark'?'☀︎':'☾')+' Tema'
 }
 function toggleTheme(){applyTheme(document.documentElement.dataset.theme==='dark'?'light':'dark')}
@@ -1842,9 +1849,10 @@ function setLoginTab(tab){
 }
 function updatePendingCounts(){
   const n=accounts.filter(a=>a.status==='pending').length;
-  ['pendingHeaderCount','pendingBarCount','pendingPanelCount','pendingDashboardCount'].forEach(id=>{
-    const el=document.getElementById(id);if(el)el.textContent=n
-  })
+  ['pendingBarCount','pendingPanelCount'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.textContent=n?String(n):''
+  });
+  const dashboard=document.getElementById('pendingDashboardCount');if(dashboard)dashboard.textContent=String(n)
 }
 function accountRow(a){
   const contact=[a.email,a.phone].filter(Boolean).join(' • ')||'Sem contato';
@@ -1936,12 +1944,35 @@ function deleteAccount(id){
 function updateHeader(){
   const btn=document.getElementById('customerHeaderBtn');
   const c=getCustomer();
-  if(btn)btn.textContent=c?`Minha conta ✓`:'Entrar';
+  if(btn){const label=btn.querySelector('.btn-label');if(label)label.textContent=c?'Minha conta ✓':'Entrar'}
   updatePendingCounts()
 }
 function renderAll(){
   updateCeoBar();updateHeader();renderCustomerAuth();renderProducts();updateCart();syncPurposeFields()
 }
+
+function toggleCeoF1(){
+  if(!ceoSession){openCheckout(1);showAdminLogin();return}
+  const admin=document.getElementById('adminShell'),logins=document.getElementById('loginShell');
+  const painelAberto=admin?.classList.contains('show')||logins?.classList.contains('show');
+  if(painelAberto){
+    logins?.classList.remove('show');
+    admin?.classList.remove('show');
+    document.body.style.overflow='';
+    renderAll();
+    window.scrollTo({top:0,behavior:'smooth'});
+    return
+  }
+  closeAll();
+  openAdmin()
+}
+window.addEventListener('keydown',event=>{
+  if(event.key==='F1'){
+    event.preventDefault();
+    event.stopPropagation();
+    toggleCeoF1()
+  }
+},{capture:true});
 
 accounts=accounts.map(a=>({...a,purpose:a.purpose||'commerce'}));saveAccounts();
 applyTheme(localStorage.getItem('uba-rev-theme')||'dark');
