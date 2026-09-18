@@ -135,9 +135,9 @@ function serialize(row, includePix = false) {
 }
 function asaasConfig() {
   const apiKey = String(process.env.ASAAS_API_KEY || "").trim();
-  // A loja publicada recebe pagamentos reais. Sandbox continua disponível
-  // quando ASAAS_ENV=sandbox for definido explicitamente na Vercel.
-  const environment = String(process.env.ASAAS_ENV || "production").trim().toLowerCase();
+  // Enquanto a integração usa uma chave de testes, o ambiente padrão precisa
+  // ser o Sandbox. Produção só é ativada explicitamente com ASAAS_ENV=production.
+  const environment = String(process.env.ASAAS_ENV || "sandbox").trim().toLowerCase();
   if (!apiKey) throw Object.assign(new Error("ASAAS_API_KEY não configurada na Vercel."), { statusCode: 503 });
   if (!["sandbox", "production"].includes(environment)) {
     throw Object.assign(new Error("ASAAS_ENV deve ser sandbox ou production."), { statusCode: 503 });
