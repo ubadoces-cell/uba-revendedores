@@ -5,7 +5,7 @@ const ADMIN_COOKIE = "uba_rev_session";
 const CUSTOMER_COOKIE = "uba_rev_customer_session";
 const MAX_AGE = 60 * 60 * 24 * 30;
 const VALID_STATUS = new Set(["pending", "approved", "blocked"]);
-const VALID_PURPOSE = new Set(["commerce", "event"]);
+const VALID_PURPOSE = new Set(["commerce"]);
 
 function db() {
   const url = process.env.DATABASE_URL || process.env.POSTGRES_URL;
@@ -79,6 +79,8 @@ async function ensureSchema(sql) {
     expires_at TIMESTAMPTZ NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
   )`, []);
+  await sql.query(`UPDATE reseller_customer_accounts SET purpose = 'commerce'
+    WHERE purpose <> 'commerce'`, []);
 }
 async function requireAdmin(req, sql) {
   const token = cookie(req, ADMIN_COOKIE);

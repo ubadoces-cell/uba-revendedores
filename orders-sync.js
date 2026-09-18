@@ -1,4 +1,4 @@
-/* Pedidos de Revendedores/Eventos — banco compartilhado, Pix Asaas e painel CEO. */
+/* Pedidos de revendedores — banco compartilhado, Pix Asaas e painel CEO. */
 (function(){
   let orders=[];
   let ordersLoading=false;
@@ -29,7 +29,7 @@
       estorno_em_andamento:'Estorno em andamento',contestacao:'Em contestação',erro_pagamento:'Erro no pagamento'
     })[status]||status||'Aguardando Pix'
   }
-  function orderPurpose(value){return value==='event'?'Festa ou evento':'Revendedor / comércio'}
+  function orderPurpose(){return 'Revendedor / comércio'}
   function updateOrderCount(){
     const count=orders.filter(order=>order.status==='novo').length;
     const metric=document.getElementById('mOrders');if(metric)metric.textContent=String(count);

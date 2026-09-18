@@ -169,7 +169,7 @@ export default async function handler(req, res) {
       item.toMake -= coveredToMake;
       const note = coveredToMake
         ? `Reserva manual pelo CEO; ${coveredToMake} un. abatidas de A Fabricar`
-        : "Reserva manual pelo CEO para Revendedores/Eventos";
+        : "Reserva manual pelo CEO para Revendedores";
       state.history.unshift(movement("seller_reservation", mapped.id, amount, note, actor));
     } else if (body.action === "production") {
       const mapped = PRODUCT_MAP[body.productId];
@@ -184,7 +184,7 @@ export default async function handler(req, res) {
       const extra = amount - forOrders;
       if (extra) {
         item.reseller += extra;
-        state.history.unshift(movement("production", mapped.id, extra, "Excedente no estoque Revendedores/Eventos", actor));
+        state.history.unshift(movement("production", mapped.id, extra, "Excedente no estoque Revendedores", actor));
       }
     } else if (body.action === "order_paid") {
       const reference = String(body.reference || "Pedido pago").slice(0, 120);

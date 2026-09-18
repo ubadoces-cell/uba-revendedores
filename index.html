@@ -217,7 +217,7 @@ body.ceo-mode.ceo-editing .inline-editor{display:block}
 .purpose-gate.show{display:flex}.purpose-card{width:min(760px,100%);border:1px solid rgba(205,198,228,.28);border-radius:28px;background:radial-gradient(circle at 88% 8%,rgba(205,198,228,.18),transparent 26%),linear-gradient(145deg,#211d2d,#16151b 64%);color:#f8f7fc;padding:28px;box-shadow:0 28px 90px rgba(0,0,0,.48)}
 .purpose-kicker{display:inline-flex;padding:7px 10px;border-radius:999px;background:#3b2f6b;color:#eee8ff;font-size:10px;font-weight:1000;letter-spacing:.06em;text-transform:uppercase}.purpose-card h2{margin:14px 0 8px;font-size:clamp(28px,5vw,46px);line-height:.98;letter-spacing:-.045em}.purpose-card>p{margin:0;color:#c8c4d2;font-size:14px;line-height:1.55;max-width:620px}
 .purpose-options{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}.purpose-option{border:1px solid #4b4656;border-radius:22px;background:#211f27;color:#fff;padding:20px;text-align:left;cursor:pointer;min-height:178px;transition:.18s ease}.purpose-option:hover{transform:translateY(-2px);border-color:#8e7ad4;background:#26222f}.purpose-option .icon{width:46px;height:46px;display:grid;place-items:center;border-radius:15px;background:#4A388E;font-size:23px;margin-bottom:14px}.purpose-option strong{display:block;font-size:18px;line-height:1.15;margin-bottom:7px}.purpose-option span{display:block;color:#bdb9c8;font-size:12px;line-height:1.45}.purpose-foot{margin-top:16px;color:#9691a2;font-size:10px;line-height:1.4;text-align:center}
-.purpose-chip{display:inline-flex;align-items:center;gap:6px;margin-top:6px;padding:6px 9px;border:1px solid var(--line);border-radius:999px;background:var(--surface2);font-size:10px;font-weight:900}.purpose-chip.commerce{color:#d6c9ff}.purpose-chip.event{color:#ffe1a6}.purpose-summary{margin-top:8px;padding:10px 11px;border:1px solid var(--line);border-radius:12px;background:var(--surface2);color:var(--muted);font-size:11px}.purpose-summary b{color:var(--text)}
+.purpose-chip{display:inline-flex;align-items:center;gap:6px;margin-top:6px;padding:6px 9px;border:1px solid var(--line);border-radius:999px;background:var(--surface2);font-size:10px;font-weight:900}.purpose-chip.commerce{color:#d6c9ff}.purpose-summary{margin-top:8px;padding:10px 11px;border:1px solid var(--line);border-radius:12px;background:var(--surface2);color:var(--muted);font-size:11px}.purpose-summary b{color:var(--text)}
 @media(max-width:640px){.purpose-card{padding:22px 16px;border-radius:23px}.purpose-options{grid-template-columns:1fr}.purpose-option{min-height:0;padding:17px}}
 
 
@@ -677,19 +677,6 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
 </head>
 <body>
 
-<section class="purpose-gate" id="purposeGate" role="dialog" aria-modal="true" aria-labelledby="purposeTitle">
-  <div class="purpose-card">
-    <div class="purpose-kicker">UBA DOCES • primeiro acesso</div>
-    <h2 id="purposeTitle">Como podemos atender você?</h2>
-    <p>Escolha o motivo principal da sua compra. Essa preferência ficará salva e será vinculada ao seu cadastro quando você criar uma conta.</p>
-    <div class="purpose-options">
-      <button class="purpose-option" onclick="choosePurpose('commerce')"><span class="icon">🏪</span><strong>Fornecimento para comércio</strong><span>Quero revender alfajores na minha loja, comércio, ponto de venda ou estabelecimento.</span></button>
-      <button class="purpose-option" onclick="choosePurpose('event')"><span class="icon">🎉</span><strong>Festa ou evento</strong><span>Quero alfajores para aniversário, casamento, confraternização, empresa ou outro evento.</span></button>
-    </div>
-    <div class="purpose-foot">A UBA poderá ver essa escolha junto do seu cadastro e atualizar a informação quando necessário.</div>
-  </div>
-</section>
-
 <form class="ghost-autofill" autocomplete="on" aria-hidden="true"><input type="text" name="username" autocomplete="username"><input type="password" name="password" autocomplete="current-password"></form>
 
 <div class="app">
@@ -708,7 +695,7 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
 
   <section class="hero">
     <div><small>Catálogo para revendedores</small><h2>Escolha seus sabores. A UBA cuida do resto.</h2><p>Monte o pedido primeiro sem precisar criar conta. Os preços ficam protegidos até seu cadastro ser aprovado pela UBA.</p><div class="hero-note">🔒 Preços de revenda aparecem somente para contas aprovadas e conectadas.</div></div>
-    <div class="hero-side"><div class="hero-card"><span class="bubble">PEDIDO B2B</span><img src="equipe-uba.jpg" alt="Equipe UBA DOCES"><b>Venda mais com UBA DOCES.</b><span>Escolha sabores, quantidades e finalize com Pix. Seus dados ficam salvos para os próximos pedidos.</span><span class="hero-team-note"><span class="hero-check">✓</span>Equipe UBA pronta para atender seu comércio, festa ou evento.</span></div></div>
+    <div class="hero-side"><div class="hero-card"><span class="bubble">PEDIDO B2B</span><img src="equipe-uba.jpg" alt="Equipe UBA DOCES"><b>Venda mais com UBA DOCES.</b><span>Escolha sabores, quantidades e finalize com Pix. Seus dados ficam salvos para os próximos pedidos.</span><span class="hero-team-note"><span class="hero-check">✓</span>Equipe UBA pronta para atender seu comércio.</span></div></div>
   </section>
 
   <div class="toolbar"><div class="search"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.4-3.4"></path></svg><input id="search" name="catalog-search" type="search" inputmode="search" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" readonly onfocus="this.removeAttribute('readonly')" placeholder="Buscar sabor..." oninput="filterProducts()"></div><div class="filters"><button class="filter active" onclick="setFilter(this,'all')">Todos</button><button class="filter" onclick="setFilter(this,'featured')">Destaques</button><button class="filter" onclick="setFilter(this,'available')">Disponíveis</button></div></div>
@@ -760,7 +747,7 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
             <div class="field"><label>CPF ou CNPJ</label><input id="regDoc" autocomplete="off" inputmode="numeric" placeholder="Documento do comprador/empresa" /></div>
             <div class="field"><label>Nome da loja</label><input id="regStore" autocomplete="organization" placeholder="Nome comercial" /></div>
             <div class="field full"><label>Crie uma senha</label><input id="regPass" type="password" autocomplete="new-password" placeholder="Mínimo 6 caracteres" /></div>
-            <div class="field full"><label>Tipo de atendimento</label><select id="regPurpose"><option value="commerce">Fornecimento para comércio</option><option value="event">Festa ou evento</option></select><div class="purpose-summary" id="regPurposeSummary"></div></div>
+            <input id="regPurpose" type="hidden" value="commerce" />
           </div>
 
           <div class="auth-status" id="authStatus">🔒 Os preços não são enviados para uma conta pública. Após o cadastro, a UBA aprova o acesso comercial.</div>
@@ -837,8 +824,8 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
         <div class="metric"><span class="admin-metric-icon"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M4 7h16v13H4z"></path><path d="M8 7V4h8v3"></path></svg></span><div><small>Produtos ativos</small><strong id="mActive">0</strong></div></div>
         <div class="metric"><span class="admin-metric-icon"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M4 7l8-4 8 4-8 4-8-4z"></path><path d="M4 7v10l8 4 8-4V7"></path><path d="M12 11v10"></path></svg></span><div><small>Estoque total</small><strong id="mStock">0</strong></div></div>
         <div class="metric"><span class="admin-metric-icon"><svg class="ui-icon" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"></circle><path d="M3 20a6 6 0 0 1 12 0"></path><circle cx="17" cy="9" r="2"></circle><path d="M16 14a5 5 0 0 1 5 5"></path></svg></span><div><small>Estoque Vendedores</small><strong id="mSellers">0</strong></div></div>
-        <div class="metric"><span class="admin-metric-icon"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M3 10l2-5h14l2 5"></path><path d="M5 10v10h14V10"></path><path d="M9 20v-6h6v6"></path></svg></span><div><small>Revendedores/Eventos</small><strong id="mReseller">0</strong></div></div>
-        <div class="metric"><span class="admin-metric-icon"><svg class="ui-icon" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"></rect><path d="M8 3v4M16 3v4M8 12l2 2 5-5"></path></svg></span><div><small>Reservado Rev./Eventos</small><strong id="mReserved">0</strong></div></div>
+        <div class="metric"><span class="admin-metric-icon"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M3 10l2-5h14l2 5"></path><path d="M5 10v10h14V10"></path><path d="M9 20v-6h6v6"></path></svg></span><div><small>Revendedores</small><strong id="mReseller">0</strong></div></div>
+        <div class="metric"><span class="admin-metric-icon"><svg class="ui-icon" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"></rect><path d="M8 3v4M16 3v4M8 12l2 2 5-5"></path></svg></span><div><small>Reservado Revendedores</small><strong id="mReserved">0</strong></div></div>
         <div class="metric"><span class="admin-metric-icon"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3z"></path><path d="M9 8h6M9 12h6"></path></svg></span><div><small>Pedidos novos</small><strong id="mOrders">0</strong></div></div>
         <div class="metric"><span class="admin-metric-icon"><svg class="ui-icon" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"></circle><path d="M3 20a6 6 0 0 1 12 0M18 8v6M15 11h6"></path></svg></span><div><small>Cadastros pendentes</small><strong id="pendingDashboardCount">0</strong></div></div>
       </div>
@@ -880,7 +867,7 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
         <div class="section-label">
           <div>
             <h3>Preços por quantidade</h3>
-            <p>Tabelas para revendedores/comércio e festas/eventos.</p>
+            <p>Tabela para revendedores e comércios.</p>
           </div>
         </div>
         <div class="pricing-editor">
@@ -901,11 +888,11 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
         <button class="admin-back" onclick="setAdminView('dashboard')">← Início</button>
         <div class="admin-page-title">
           <h3>Pedidos de clientes</h3>
-          <p>Pedidos enviados pela loja de Revendedores/Eventos.</p>
+          <p>Pedidos enviados pela loja de revendedores.</p>
         </div>
         <button class="admin-back" onclick="loadOrdersRemote()">↻ Atualizar</button>
       </div>
-      <div class="orders-help"><b>Pagamento:</b> pedidos entram como <b>Aguardando Pix</b>. A confirmação vem diretamente do Asaas; somente o evento de valor recebido confirma o pedido e movimenta o estoque.</div>
+      <div class="orders-help"><b>Pagamento:</b> pedidos entram como <b>Aguardando Pix</b>. A confirmação vem diretamente do Asaas; somente o pagamento recebido confirma o pedido e movimenta o estoque.</div>
       <div class="orders-list" id="ordersList"><div class="orders-empty">Carregando pedidos...</div></div>
     </section>
 
@@ -931,24 +918,24 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
           <span>Saldo exclusivo do fechamento de caixa.</span>
         </div>
         <div class="stock-card reseller">
-          <small>Estoque Revendedores/Eventos</small>
+          <small>Estoque Revendedores</small>
           <strong id="stockResellerTotal">0</strong>
           <span>Saldo próprio deste canal.</span>
         </div>
         <div class="stock-card reserved">
-          <small>Reservado Revendedores/Eventos</small>
+          <small>Reservado Revendedores</small>
           <strong id="stockReservedTotal">0</strong>
           <span>Unidades físicas reservadas para pedidos.</span>
         </div>
       </div>
 
       <div class="stock-explain">
-        <b>Reserva manual:</b> informe a quantidade do sabor e clique em <b>Reservar</b>. As unidades saem do Estoque Vendedores e entram em Reservado Revendedores/Eventos. O Estoque total não muda.
+        <b>Reserva manual:</b> informe a quantidade do sabor e clique em <b>Reservar</b>. As unidades saem do Estoque Vendedores e entram em Reservado Revendedores. O Estoque total não muda.
       </div>
 
       <div class="stock-table-wrap">
         <table class="stock-table">
-          <thead><tr><th>Produto</th><th>Estoque total</th><th>Vendedores</th><th>Revendedores/Eventos</th><th>Reservado Revendedores/Eventos</th><th>Reservar dos vendedores</th></tr></thead>
+          <thead><tr><th>Produto</th><th>Estoque total</th><th>Vendedores</th><th>Revendedores</th><th>Reservado Revendedores</th><th>Reservar dos vendedores</th></tr></thead>
           <tbody id="stockTableBody"></tbody>
           <tfoot id="stockTableFoot"></tfoot>
         </table>
@@ -999,7 +986,7 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
         <div><label>WhatsApp</label><input id="accountPhone" /></div>
         <div><label>CPF / CNPJ</label><input id="accountDoc" /></div>
         <div><label>Status</label><select id="accountStatus"><option value="approved">Aprovado</option><option value="pending">Aguardando aprovação</option><option value="blocked">Bloqueado / desativado</option></select></div>
-        <div class="full"><label>Finalidade do cliente</label><select id="accountPurpose"><option value="commerce">Fornecimento para comércio</option><option value="event">Festa ou evento</option></select></div>
+        <input id="accountPurpose" type="hidden" value="commerce" />
         <div class="full"><label>Senha ${'<span style="color:var(--muted);font-weight:700">(obrigatória ao criar; deixe em branco ao editar para manter a atual)</span>'}</label><input id="accountPassword" type="password" minlength="6" /></div>
         <div class="login-form-actions">
           <button class="cancel" type="button" onclick="clearAccountForm()">Limpar</button>
@@ -1025,12 +1012,6 @@ const defaultPricing={
     {min:100,max:199,label:'100 a 199',chocolate50:4.55,standard:4.88,pistache:5.53},
     {min:200,max:399,label:'200 a 399',chocolate50:4.20,standard:4.50,pistache:5.10},
     {min:400,max:null,label:'400 ou mais',chocolate50:3.85,standard:4.13,pistache:4.68}
-  ],
-  event:[
-    {min:50,max:99,label:'50 a 99',chocolate50:4.60,standard:5.10,pistache:6.10},
-    {min:100,max:199,label:'100 a 199',chocolate50:4.59,standard:4.91,pistache:5.57},
-    {min:200,max:399,label:'200 a 399',chocolate50:4.38,standard:4.69,pistache:5.31},
-    {min:400,max:null,label:'400 ou mais',chocolate50:4.20,standard:4.50,pistache:5.10}
   ]
 };
 
@@ -1080,7 +1061,7 @@ let authMode='login';
 let ceoSession=sessionStorage.getItem('uba-rev-ceo-session')==='1';
 let customerSessionId=sessionStorage.getItem('uba-rev-customer-session')||'';
 let loginTab='pending';
-let visitorPurpose=localStorage.getItem('uba-rev-purpose')||'';
+let visitorPurpose='commerce';localStorage.setItem('uba-rev-purpose','commerce');
 
 const money=v=>Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
 function stockItem(id){
@@ -1159,11 +1140,11 @@ function statusLabel(status){
 function accountStatusClass(status){
   return status==='approved'?'approved':status==='blocked'?'blocked':'pending'
 }
-function purposeLabel(value){return value==='event'?'Festa ou evento':'Fornecimento para comércio'}
-function purposeIcon(value){return value==='event'?'🎉':'🏪'}
+function purposeLabel(){return 'Fornecimento para comércio'}
+function purposeIcon(){return '🏪'}
 function getOrderPurpose(){
   const c=getCustomer();
-  return (c&&c.purpose)||visitorPurpose||'commerce'
+  return 'commerce'
 }
 function getOrderCount(){
   return catalog.reduce((sum,p)=>sum+Number(qty[p.id]||0),0)
@@ -1184,20 +1165,10 @@ function getUnitPrice(p,count=getOrderCount(),purpose=getOrderPurpose()){
   return Number(tier[productPriceGroup(p)]||0)
 }
 
-function choosePurpose(value){
-  if(value!=='commerce'&&value!=='event')return;
-  visitorPurpose=value;localStorage.setItem('uba-rev-purpose',value);
-  document.getElementById('purposeGate')?.classList.remove('show');syncPurposeFields()
-}
 function syncPurposeFields(){
-  const c=getCustomer();const purpose=(c&&c.purpose)||visitorPurpose||'commerce';
-  const reg=document.getElementById('regPurpose');if(reg)reg.value=purpose;
-  const summary=document.getElementById('regPurposeSummary');if(summary)summary.innerHTML=`Selecionado no primeiro acesso: <b>${purposeIcon(purpose)} ${purposeLabel(purpose)}</b>`
-}
-function maybeShowPurposeGate(){
-  if(ceoSession)return;const c=getCustomer();
-  if(c&&c.purpose){visitorPurpose=c.purpose;localStorage.setItem('uba-rev-purpose',c.purpose);return}
-  if(!visitorPurpose)document.getElementById('purposeGate')?.classList.add('show')
+  visitorPurpose='commerce';localStorage.setItem('uba-rev-purpose','commerce');
+  const reg=document.getElementById('regPurpose');if(reg)reg.value='commerce';
+  const account=document.getElementById('accountPurpose');if(account)account.value='commerce'
 }
 
 function applyTheme(theme){
@@ -1624,7 +1595,7 @@ function reserveSellerStock(productId){
   s.sellers-=quantity;
   s.separated+=quantity;
   s.toMake-=coveredToMake;
-  pushStockHistory('seller_reservation',productId,quantity,coveredToMake?`Reserva manual; ${coveredToMake} un. abatidas de A Fabricar`:'Reserva manual para Revendedores/Eventos');
+  pushStockHistory('seller_reservation',productId,quantity,coveredToMake?`Reserva manual; ${coveredToMake} un. abatidas de A Fabricar`:'Reserva manual para Revendedores');
   if(input)input.value='';
   renderStockPanel()
 }
@@ -1642,7 +1613,7 @@ function registerProduction(productId){
   const extra=produced-forOrders;
   if(extra>0){
     s.reseller+=extra;
-    pushStockHistory('production',productId,extra,'Excedente entrou no estoque Revendedores/Eventos');
+    pushStockHistory('production',productId,extra,'Excedente entrou no estoque Revendedores');
   }
   if(input)input.value='';
   saveSharedStock();
@@ -1667,7 +1638,7 @@ function registerConfirmedOrderInStock(){
     const q=Number(qty[p.id]||0);
     if(q<=0)return;
     const s=stockItem(p.id);
-    // Estoque Revendedores/Eventos, caso exista no futuro, atende primeiro.
+    // O estoque de revendedores, caso exista, atende primeiro.
     const fromReseller=Math.min(q,Number(s.reseller||0));
     if(fromReseller>0){
       s.reseller-=fromReseller;
@@ -1675,7 +1646,7 @@ function registerConfirmedOrderInStock(){
     }
     const remainder=q-fromReseller;
     if(remainder>0)s.toMake+=remainder;
-    pushStockHistory('order',p.id,q,fromReseller>0?`${fromReseller} un. já separadas do estoque Rev./Eventos`:'Entrou em A Fabricar');
+    pushStockHistory('order',p.id,q,fromReseller>0?`${fromReseller} un. já separadas do estoque de revendedores`:'Entrou em A Fabricar');
     total+=q
   });
   saveSharedStock();
@@ -1697,7 +1668,7 @@ function renderPricingEditor(){
       </tr>`).join('')}</tbody>
     </table></div>
   </div>`;
-  root.innerHTML=section('commerce','🏪 Revendedores / comércio')+section('event','🎉 Festas e eventos')
+  root.innerHTML=section('commerce','🏪 Revendedores / comércio')
 }
 function editPricing(purpose,index,key,value){
   pricing[purpose][index][key]=Math.max(0,Number(value||0));
@@ -1894,7 +1865,7 @@ function editAccount(id){
   document.getElementById('accountPhone').value=a.phone||'';
   document.getElementById('accountDoc').value=a.doc||'';
   document.getElementById('accountStatus').value=a.status||'pending';
-  document.getElementById('accountPurpose').value=a.purpose||'commerce';
+  document.getElementById('accountPurpose').value='commerce';
   document.getElementById('accountPassword').value='';
   document.getElementById('accountFormTitle').innerHTML=`Editando <b>${escapeHtml(a.name)}</b>. Deixe a senha em branco para manter a senha atual.`;
   setLoginTab('create')
@@ -1903,7 +1874,7 @@ function clearAccountForm(resetTitle=true){
   const form=document.getElementById('accountForm');if(form)form.reset();
   document.getElementById('accountEditId').value='';
   document.getElementById('accountStatus').value='approved';
-  document.getElementById('accountPurpose').value=visitorPurpose||'commerce';
+  document.getElementById('accountPurpose').value='commerce';
   if(resetTitle)document.getElementById('accountFormTitle').textContent='Crie um acesso manualmente. Você pode deixá-lo aprovado imediatamente ou pendente.'
 }
 async function saveAccountForm(event){
@@ -1977,7 +1948,6 @@ window.addEventListener('keydown',event=>{
 accounts=accounts.map(a=>({...a,purpose:a.purpose||'commerce'}));saveAccounts();
 applyTheme(localStorage.getItem('uba-rev-theme')||'dark');
 renderAll();
-maybeShowPurposeGate();
 </script>
 <script src="shared-stock-sync.js?v=2"></script>
 <script src="orders-sync.js?v=3"></script>

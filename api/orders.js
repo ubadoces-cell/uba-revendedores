@@ -17,12 +17,6 @@ const PRICING = {
     { min: 200, max: 399, chocolate50: 420, standard: 450, pistache: 510 },
     { min: 400, max: null, chocolate50: 385, standard: 413, pistache: 468 },
   ],
-  event: [
-    { min: 50, max: 99, chocolate50: 460, standard: 510, pistache: 610 },
-    { min: 100, max: 199, chocolate50: 459, standard: 491, pistache: 557 },
-    { min: 200, max: 399, chocolate50: 438, standard: 469, pistache: 531 },
-    { min: 400, max: null, chocolate50: 420, standard: 450, pistache: 510 },
-  ],
 };
 
 function db() {
@@ -201,7 +195,7 @@ export default async function handler(req, res) {
     if (req.method === "POST") {
       asaasConfig();
       const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : (req.body || {});
-      const purpose = body.purpose === "event" ? "event" : "commerce";
+      const purpose = "commerce";
       const calculated = calculate(normalizeItems(body.items), purpose);
       if (calculated.units < 50) return res.status(400).json({ error: "O pedido mínimo é de 50 unidades." });
 

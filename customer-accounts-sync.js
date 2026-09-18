@@ -60,7 +60,7 @@
     const phone = document.getElementById("regPhone").value.trim();
     const doc = document.getElementById("regDoc").value.trim();
     const store = document.getElementById("regStore").value.trim();
-    const purpose = document.getElementById("regPurpose").value || visitorPurpose || "commerce";
+    const purpose = "commerce";
     const password = document.getElementById("regPass").value;
     if (!name || (!email && !phone) || !doc || password.length < 6) {
       setAuthMessage("Preencha nome, e-mail ou telefone, CPF/CNPJ e uma senha com pelo menos 6 caracteres.", "bad");
@@ -68,8 +68,8 @@
     }
     try {
       await request({ method: "POST", body: JSON.stringify({ action: "register", name, email, phone, doc, store, purpose, password }) });
-      visitorPurpose = purpose;
-      localStorage.setItem("uba-rev-purpose", purpose);
+      visitorPurpose = "commerce";
+      localStorage.setItem("uba-rev-purpose", "commerce");
       showPanel("pendingPanel");
       for (let i = 1; i <= 4; i += 1) document.getElementById(`dot${i}`).classList.toggle("on", i === 1);
     } catch (error) {
@@ -89,10 +89,8 @@
       customerAccount = data.account;
       customerSessionId = data.account.id;
       sessionStorage.setItem("uba-rev-customer-session", data.account.id);
-      if (data.account.purpose) {
-        visitorPurpose = data.account.purpose;
-        localStorage.setItem("uba-rev-purpose", data.account.purpose);
-      }
+      visitorPurpose = "commerce";
+      localStorage.setItem("uba-rev-purpose", "commerce");
       renderAll();
       if (getTotals().count > 0) goStep(2);
       else closeAll();
@@ -149,7 +147,7 @@
     const phone = document.getElementById("accountPhone").value.trim();
     const doc = document.getElementById("accountDoc").value.trim();
     const status = document.getElementById("accountStatus").value;
-    const purpose = document.getElementById("accountPurpose").value || "commerce";
+    const purpose = "commerce";
     const password = document.getElementById("accountPassword").value;
     if (!name || (!email && !phone)) { alert("Informe nome e pelo menos e-mail ou telefone."); return; }
     if (!id && password.length < 6) { alert("Ao criar um login, informe uma senha com pelo menos 6 caracteres."); return; }

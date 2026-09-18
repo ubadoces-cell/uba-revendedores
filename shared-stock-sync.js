@@ -55,7 +55,7 @@
     const item=sharedStock?.[productId]||{};
     const available=Math.max(0,Math.trunc(Number(item.sellers||0)));
     if(quantity>available){alert(`Há apenas ${available} unidades deste sabor no estoque dos vendedores.`);return}
-    if(!confirm(`Reservar ${quantity} unidade(s) do estoque dos vendedores para Revendedores/Eventos?`))return;
+    if(!confirm(`Reservar ${quantity} unidade(s) do estoque dos vendedores para Revendedores?`))return;
     try{
       await stockAction('reserve_seller_stock',{productId,quantity});
       if(input)input.value=''
