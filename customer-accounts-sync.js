@@ -53,6 +53,89 @@
       renderAll();
     }
   }
+  window.refreshCurrentCustomer = loadCurrentCustomer;
+
+  function profileMessage(message, type = "") {
+    const element = document.getElementById("profileStatus");
+    if (!element) return;
+    element.textContent = message;
+    element.className = `auth-status${type ? ` ${type}` : ""}`;
+  }
+
+  function fillCustomerProfile() {
+    const account = customerAccount;
+    if (!account) return;
+    const address = account.address || {};
+    const values = {
+      profileName: account.name,
+      profileEmail: account.email,
+      profilePhone: account.phone,
+      profileDoc: account.doc,
+      profileStore: account.store,
+      profileCep: address.cep,
+      profileCity: address.city,
+      profileStreet: address.street,
+      profileNumber: address.number,
+      profileComplement: address.complement,
+    };
+    for (const [id, value] of Object.entries(values)) {
+      const input = document.getElementById(id);
+      if (input) input.value = value || "";
+    }
+    profileMessage("Dados carregados do banco do UBA Revendedores.");
+  }
+
+  window.saveCustomerProfile = async function (event) {
+    event.preventDefault();
+    const payload = {
+      action: "update_profile",
+      name: document.getElementById("profileName").value.trim(),
+      email: document.getElementById("profileEmail").value.trim(),
+      phone: document.getElementById("profilePhone").value.trim(),
+      doc: document.getElementById("profileDoc").value.trim(),
+      store: document.getElementById("profileStore").value.trim(),
+      address: {
+        cep: document.getElementById("profileCep").value.trim(),
+        city: document.getElementById("profileCity").value.trim(),
+        street: document.getElementById("profileStreet").value.trim(),
+        number: document.getElementById("profileNumber").value.trim(),
+        complement: document.getElementById("profileComplement").value.trim(),
+      },
+    };
+    profileMessage("Salvando seus dados com segurança...", "warn");
+    try {
+      const data = await request({ method: "PATCH", body: JSON.stringify(payload) });
+      customerAccount = data.account;
+      fillCustomerProfile();
+      renderAll();
+      profileMessage("✓ Dados salvos no banco.", "good");
+    } catch (error) {
+      profileMessage(error.message, "bad");
+    }
+  };
+
+  const previousOpenCustomerEntry = window.openCustomerEntry;
+  window.openCustomerEntry = function () {
+    previousOpenCustomerEntry();
+    if (customerAccount) fillCustomerProfile();
+  };
+
+  const previousPrefillBuyer = window.prefillBuyer;
+  window.prefillBuyer = function () {
+    previousPrefillBuyer();
+    const address = customerAccount?.address || {};
+    const values = {
+      deliveryCep: address.cep,
+      deliveryCity: address.city,
+      deliveryStreet: address.street,
+      deliveryNumber: address.number,
+      deliveryComplement: address.complement,
+    };
+    for (const [id, value] of Object.entries(values)) {
+      const input = document.getElementById(id);
+      if (input && !input.value) input.value = value || "";
+    }
+  };
 
   registerCustomer = async function () {
     const name = document.getElementById("regName").value.trim();

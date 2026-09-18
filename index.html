@@ -767,11 +767,29 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
 
       <section class="panel" id="customerAccount">
         <h4>Minha conta</h4>
-        <p class="hint">Seu cadastro está aprovado e os preços de revenda estão liberados nesta sessão.</p>
+        <p class="hint">Seus dados ficam salvos para preencher automaticamente os próximos pedidos.</p>
         <div class="account-box show">
           <strong id="accountPanelName"></strong>
           <p id="accountPanelMeta"></p>
           <div class="customer-approved">✓ ACESSO COMERCIAL APROVADO</div>
+          <form id="customerProfileForm" onsubmit="saveCustomerProfile(event)" style="margin-top:16px">
+            <div class="fields">
+              <div class="field full"><label>Nome do responsável / razão social</label><input id="profileName" autocomplete="name" /></div>
+              <div class="field"><label>E-mail</label><input id="profileEmail" type="email" autocomplete="email" /></div>
+              <div class="field"><label>WhatsApp</label><input id="profilePhone" autocomplete="tel" inputmode="tel" /></div>
+              <div class="field"><label>CPF ou CNPJ</label><input id="profileDoc" inputmode="numeric" /></div>
+              <div class="field"><label>Nome da loja</label><input id="profileStore" autocomplete="organization" /></div>
+              <div class="field"><label>CEP</label><input id="profileCep" autocomplete="postal-code" inputmode="numeric" /></div>
+              <div class="field"><label>Cidade</label><input id="profileCity" autocomplete="address-level2" /></div>
+              <div class="field full"><label>Rua / Avenida</label><input id="profileStreet" autocomplete="street-address" /></div>
+              <div class="field"><label>Número</label><input id="profileNumber" autocomplete="address-line2" /></div>
+              <div class="field"><label>Complemento</label><input id="profileComplement" autocomplete="address-line3" /></div>
+            </div>
+            <div class="auth-status" id="profileStatus">Os dados serão gravados no banco exclusivo do UBA Revendedores.</div>
+            <div class="account-actions" style="margin-top:12px">
+              <button class="next" type="submit">Salvar meus dados</button>
+            </div>
+          </form>
           <div class="account-actions" style="margin-top:12px">
             <button class="next" onclick="closeAll()">Voltar à loja</button>
             <button class="logout" onclick="logoutCustomer()">Sair da conta</button>
@@ -1951,6 +1969,6 @@ renderAll();
 </script>
 <script src="shared-stock-sync.js?v=2"></script>
 <script src="orders-sync.js?v=3"></script>
-<script src="customer-accounts-sync.js?v=11"></script>
+<script src="customer-accounts-sync.js?v=12"></script>
 </body>
 </html>

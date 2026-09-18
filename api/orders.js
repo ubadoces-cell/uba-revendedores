@@ -1,7 +1,8 @@
 import { createHash, randomBytes } from "node:crypto";
-import { neon } from "@neondatabase/serverless";
+import { requireAdmin } from "../server/admin-auth.js";
+import { currentCustomer } from "../server/customer-auth.js";
+import { database } from "../server/database.js";
 
-const SESSION_COOKIE = "uba_rev_session";
 const STATUSES = ["novo", "confirmado", "em_producao", "pronto", "concluido", "cancelado"];
 const PRODUCTS = {
   pistache: { name: "Pistache", group: "pistache" },
@@ -19,32 +20,12 @@ const PRICING = {
   ],
 };
 
-function db() {
-  const url = process.env.DATABASE_URL || process.env.POSTGRES_URL;
-  if (!url) throw new Error("DATABASE_URL não configurada.");
-  return neon(url);
-}
 function sha256(value) { return createHash("sha256").update(value).digest("hex"); }
 function clean(value, max = 180) { return String(value || "").trim().slice(0, max); }
 function digits(value) { return String(value || "").replace(/\D/g, ""); }
 function int(value) {
   const number = Number(value);
   return Number.isFinite(number) ? Math.max(0, Math.trunc(number)) : 0;
-}
-function cookie(req, name) {
-  for (const part of String(req.headers.cookie || "").split(";")) {
-    const [key, ...rest] = part.trim().split("=");
-    if (key === name) return decodeURIComponent(rest.join("="));
-  }
-  return "";
-}
-async function requireAdmin(req, sql) {
-  const token = cookie(req, SESSION_COOKIE);
-  if (!token) return null;
-  const rows = await sql.query(`SELECT a.id, a.username FROM sessions s JOIN accounts a ON a.id = s.account_id
-    WHERE s.token_hash = $1 AND s.expires_at > $2 AND a.active = 1 AND a.role = 'admin' LIMIT 1`,
-    [sha256(token), new Date().toISOString()]);
-  return rows[0] || null;
 }
 async function ensureSchema(sql) {
   await sql.query(`CREATE TABLE IF NOT EXISTS reseller_orders (
@@ -189,21 +170,24 @@ function dueDateTomorrow() {
 export default async function handler(req, res) {
   let insertedOrderId = "";
   try {
-    const sql = db();
+    const sql = database();
     await ensureSchema(sql);
 
     if (req.method === "POST") {
       asaasConfig();
       const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : (req.body || {});
+      const account = await currentCustomer(req, sql);
+      if (!account || account.status !== "approved") {
+        return res.status(401).json({ error: "Entre com uma conta aprovada para gerar o pedido." });
+      }
       const purpose = "commerce";
       const calculated = calculate(normalizeItems(body.items), purpose);
       if (calculated.units < 50) return res.status(400).json({ error: "O pedido mínimo é de 50 unidades." });
 
-      const customer = body.customer && typeof body.customer === "object" ? body.customer : {};
       const buyer = body.buyer && typeof body.buyer === "object" ? body.buyer : {};
       const delivery = body.delivery && typeof body.delivery === "object" ? body.delivery : {};
-      const customerName = clean(buyer.name || customer.name, 140);
-      const customerDoc = digits(buyer.doc || customer.doc);
+      const customerName = clean(buyer.name || account.name, 140);
+      const customerDoc = digits(buyer.doc || account.doc);
       if (!customerName) return res.status(400).json({ error: "Informe o nome do comprador." });
       if (![11, 14].includes(customerDoc.length)) {
         return res.status(400).json({ error: "Informe um CPF ou CNPJ válido para gerar o Pix." });
@@ -220,15 +204,21 @@ export default async function handler(req, res) {
         number: clean(delivery.number, 30),
         complement: clean(delivery.complement, 120),
       };
-      const email = clean(customer.email, 180);
-      const phone = clean(customer.phone, 60);
+      const email = clean(account.email, 180);
+      const phone = clean(account.phone, 60);
       await sql.query(`INSERT INTO reseller_orders
         (id, code, status, payment_status, public_token_hash, customer_name, customer_email, customer_phone,
          customer_store, customer_doc, purpose, delivery, items, units, total_cents)
         VALUES ($1,$2,'novo','aguardando_pagamento',$3,$4,$5,$6,$7,$8,$9,$10::jsonb,$11::jsonb,$12,$13)`, [
         id, code, sha256(publicToken), customerName, email, phone,
-        clean(buyer.store || customer.store, 140), customerDoc, purpose,
+        clean(buyer.store || account.store, 140), customerDoc, purpose,
         JSON.stringify(safeDelivery), JSON.stringify(calculated.items), calculated.units, calculated.totalCents,
+      ]);
+      await sql.query(`UPDATE reseller_customer_accounts SET
+        name=$2,doc=$3,doc_norm=$4,store=$5,address_cep=$6,address_city=$7,address_street=$8,
+        address_number=$9,address_complement=$10,updated_at=NOW() WHERE id=$1`, [
+        account.id, customerName, customerDoc, customerDoc, clean(buyer.store || account.store, 140),
+        safeDelivery.cep, safeDelivery.city, safeDelivery.street, safeDelivery.number, safeDelivery.complement,
       ]);
 
       const asaasCustomerId = await findOrCreateCustomer({
@@ -280,10 +270,8 @@ export default async function handler(req, res) {
     console.error(error);
     if (insertedOrderId) {
       try {
-        const sql = db();
-        const rows = await sql.query("SELECT asaas_payment_id FROM reseller_orders WHERE id=$1", [insertedOrderId]);
-        if (!rows[0]?.asaas_payment_id) await sql.query("DELETE FROM reseller_orders WHERE id=$1", [insertedOrderId]);
-        else await sql.query("UPDATE reseller_orders SET payment_status='erro_pagamento', updated_at=NOW() WHERE id=$1", [insertedOrderId]);
+        const sql = database();
+        await sql.query("UPDATE reseller_orders SET payment_status='erro_pagamento', updated_at=NOW() WHERE id=$1", [insertedOrderId]);
       } catch { /* preserve original error */ }
     }
     return res.status(error.statusCode || 500).json({
