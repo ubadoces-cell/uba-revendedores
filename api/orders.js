@@ -135,13 +135,10 @@ function serialize(row, includePix = false) {
 }
 function asaasConfig() {
   const apiKey = String(process.env.ASAAS_API_KEY || "").trim();
-  // Enquanto a integração usa uma chave de testes, o ambiente padrão precisa
-  // ser o Sandbox. Produção só é ativada explicitamente com ASAAS_ENV=production.
-  const environment = String(process.env.ASAAS_ENV || "sandbox").trim().toLowerCase();
+  // Esta implantação usa a chave de testes cadastrada na Vercel.
+  // Fixar o ambiente evita que uma ASAAS_ENV antiga sobrescreva a configuração.
+  const environment = "sandbox";
   if (!apiKey) throw Object.assign(new Error("ASAAS_API_KEY não configurada na Vercel."), { statusCode: 503 });
-  if (!["sandbox", "production"].includes(environment)) {
-    throw Object.assign(new Error("ASAAS_ENV deve ser sandbox ou production."), { statusCode: 503 });
-  }
   return {
     apiKey,
     baseUrl: environment === "production" ? "https://api.asaas.com/v3" : "https://api-sandbox.asaas.com/v3",
