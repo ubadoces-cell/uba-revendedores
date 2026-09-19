@@ -171,6 +171,7 @@
         items:catalog.filter(product=>Number(qty[product.id]||0)>0).map(product=>({productId:product.id,quantity:Number(qty[product.id])}))
       };
       const data=await ordersRequest({method:'POST',body:JSON.stringify(payload)});
+      if(typeof window.refreshCurrentCustomer==='function')await window.refreshCurrentCustomer();
       showPix(data.order,data.publicToken)
     }catch(error){alert(error.message)}
     finally{if(button){button.disabled=false;button.textContent='Gerar Pix'}}

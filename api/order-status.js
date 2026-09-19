@@ -1,11 +1,5 @@
 import { createHash } from "node:crypto";
-import { neon } from "@neondatabase/serverless";
-
-function db() {
-  const url = process.env.DATABASE_URL || process.env.POSTGRES_URL;
-  if (!url) throw new Error("DATABASE_URL não configurada.");
-  return neon(url);
-}
+import { database } from "../server/database.js";
 function sha256(value) { return createHash("sha256").update(value).digest("hex"); }
 function clean(value, max = 180) { return String(value || "").trim().slice(0, max); }
 
@@ -15,7 +9,7 @@ export default async function handler(req, res) {
     const code = clean(req.query?.code, 80);
     const token = clean(req.query?.token, 120);
     if (!code || !token) return res.status(400).json({ error: "Identificação do pedido incompleta." });
-    const rows = await db().query(`SELECT code, status, payment_status, paid_at, updated_at
+    const rows = await database().query(`SELECT code, status, payment_status, paid_at, updated_at
       FROM reseller_orders WHERE code=$1 AND public_token_hash=$2 LIMIT 1`, [code, sha256(token)]);
     if (!rows[0]) return res.status(404).json({ error: "Pedido não encontrado." });
     return res.status(200).json({
