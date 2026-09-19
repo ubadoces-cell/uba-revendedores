@@ -3,7 +3,7 @@
 ## Fonte de verdade
 
 - **UBA Revendedores (Neon/PostgreSQL):** clientes B2B, sessões, pedidos, pagamentos e eventos do Asaas.
-- **UBA Controles (D1):** estoque físico, reservas, produção e histórico operacional.
+- **UBA Controles (Neon/PostgreSQL na Vercel):** estoque físico, reservas, produção e histórico operacional.
 - Os bancos não compartilham credenciais nem tabelas.
 - A comunicação ocorre exclusivamente por API servidor-servidor autenticada.
 
@@ -20,7 +20,7 @@ ASAAS_ENV=sandbox|production
 ASAAS_WEBHOOK_TOKEN=<token do webhook>
 ```
 
-Não reutilize `DATABASE_URL` do UBA Controles. O código exige `RESELLER_DATABASE_URL` para impedir conexão acidental ao banco errado.
+Não reutilize `DATABASE_URL` do UBA Controles. A integração Neon existente cria `RESELLER_DATABASE_DATABASE_URL`, também aceita. Não há fallback para `DATABASE_URL` ou `POSTGRES_URL`. Se as duas variáveis exclusivas estiverem presentes com valores diferentes, o servidor recusa a conexão.
 
 ## Variável do UBA Controles
 
@@ -32,7 +32,7 @@ UBA_INTEGRATION_SECRET=<mesmo segredo do UBA Revendedores>
 
 1. Exportar/guardar backup do banco atual antes de qualquer migração.
 2. Criar um Neon/PostgreSQL exclusivo para o UBA Revendedores.
-3. Copiar para ele somente as tabelas `reseller_*` e `asaas_webhook_events`.
+3. Iniciar o banco exclusivo vazio. Por decisão do proprietário, não migrar os dados antigos e não apagá-los da origem.
 4. Configurar as variáveis acima em ambiente de prévia.
 5. Publicar primeiro o endpoint de integração do UBA Controles.
 6. Validar cadastro, edição de perfil, login do CEO, criação de pedido e webhook em sandbox.
