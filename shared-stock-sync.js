@@ -1,10 +1,10 @@
-/* Sincronização do estoque UBA entre Revendedores e UBA Controles. */
+/* Estoque exclusivo do portal Revendedores. Integração Controles ainda não ativa. */
 (function(){
   let loadingSharedStock=false;
   async function request(url,options={}){
     const response=await fetch(url,{credentials:'same-origin',headers:{'Content-Type':'application/json',...(options.headers||{})},...options});
     const data=await response.json().catch(()=>({}));
-    if(!response.ok)throw new Error(data.error||'Não foi possível acessar o estoque compartilhado.');
+    if(!response.ok)throw new Error(data.error||'Não foi possível acessar o estoque do portal.');
     return data
   }
   function applySharedStock(data){
@@ -49,17 +49,7 @@
     document.body.style.overflow='';renderAll()
   };
   window.reserveSellerStock=async function(productId){
-    const input=document.getElementById('reserveSeller-'+productId);
-    const quantity=Math.max(0,Math.trunc(Number(input?.value||0)));
-    if(!quantity){alert('Informe a quantidade que deseja reservar.');return}
-    const item=sharedStock?.[productId]||{};
-    const available=Math.max(0,Math.trunc(Number(item.sellers||0)));
-    if(quantity>available){alert(`Há apenas ${available} unidades deste sabor no estoque dos vendedores.`);return}
-    if(!confirm(`Reservar ${quantity} unidade(s) do estoque dos vendedores para Revendedores?`))return;
-    try{
-      await stockAction('reserve_seller_stock',{productId,quantity});
-      if(input)input.value=''
-    }catch(error){alert(error.message)}
+    alert('O estoque do Controles continua preservado no outro sistema. A transferência aguarda integração por API.');
   };
   window.registerProduction=async function(productId){
     const input=document.getElementById('produce-'+productId);
@@ -67,11 +57,11 @@
     try{await stockAction('production',{productId,quantity});if(input)input.value=''}catch(error){alert(error.message)}
   };
   window.clearStockHistory=async function(){
-    if(!confirm('Limpar apenas o histórico compartilhado? Os saldos não serão alterados.'))return;
+    if(!confirm('Limpar apenas o histórico do portal? Os saldos não serão alterados.'))return;
     try{await stockAction('clear_history')}catch(error){alert(error.message)}
   };
   window.resetSharedStock=function(){
-    alert('A restauração de saldos foi desativada porque este é o estoque real compartilhado. Faça movimentações pelo painel.')
+    alert('A restauração de saldos foi desativada porque este é o estoque do portal. Faça movimentações pelo painel.')
   };
   // O checkout atual é uma demonstração. Somente um webhook de pagamento real poderá usar order_paid.
   window.registerConfirmedOrderInStock=function(){return 0};

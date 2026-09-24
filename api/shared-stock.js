@@ -1,5 +1,5 @@
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
-import { neon } from "@neondatabase/serverless";
+import { database } from "../server/database.js";
 
 const PRODUCT_MAP = {
   chocolate50: { id: "p1", name: "Chocolate 50% cacau" },
@@ -12,9 +12,7 @@ const REVERSE_MAP = Object.fromEntries(Object.entries(PRODUCT_MAP).map(([key, va
 const SESSION_COOKIE = "uba_rev_session";
 
 function db() {
-  const url = process.env.DATABASE_URL || process.env.POSTGRES_URL;
-  if (!url) throw new Error("DATABASE_URL não configurada.");
-  return neon(url);
+  return database();
 }
 function int(value) {
   const parsed = Number(value);
@@ -95,22 +93,6 @@ async function loadState(sql) {
     try { return normalize(JSON.parse(rows[0].data)); } catch { /* seed below */ }
   }
   const state = emptyState();
-  let appRows = [];
-  try { appRows = await sql.query(`SELECT data FROM app_state WHERE id = 1`, []); } catch { appRows = []; }
-  if (appRows[0]) {
-    try {
-      const app = JSON.parse(appRows[0].data);
-      for (const product of Object.values(PRODUCT_MAP)) {
-        state.products[product.id] = {
-          sellers: int(app.estoque?.porSabor?.[product.id]),
-          reseller: int(app.estoque?.revendedoresPorSabor?.[product.id]),
-          separated: int(app.estoque?.separadoPedidosPorSabor?.[product.id]),
-          toMake: int(app.estoque?.fabricarRevendedoresPorSabor?.[product.id]),
-        };
-      }
-      state.history = Array.isArray(app.estoque?.historicoCompartilhado) ? app.estoque.historicoCompartilhado.slice(0, 200) : [];
-    } catch { /* keep empty */ }
-  }
   await saveState(sql, state);
   return state;
 }
@@ -130,7 +112,7 @@ async function requireAdmin(req, sql) {
 function publicState(state) {
   const stock = {};
   for (const [key, product] of Object.entries(PRODUCT_MAP)) stock[key] = state.products[product.id];
-  return { stock, history: state.history };
+  return { stock, history: state.history, controlesIntegration: false };
 }
 function movement(type, productId, quantity, note, actor) {
   const key = REVERSE_MAP[productId];
@@ -156,21 +138,7 @@ export default async function handler(req, res) {
     const state = await loadState(sql);
     const actor = admin?.username || "pagamento-confirmado";
     if (body.action === "reserve_seller_stock") {
-      const mapped = PRODUCT_MAP[body.productId];
-      const amount = int(body.quantity);
-      if (!mapped || !amount) return res.status(400).json({ error: "Produto ou quantidade inválida." });
-      const item = state.products[mapped.id];
-      if (amount > item.sellers) {
-        return res.status(400).json({ error: `Há apenas ${item.sellers} unidades deste sabor no estoque dos vendedores.` });
-      }
-      const coveredToMake = Math.min(amount, item.toMake);
-      item.sellers -= amount;
-      item.separated += amount;
-      item.toMake -= coveredToMake;
-      const note = coveredToMake
-        ? `Reserva manual pelo CEO; ${coveredToMake} un. abatidas de A Fabricar`
-        : "Reserva manual pelo CEO para Revendedores";
-      state.history.unshift(movement("seller_reservation", mapped.id, amount, note, actor));
+      return res.status(409).json({ error: "A transferência do estoque do Controles aguarda integração por API. Nenhum saldo foi alterado." });
     } else if (body.action === "production") {
       const mapped = PRODUCT_MAP[body.productId];
       const amount = int(body.quantity);

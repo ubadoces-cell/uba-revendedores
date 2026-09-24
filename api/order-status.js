@@ -1,10 +1,8 @@
 import { createHash } from "node:crypto";
-import { neon } from "@neondatabase/serverless";
+import { database } from "../server/database.js";
 
 function db() {
-  const url = process.env.DATABASE_URL || process.env.POSTGRES_URL;
-  if (!url) throw new Error("DATABASE_URL não configurada.");
-  return neon(url);
+  return database();
 }
 function sha256(value) { return createHash("sha256").update(value).digest("hex"); }
 function clean(value, max = 180) { return String(value || "").trim().slice(0, max); }
