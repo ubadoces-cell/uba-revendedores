@@ -1,5 +1,5 @@
 import { randomBytes, timingSafeEqual } from "node:crypto";
-import { neon } from "@neondatabase/serverless";
+import { database } from "../server/database.js";
 
 const PRODUCT_MAP = {
   chocolate50: { id: "p1", name: "Chocolate 50% cacau" },
@@ -10,9 +10,7 @@ const PRODUCT_MAP = {
 };
 
 function db() {
-  const url = process.env.DATABASE_URL || process.env.POSTGRES_URL;
-  if (!url) throw new Error("DATABASE_URL não configurada.");
-  return neon(url);
+  return database();
 }
 function safeEqual(left, right) {
   const a = Buffer.from(String(left || ""));

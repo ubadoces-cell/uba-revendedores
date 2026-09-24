@@ -1,0 +1,43 @@
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {db,statements} from './neon-mock.mjs';
+import {databaseUrl,database} from '../server/database.js';
+import admin from '../api/admin-session.js';
+import stock from '../api/shared-stock.js';
+import customers from '../api/customer-accounts.js';
+import health from '../api/health.js';
+const call=async(fn,req)=>{
+ const res={statusCode:200,headers:{},status(n){this.statusCode=n;return this;},setHeader(k,v){this.headers[k]=v;},json(data){this.body=data;return this;}};
+ await fn({method:'GET',headers:{},query:{},...req},res);return res;
+};
+try{
+ assert.throws(()=>databaseUrl({DATABASE_URL:'postgres://shared.test/db'}),/exclusivo/);
+ process.env.RESELLER_DATABASE_DATABASE_URL='postgres://isolated.test/db';
+ assert.equal(databaseUrl(),process.env.RESELLER_DATABASE_DATABASE_URL);
+ await assert.rejects(database().query('CREATE TABLE should_not_exist(id int)',[]));
+ assert.equal(statements.some(s=>s.includes('CREATE TABLE should_not_exist')),false);
+ await db.exec(await readFile(new URL('../server/schema.sql',import.meta.url),'utf8'));
+ assert.equal((await call(health,{})).body.database,'dedicated');
+ const salt='synthetic-test-salt',password='synthetic-test-password';
+ const sha=v=>createHash('sha256').update(v).digest('hex');
+ let hash=`${salt}:${password}`;for(let i=0;i<128;i++)hash=sha(`${salt}:${hash}`);
+ await db.query("INSERT INTO accounts(id,username,password_hash,password_salt,role) VALUES('test','local-admin',$1,$2,'admin')",[hash,salt]);
+ const login=await call(admin,{method:'POST',body:{username:'local-admin',password}});
+ assert.equal(login.statusCode,200);
+ const cookie=login.headers['Set-Cookie'].split(';')[0];
+ assert.equal((await call(stock,{})).statusCode,401);
+ const before=await call(stock,{headers:{cookie}});
+ assert.equal(before.statusCode,200);assert.equal(before.body.controlesIntegration,false);
+ assert.equal(before.body.stock.chocolate50.sellers,0);
+ const reserve=await call(stock,{method:'POST',headers:{cookie},body:{action:'reserve_seller_stock',productId:'chocolate50',quantity:1}});
+ assert.equal(reserve.statusCode,409);
+ const produced=await call(stock,{method:'POST',headers:{cookie},body:{action:'production',productId:'chocolate50',quantity:12}});
+ assert.equal(produced.body.stock.chocolate50.reseller,12);
+ const customer=await call(customers,{method:'POST',headers:{cookie},body:{action:'create',name:'Cliente Teste',email:'teste@example.invalid',phone:'00000000000',doc:'00000000000',password:'synthetic-customer-password'}});
+ assert.equal(customer.statusCode,201);
+ assert.equal((await db.query("SELECT count(*)::int AS n FROM information_schema.tables WHERE table_schema='public' AND table_name IN ('app_state','notices','notice_reads')")).rows[0].n,0);
+ assert.equal(statements.some(s=>/\bapp_state\b/.test(s)),false);
+ assert.equal(statements.some(s=>/INSERT INTO sessions/.test(s)),true);
+ console.log('PASS: banco antigo recusado; identidade exigida antes de escrita; login local; cliente local; estoque local; transferencia ao Controles bloqueada.');
+}finally{await db.close();}

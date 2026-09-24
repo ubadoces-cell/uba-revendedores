@@ -822,7 +822,7 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
     <section class="admin-view" id="adminDashboardView">
       <div class="admin-summary admin-dashboard-summary">
         <div class="metric"><span class="admin-metric-icon"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M4 7h16v13H4z"></path><path d="M8 7V4h8v3"></path></svg></span><div><small>Produtos ativos</small><strong id="mActive">0</strong></div></div>
-        <div class="metric"><span class="admin-metric-icon"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M4 7l8-4 8 4-8 4-8-4z"></path><path d="M4 7v10l8 4 8-4V7"></path><path d="M12 11v10"></path></svg></span><div><small>Estoque total</small><strong id="mStock">0</strong></div></div>
+        <div class="metric"><span class="admin-metric-icon"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M4 7l8-4 8 4-8 4-8-4z"></path><path d="M4 7v10l8 4 8-4V7"></path><path d="M12 11v10"></path></svg></span><div><small>Estoque total do portal</small><strong id="mStock">0</strong></div></div>
         <div class="metric"><span class="admin-metric-icon"><svg class="ui-icon" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"></circle><path d="M3 20a6 6 0 0 1 12 0"></path><circle cx="17" cy="9" r="2"></circle><path d="M16 14a5 5 0 0 1 5 5"></path></svg></span><div><small>Estoque Vendedores</small><strong id="mSellers">0</strong></div></div>
         <div class="metric"><span class="admin-metric-icon"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M3 10l2-5h14l2 5"></path><path d="M5 10v10h14V10"></path><path d="M9 20v-6h6v6"></path></svg></span><div><small>Revendedores</small><strong id="mReseller">0</strong></div></div>
         <div class="metric"><span class="admin-metric-icon"><svg class="ui-icon" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"></rect><path d="M8 3v4M16 3v4M8 12l2 2 5-5"></path></svg></span><div><small>Reservado Revendedores</small><strong id="mReserved">0</strong></div></div>
@@ -908,7 +908,7 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
 
       <div class="stock-summary">
         <div class="stock-card">
-          <small>Estoque total</small>
+          <small>Estoque total do portal</small>
           <strong id="stockGeneralTotal">0</strong>
           <span>Soma de todo o estoque físico.</span>
         </div>
@@ -930,19 +930,19 @@ body.ceo-mode .ceo-header-login{display:inline-flex}
       </div>
 
       <div class="stock-explain">
-        <b>Reserva manual:</b> informe a quantidade do sabor e clique em <b>Reservar</b>. As unidades saem do Estoque Vendedores e entram em Reservado Revendedores. O Estoque total não muda.
+        <b>Estoque independente:</b> os saldos do Controles permanecem no outro sistema. A transferência entre os sites aguarda integração por API.
       </div>
 
       <div class="stock-table-wrap">
         <table class="stock-table">
-          <thead><tr><th>Produto</th><th>Estoque total</th><th>Vendedores</th><th>Revendedores</th><th>Reservado Revendedores</th><th>Reservar dos vendedores</th></tr></thead>
+          <thead><tr><th>Produto</th><th>Total do portal</th><th>Vendedores</th><th>Revendedores</th><th>Reservado Revendedores</th><th>Reservar dos vendedores</th></tr></thead>
           <tbody id="stockTableBody"></tbody>
           <tfoot id="stockTableFoot"></tfoot>
         </table>
       </div>
 
       <div class="stock-movements">
-        <div class="stock-movements-head"><div><h3>Histórico de movimentações</h3><span>Histórico compartilhado entre os dois painéis do CEO.</span></div></div>
+        <div class="stock-movements-head"><div><h3>Histórico de movimentações</h3><span>Movimentações do estoque deste portal.</span></div></div>
         <div class="stock-movements-list" id="stockMovementsList"></div>
       </div>
     </section>
@@ -1521,7 +1521,7 @@ function setAdminView(view){
 function renderStockPanel(){
   const totals=stockTotals();
   document.getElementById('stockGeneralTotal').textContent=totals.general;
-  document.getElementById('stockSellersTotal').textContent=totals.sellers;
+  document.getElementById('stockSellersTotal').textContent='—';
   document.getElementById('stockResellerTotal').textContent=totals.reseller;
   document.getElementById('stockReservedTotal').textContent=totals.separated;
 
@@ -1532,15 +1532,15 @@ function renderStockPanel(){
     return `<tr>
       <td class="product-name">${escapeHtml(p.name)}</td>
       <td class="num">${general}</td>
-      <td class="num">${Number(s.sellers||0)}</td>
+      <td class="num" title="Consulte o UBA Controles">—</td>
       <td class="num ${Number(s.reseller||0)===0?'zero':''}">${Number(s.reseller||0)}</td>
       <td class="num ${Number(s.separated||0)>0?'ready':'zero'}">${Number(s.separated||0)}</td>
       <td class="stock-actions-cell">
         <div class="stock-action">
-          <input id="reserveSeller-${p.id}" type="number" min="1" max="${Number(s.sellers||0)}" step="1" inputmode="numeric" placeholder="Quantidade">
-          <button class="primary" onclick="reserveSellerStock('${p.id}')">Reservar</button>
+          <input disabled id="reserveSeller-${p.id}" type="number" min="1" max="${Number(s.sellers||0)}" step="1" inputmode="numeric" placeholder="Quantidade">
+          <button class="primary" disabled title="Integração por API pendente">Indisponível</button>
         </div>
-        <small>${Number(s.toMake||0)>0?`${Number(s.toMake||0)} un. em A Fabricar`:'Reserva manual livre'}</small>
+        <small>${Number(s.toMake||0)>0?`${Number(s.toMake||0)} un. em A Fabricar`:'Transferência entre sites indisponível'}</small>
       </td>
     </tr>`
   }).join('');
@@ -1549,7 +1549,7 @@ function renderStockPanel(){
   foot.innerHTML=`<tr class="stock-total-row">
     <td>TOTAL</td>
     <td>${totals.general}</td>
-    <td>${totals.sellers}</td>
+    <td>—</td>
     <td>${totals.reseller}</td>
     <td>${totals.separated}</td>
     <td>—</td>
@@ -1757,7 +1757,7 @@ function updateAdminMetrics(){
   const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=String(value)};
   set('mActive',catalog.filter(p=>p.active).length);
   set('mStock',totals.general);
-  set('mSellers',totals.sellers);
+  set('mSellers','—');
   set('mReseller',totals.reseller);
   set('mReserved',totals.separated);
   if(!document.getElementById('mOrders')?.textContent) set('mOrders',0);
