@@ -1,5 +1,18 @@
 (function () {
   let customerAccount = null;
+
+  function cleanupUnrequestedLabels() {
+    const bubble = document.querySelector('.hero-card .bubble');
+    if (bubble && /B2B/i.test(bubble.textContent || '')) bubble.remove();
+    const revenueButton = document.getElementById('revenueQuickButton');
+    if (revenueButton && /B2B/i.test(revenueButton.textContent || '')) revenueButton.textContent = '💰 Faturamento';
+    const revenueTitle = document.querySelector('#adminRevenueView .admin-page-title h3');
+    if (revenueTitle && /B2B/i.test(revenueTitle.textContent || '')) revenueTitle.textContent = 'Faturamento';
+  }
+  const labelObserver = new MutationObserver(cleanupUnrequestedLabels);
+  labelObserver.observe(document.documentElement, { childList: true, subtree: true });
+  queueMicrotask(cleanupUnrequestedLabels);
+
   const baseRenderAll=renderAll;
   renderAll=function(){
     baseRenderAll();
@@ -7,6 +20,7 @@
     const banner=document.getElementById('testModeBanner');if(banner)banner.hidden=!isTest;
     const pay=document.querySelector('#step4 .checkout-nav .next');if(pay)pay.textContent=isTest?'Finalizar teste sem pagar':'Gerar Pix';
     ensureMyOrdersBox();
+    cleanupUnrequestedLabels();
   };
   const baseGoStep=goStep;
   goStep=function(step){
