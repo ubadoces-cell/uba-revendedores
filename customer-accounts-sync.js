@@ -13,6 +13,15 @@
   labelObserver.observe(document.documentElement, { childList: true, subtree: true });
   queueMicrotask(cleanupUnrequestedLabels);
 
+  function prepareTestAllFlavorsCart(force = false) {
+    if (!customerAccount?.isTest || !Array.isArray(catalog)) return false;
+    const alreadyPrepared = sessionStorage.getItem('uba-rev-test-all-flavors') === '1';
+    if (alreadyPrepared && !force) return false;
+    for (const product of catalog) qty[product.id] = 10;
+    sessionStorage.setItem('uba-rev-test-all-flavors', '1');
+    return true;
+  }
+
   const baseRenderAll=renderAll;
   renderAll=function(){
     baseRenderAll();
@@ -77,7 +86,9 @@
       customerSessionId = customerAccount?.id || "";
       if (customerSessionId) sessionStorage.setItem("uba-rev-customer-session", customerSessionId);
       else sessionStorage.removeItem("uba-rev-customer-session");
+      const prepared = prepareTestAllFlavorsCart(false);
       renderAll();
+      if (prepared) setTimeout(() => renderAll(), 0);
     } catch {
       customerAccount = null;
       customerSessionId = "";
@@ -122,6 +133,10 @@
       sessionStorage.setItem("uba-rev-customer-session", data.account.id);
       visitorPurpose = "commerce";
       localStorage.setItem("uba-rev-purpose", "commerce");
+      if (customerAccount?.isTest) {
+        sessionStorage.removeItem('uba-rev-test-all-flavors');
+        prepareTestAllFlavorsCart(true);
+      }
       renderAll();
       if (getTotals().count > 0) goStep(2);
       else closeAll();
@@ -135,6 +150,7 @@
     customerAccount = null;
     customerSessionId = "";
     sessionStorage.removeItem("uba-rev-customer-session");
+    sessionStorage.removeItem('uba-rev-test-all-flavors');
     renderAll();
     closeAll();
   };
