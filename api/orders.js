@@ -4,7 +4,7 @@ import { createHash, randomBytes } from "node:crypto";
 import { database } from "../server/database.js";
 
 const SESSION_COOKIE = "uba_rev_session";
-const STATUSES = ["novo", "confirmado", "em_producao", "pronto", "concluido", "cancelado"];
+const STATUSES = ["novo", "confirmado", "em_producao", "separacao", "pronto", "enviado", "retirada", "concluido", "cancelado"];
 const PRODUCTS = {
   pistache: { name: "Pistache", group: "pistache" },
   chocolate50: { name: "Chocolate 50%", group: "chocolate50" },
@@ -21,9 +21,7 @@ const PRICING = {
   ],
 };
 
-function db() {
-  return database();
-}
+function db() { return database(); }
 function sha256(value) { return createHash("sha256").update(value).digest("hex"); }
 function clean(value, max = 180) { return String(value || "").trim().slice(0, max); }
 function digits(value) { return String(value || "").replace(/\D/g, ""); }
@@ -73,7 +71,10 @@ async function ensureSchema(sql) {
     ADD COLUMN IF NOT EXISTS pix_expiration_at TIMESTAMPTZ,
     ADD COLUMN IF NOT EXISTS public_token_hash TEXT,
     ADD COLUMN IF NOT EXISTS paid_at TIMESTAMPTZ,
-    ADD COLUMN IF NOT EXISTS stock_applied BOOLEAN NOT NULL DEFAULT FALSE`, []);
+    ADD COLUMN IF NOT EXISTS stock_applied BOOLEAN NOT NULL DEFAULT FALSE,
+    ADD COLUMN IF NOT EXISTS production_allocation JSONB NOT NULL DEFAULT '[]'::jsonb,
+    ADD COLUMN IF NOT EXISTS customer_note TEXT NOT NULL DEFAULT '',
+    ADD COLUMN IF NOT EXISTS customer_account_id TEXT`, []);
 }
 function normalizeItems(rawItems) {
   const merged = new Map();
@@ -83,9 +84,7 @@ function normalizeItems(rawItems) {
     if (!PRODUCTS[productId] || !quantity) continue;
     merged.set(productId, (merged.get(productId) || 0) + quantity);
   }
-  return [...merged.entries()].map(([productId, quantity]) => ({
-    productId, name: PRODUCTS[productId].name, quantity,
-  }));
+  return [...merged.entries()].map(([productId, quantity]) => ({ productId, name: PRODUCTS[productId].name, quantity }));
 }
 function calculate(items, purpose) {
   const units = items.reduce((sum, item) => sum + item.quantity, 0);
@@ -108,6 +107,9 @@ function serialize(row, includePix = false) {
     status: row.status,
     paymentStatus: row.payment_status || "aguardando_pagamento",
     paidAt: row.paid_at || null,
+    customerNote: row.customer_note || "",
+    productionAllocation: Array.isArray(row.production_allocation) ? row.production_allocation : [],
+    stockApplied: Boolean(row.stock_applied),
     customer: {
       name: row.customer_name,
       email: row.customer_email,
@@ -137,24 +139,14 @@ function asaasConfig() {
   const apiKey = String(process.env.ASAAS_API_KEY || "").trim();
   const environment = String(process.env.ASAAS_ENV || "sandbox").trim().toLowerCase();
   if (!apiKey) throw Object.assign(new Error("ASAAS_API_KEY não configurada na Vercel."), { statusCode: 503 });
-  if (!["sandbox", "production"].includes(environment)) {
-    throw Object.assign(new Error("ASAAS_ENV deve ser sandbox ou production."), { statusCode: 503 });
-  }
-  return {
-    apiKey,
-    baseUrl: environment === "production" ? "https://api.asaas.com/v3" : "https://api-sandbox.asaas.com/v3",
-  };
+  if (!["sandbox", "production"].includes(environment)) throw Object.assign(new Error("ASAAS_ENV deve ser sandbox ou production."), { statusCode: 503 });
+  return { apiKey, baseUrl: environment === "production" ? "https://api.asaas.com/v3" : "https://api-sandbox.asaas.com/v3" };
 }
 async function asaas(path, options = {}) {
   const { apiKey, baseUrl } = asaasConfig();
   const response = await fetch(baseUrl + path, {
     ...options,
-    headers: {
-      accept: "application/json",
-      access_token: apiKey,
-      "content-type": "application/json",
-      ...(options.headers || {}),
-    },
+    headers: { accept: "application/json", access_token: apiKey, "content-type": "application/json", ...(options.headers || {}) },
   });
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
@@ -168,14 +160,7 @@ async function findOrCreateCustomer(customer) {
   if (Array.isArray(found.data) && found.data[0]?.id) return found.data[0].id;
   const created = await asaas("/customers", {
     method: "POST",
-    body: JSON.stringify({
-      name: customer.name,
-      cpfCnpj: customer.doc,
-      email: customer.email || undefined,
-      mobilePhone: customer.phone || undefined,
-      externalReference: customer.reference,
-      notificationDisabled: false,
-    }),
+    body: JSON.stringify({ name: customer.name, cpfCnpj: customer.doc, email: customer.email || undefined, mobilePhone: customer.phone || undefined, externalReference: customer.reference, notificationDisabled: false }),
   });
   if (!created.id) throw Object.assign(new Error("O Asaas não retornou o cliente criado."), { statusCode: 502 });
   return created.id;
@@ -189,16 +174,17 @@ function dueDateTomorrow() {
 export default async function handler(req, res) {
   let insertedOrderId = "";
   try {
-    res.setHeader("Cache-Control","no-store");
+    res.setHeader("Cache-Control", "no-store");
     const sql = db();
     await ensureSchema(sql);
 
     if (req.method === "POST") {
-      const testAccount=await testCustomer(req,sql);
-      if(!testAccount){
+      const testAccount = await testCustomer(req, sql);
+      let account = null;
+      if (!testAccount) {
         await ensureCustomers(sql);
-        const account=await currentCustomer(req,sql);
-        if(!account || account.status!=='approved')return res.status(401).json({error:'Entre com uma conta aprovada para enviar pedidos.'});
+        account = await currentCustomer(req, sql);
+        if (!account || account.status !== "approved") return res.status(401).json({ error: "Entre com uma conta aprovada para enviar pedidos." });
         asaasConfig();
       }
       const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : (req.body || {});
@@ -212,66 +198,62 @@ export default async function handler(req, res) {
       const customerName = clean(buyer.name || customer.name, 140);
       const customerDoc = digits(buyer.doc || customer.doc);
       if (!customerName) return res.status(400).json({ error: "Informe o nome do comprador." });
-      if (![11, 14].includes(customerDoc.length)) {
-        return res.status(400).json({ error: "Informe um CPF ou CNPJ válido para gerar o Pix." });
+      if (![11, 14].includes(customerDoc.length)) return res.status(400).json({ error: "Informe um CPF ou CNPJ válido para gerar o Pix." });
+
+      if (testAccount) {
+        const safeDelivery = Object.fromEntries(["cep", "city", "street", "number", "complement"].map((key) => [key, clean(delivery[key], 180)]));
+        return res.status(201).json({ order: await saveTestOrder(sql, calculated, safeDelivery) });
       }
 
-      if(testAccount){
-        const safeDelivery=Object.fromEntries(['cep','city','street','number','complement'].map(k=>[k,clean(delivery[k],180)]));
-        return res.status(201).json({order:await saveTestOrder(sql,calculated,safeDelivery)});
-      }
       const id = randomBytes(16).toString("hex");
       insertedOrderId = id;
       const publicToken = randomBytes(24).toString("hex");
       const code = `UBA-${Date.now().toString(36).toUpperCase()}-${randomBytes(2).toString("hex").toUpperCase()}`;
       const safeDelivery = {
-        cep: clean(delivery.cep, 20),
-        city: clean(delivery.city, 100),
-        street: clean(delivery.street, 180),
-        number: clean(delivery.number, 30),
-        complement: clean(delivery.complement, 120),
+        cep: clean(delivery.cep, 20), city: clean(delivery.city, 100), street: clean(delivery.street, 180),
+        number: clean(delivery.number, 30), complement: clean(delivery.complement, 120),
       };
       const email = clean(customer.email, 180);
       const phone = clean(customer.phone, 60);
       await sql.query(`INSERT INTO reseller_orders
-        (id, code, status, payment_status, public_token_hash, customer_name, customer_email, customer_phone,
+        (id, code, status, payment_status, public_token_hash, customer_account_id, customer_name, customer_email, customer_phone,
          customer_store, customer_doc, purpose, delivery, items, units, total_cents)
-        VALUES ($1,$2,'novo','aguardando_pagamento',$3,$4,$5,$6,$7,$8,$9,$10::jsonb,$11::jsonb,$12,$13)`, [
-        id, code, sha256(publicToken), customerName, email, phone,
+        VALUES ($1,$2,'novo','aguardando_pagamento',$3,$4,$5,$6,$7,$8,$9,$10,$11::jsonb,$12::jsonb,$13,$14)`, [
+        id, code, sha256(publicToken), account?.id || null, customerName, email, phone,
         clean(buyer.store || customer.store, 140), customerDoc, purpose,
         JSON.stringify(safeDelivery), JSON.stringify(calculated.items), calculated.units, calculated.totalCents,
       ]);
 
-      const asaasCustomerId = await findOrCreateCustomer({
-        name: customerName, doc: customerDoc, email, phone, reference: code,
-      });
+      const asaasCustomerId = await findOrCreateCustomer({ name: customerName, doc: customerDoc, email, phone, reference: code });
       const payment = await asaas("/payments", {
         method: "POST",
-        body: JSON.stringify({
-          customer: asaasCustomerId,
-          billingType: "PIX",
-          value: calculated.totalCents / 100,
-          dueDate: dueDateTomorrow(),
-          description: `Pedido UBA Doces ${code}`,
-          externalReference: code,
-        }),
+        body: JSON.stringify({ customer: asaasCustomerId, billingType: "PIX", value: calculated.totalCents / 100, dueDate: dueDateTomorrow(), description: `Pedido UBA Doces ${code}`, externalReference: code }),
       });
       if (!payment.id) throw Object.assign(new Error("O Asaas não retornou a cobrança Pix."), { statusCode: 502 });
       const qr = await asaas(`/payments/${encodeURIComponent(payment.id)}/pixQrCode`);
       const rows = await sql.query(`UPDATE reseller_orders SET
         asaas_customer_id=$1, asaas_payment_id=$2, pix_payload=$3, pix_encoded_image=$4,
         pix_expiration_at=$5, updated_at=NOW() WHERE id=$6 RETURNING *`, [
-        asaasCustomerId, payment.id, clean(qr.payload, 2000), clean(qr.encodedImage, 2000000),
-        qr.expirationDate || null, id,
+        asaasCustomerId, payment.id, clean(qr.payload, 2000), clean(qr.encodedImage, 2000000), qr.expirationDate || null, id,
       ]);
       return res.status(201).json({ order: serialize(rows[0], true), publicToken });
+    }
+
+    if (req.method === "GET" && req.query?.scope === "mine") {
+      await ensureCustomers(sql);
+      const account = await currentCustomer(req, sql);
+      if (!account || account.status !== "approved") return res.status(401).json({ error: "Entre na sua conta para acompanhar seus pedidos." });
+      const rows = await sql.query(`SELECT * FROM reseller_orders
+        WHERE customer_account_id=$1 OR (customer_account_id IS NULL AND (customer_email=$2 OR customer_doc=$3))
+        ORDER BY created_at DESC LIMIT 100`, [account.id, account.email || "", String(account.doc || "").replace(/\D/g, "")]);
+      return res.status(200).json({ orders: rows.map((row) => serialize(row, false)) });
     }
 
     const admin = await requireAdmin(req, sql);
     if (!admin) return res.status(401).json({ error: "Acesso administrativo necessário." });
 
     if (req.method === "GET") {
-      if(req.query?.scope==='test')return res.status(200).json({orders:await listTestOrders(sql)});
+      if (req.query?.scope === "test") return res.status(200).json({ orders: await listTestOrders(sql) });
       const rows = await sql.query("SELECT * FROM reseller_orders ORDER BY created_at DESC LIMIT 200", []);
       return res.status(200).json({ orders: rows.map((row) => serialize(row, false)) });
     }
@@ -280,13 +262,14 @@ export default async function handler(req, res) {
       const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : (req.body || {});
       const id = clean(body.id, 80);
       const status = clean(body.status, 40);
+      const customerNote = clean(body.customerNote, 1200);
       if (!id || !STATUSES.includes(status)) return res.status(400).json({ error: "Pedido ou status inválido." });
-      if(id.startsWith('test_')){
-        const order=await updateTestOrder(sql,id,status);
-        return res.status(order?200:404).json(order?{order}:{error:'Pedido de teste não encontrado.'});
+      if (id.startsWith("test_")) {
+        const order = await updateTestOrder(sql, id, status);
+        return res.status(order ? 200 : 404).json(order ? { order } : { error: "Pedido de teste não encontrado." });
       }
-      const rows = await sql.query(`UPDATE reseller_orders SET status = $1, updated_at = NOW()
-        WHERE id = $2 RETURNING *`, [status, id]);
+      const rows = await sql.query(`UPDATE reseller_orders SET status=$1, customer_note=$2, updated_at=NOW()
+        WHERE id=$3 RETURNING *`, [status, customerNote, id]);
       if (!rows[0]) return res.status(404).json({ error: "Pedido não encontrado." });
       return res.status(200).json({ order: serialize(rows[0], false) });
     }
@@ -300,10 +283,8 @@ export default async function handler(req, res) {
         const rows = await sql.query("SELECT asaas_payment_id FROM reseller_orders WHERE id=$1", [insertedOrderId]);
         if (!rows[0]?.asaas_payment_id) await sql.query("DELETE FROM reseller_orders WHERE id=$1", [insertedOrderId]);
         else await sql.query("UPDATE reseller_orders SET payment_status='erro_pagamento', updated_at=NOW() WHERE id=$1", [insertedOrderId]);
-      } catch { /* preserve original error */ }
+      } catch {}
     }
-    return res.status(error.statusCode || 500).json({
-      error: error.statusCode ? error.message : "Não foi possível gerar a cobrança Pix.",
-    });
+    return res.status(error.statusCode || 500).json({ error: error.statusCode ? error.message : "Não foi possível gerar a cobrança Pix." });
   }
 }
