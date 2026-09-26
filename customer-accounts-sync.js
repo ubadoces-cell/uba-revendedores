@@ -6,6 +6,7 @@
     const isTest=Boolean(customerAccount?.isTest);
     const banner=document.getElementById('testModeBanner');if(banner)banner.hidden=!isTest;
     const pay=document.querySelector('#step4 .checkout-nav .next');if(pay)pay.textContent=isTest?'Finalizar teste sem pagar':'Gerar Pix';
+    ensureMyOrdersBox();
   };
   const baseGoStep=goStep;
   goStep=function(step){
@@ -203,10 +204,31 @@
     }
   };
 
+  function orderStatusLabel(status){
+    return ({novo:'Pedido recebido',confirmado:'Pagamento confirmado',em_producao:'Em produção',separacao:'Em separação',pronto:'Pronto',enviado:'Enviado',retirada:'Disponível para retirada',concluido:'Entregue',cancelado:'Cancelado'})[status]||status
+  }
+  function paymentLabel(status){return ({aguardando_pagamento:'Aguardando Pix',confirmado_asaas:'Pix confirmado',pago:'Pago',vencido:'Pix vencido',cancelado:'Cancelado',estornado:'Estornado'})[status]||status||''}
+  function ensureMyOrdersBox(){
+    if(document.getElementById('myCustomerOrders'))return;
+    const panel=document.getElementById('customerAccount');if(!panel)return;
+    const style=document.createElement('style');style.textContent=`.customer-orders-box{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}.customer-orders-box h5{margin:0 0 8px;font-size:15px}.customer-order-row{padding:11px;border:1px solid var(--line);border-radius:13px;background:var(--surface2);margin-top:7px}.customer-order-head{display:flex;justify-content:space-between;gap:8px}.customer-order-row small{color:var(--muted);font-size:9px}.customer-order-status{display:inline-flex;margin-top:7px;padding:5px 8px;border-radius:999px;background:#2D135B;color:#D2AEFF;font-size:8px;font-weight:1000}.customer-order-note{margin-top:8px;padding:8px 9px;border:1px solid #27425F;border-radius:10px;background:#0B1621;color:#B9D6ED;font-size:9px;line-height:1.4}`;document.head.appendChild(style);
+    const box=document.createElement('div');box.id='myCustomerOrders';box.className='customer-orders-box';box.innerHTML='<h5>Meus pedidos</h5><div id="myCustomerOrdersList"><div class="muted">Abra sua conta para carregar os pedidos.</div></div>';panel.appendChild(box)
+  }
+  async function loadMyOrders(){
+    ensureMyOrdersBox();const root=document.getElementById('myCustomerOrdersList');if(!root||!getCustomer())return;
+    root.innerHTML='<div class="muted">Carregando pedidos...</div>';
+    try{
+      const response=await fetch('/api/orders?scope=mine',{credentials:'same-origin'});const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.error||'Não foi possível carregar seus pedidos.');
+      const orders=Array.isArray(data.orders)?data.orders:[];
+      root.innerHTML=orders.length?orders.map(order=>`<div class="customer-order-row"><div class="customer-order-head"><div><b>${escapeHtml(order.code)}</b><small>${new Date(order.createdAt).toLocaleString('pt-BR')} · ${Number(order.units||0)} unidades</small></div><b>${(Number(order.totalCents||0)/100).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}</b></div><span class="customer-order-status">${escapeHtml(orderStatusLabel(order.status))} · ${escapeHtml(paymentLabel(order.paymentStatus))}</span>${order.customerNote?`<div class="customer-order-note"><b>Mensagem da UBA:</b><br>${escapeHtml(order.customerNote)}</div>`:''}</div>`).join(''):'<div class="muted">Você ainda não possui pedidos.</div>'
+    }catch(error){root.innerHTML=`<div class="muted">${escapeHtml(error.message)}</div>`}
+  }
+  window.loadMyOrders=loadMyOrders;
+  const previousOpenCustomerEntry=window.openCustomerEntry;
+  window.openCustomerEntry=function(){previousOpenCustomerEntry();if(getCustomer())setTimeout(loadMyOrders,0)};
+
   accounts = [];
   renderAll();
   loadCurrentCustomer();
-  setInterval(() => {
-    if (ceoSession && !document.hidden) loadAccounts(true);
-  }, 15000);
+  setInterval(() => { if (ceoSession && !document.hidden) loadAccounts(true); }, 15000);
 })();
