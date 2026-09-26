@@ -28,8 +28,12 @@
       .stock-ind-badge{justify-self:start;padding:5px 8px;border-radius:999px;font-size:8px;font-weight:1000}.stock-ind-ok{background:#123724;color:#8BE0B4}.stock-ind-low{background:#392A12;color:#FFD98A}
       .stock-independent-actions{display:grid;grid-template-columns:.8fr .7fr 1fr auto;gap:6px}.stock-independent-actions input,.stock-independent-actions select{min-width:0;padding:8px;border:1px solid var(--line);border-radius:9px;background:var(--field);color:var(--text);font-size:10px}.stock-independent-actions button{border:0;border-radius:9px;background:var(--roxo);color:#fff;padding:8px 10px;font-size:9px;font-weight:1000}
       .stock-independent-help{margin-top:10px;padding:11px 12px;border:1px dashed #45365E;border-radius:13px;background:#100C19;color:var(--muted);font-size:10px;line-height:1.5}.stock-independent-help b{color:var(--text)}
-      @media(max-width:900px){.stock-independent-row{grid-template-columns:1fr .45fr .6fr}.stock-independent-actions{grid-column:1/-1}}
-      @media(max-width:600px){.stock-independent-switch{grid-template-columns:1fr}.stock-independent-row{grid-template-columns:1fr 1fr}.stock-independent-row>div:first-child{grid-column:1/-1}.stock-independent-actions{grid-template-columns:1fr 1fr}.stock-independent-actions button{grid-column:1/-1}}
+      .test-allocation-box{margin-top:12px;padding:14px;border:1px solid #6C3BC3;border-radius:16px;background:linear-gradient(145deg,#181027,#100C19)}
+      .test-allocation-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:8px}.test-allocation-head h5{margin:0;color:#fff;font-size:14px}.test-allocation-head p{margin:4px 0 0;color:#AFA8C5;font-size:9px;line-height:1.4}.test-allocation-badge{padding:5px 8px;border-radius:999px;background:#392A12;color:#FFD98A;font-size:8px;font-weight:1000;white-space:nowrap}
+      .test-allocation-row{display:grid;grid-template-columns:minmax(160px,1.25fr) repeat(3,.7fr) .55fr;gap:7px;align-items:end;padding:9px 0;border-top:1px solid #2E2942}.test-allocation-row b{font-size:10px}.test-allocation-row small{display:block;color:#8F879D;font-size:8px;margin-top:3px}.test-allocation-row label{display:grid;gap:4px;color:#8F879D;font-size:8px}.test-allocation-row input{width:100%;min-width:0;border:1px solid #39314E;border-radius:9px;background:#09070F;color:#fff;padding:8px;text-align:center}.test-alloc-check{font-size:8px;font-weight:1000}.test-alloc-check.ok{color:#8BE0B4}.test-alloc-check.bad{color:#FFBAC4}.test-alloc-check.warn{color:#FFD98A}
+      .test-allocation-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:8px}.test-allocation-summary>div{padding:9px;border:1px solid #342D47;border-radius:11px;background:#0B0911}.test-allocation-summary small{display:block;color:#91899E;font-size:7px;font-weight:900}.test-allocation-summary b{display:block;margin-top:4px;font-size:16px}.test-allocation-save{width:100%;margin-top:9px;border:0;border-radius:11px;background:#5D24C8;color:#fff;padding:10px;font-weight:1000}
+      @media(max-width:900px){.stock-independent-row{grid-template-columns:1fr .45fr .6fr}.stock-independent-actions{grid-column:1/-1}.test-allocation-row{grid-template-columns:1fr 1fr 1fr}.test-allocation-row>div:first-child,.test-allocation-row>.test-alloc-check{grid-column:1/-1}}
+      @media(max-width:600px){.stock-independent-switch{grid-template-columns:1fr}.stock-independent-row{grid-template-columns:1fr 1fr}.stock-independent-row>div:first-child{grid-column:1/-1}.stock-independent-actions{grid-template-columns:1fr 1fr}.stock-independent-actions button{grid-column:1/-1}.test-allocation-head{display:block}.test-allocation-badge{display:inline-block;margin-top:8px}.test-allocation-row{grid-template-columns:1fr 1fr}.test-allocation-row>div:first-child,.test-allocation-row>.test-alloc-check{grid-column:1/-1}.test-allocation-row>label:last-of-type{grid-column:1/-1}.test-allocation-summary{grid-template-columns:1fr 1fr}}
     `;document.head.appendChild(style)
   }
 
@@ -127,6 +131,88 @@
   window.clearStockHistory=async function(){if(!confirm('Limpar apenas o histórico do portal? Os saldos não serão alterados.'))return;try{await stockAction('clear_history')}catch(error){alert(error.message)}};
   window.resetSharedStock=function(){alert('A restauração automática foi desativada. Faça ajustes pelo Estoque Revendedores.')};
   window.registerConfirmedOrderInStock=function(){return 0};
+
+  function testProductId(name){
+    const normalized=String(name||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+    if(normalized.includes('pistache'))return 'pistache';
+    if(normalized.includes('50%'))return 'chocolate50';
+    if(normalized.includes('branco'))return 'branco';
+    if(normalized.includes('caramelo'))return 'caramelo';
+    if(normalized.includes('morango'))return 'morango';
+    return ''
+  }
+  function testOrderId(card){
+    const button=[...card.querySelectorAll('button[onclick]')].find(btn=>String(btn.getAttribute('onclick')||'').includes('saveOrderNote('));
+    const match=String(button?.getAttribute('onclick')||'').match(/saveOrderNote\('([^']+)'\)/);
+    return match?.[1]||''
+  }
+  function testItems(card){
+    return [...card.querySelectorAll('.order-items span')].map(span=>{
+      const text=String(span.textContent||'').trim();
+      const match=text.match(/^(\d+)\s*[×x]\s*(.+)$/i);
+      if(!match)return null;
+      const productId=testProductId(match[2]);
+      return productId?{productId,name:match[2].trim(),quantity:Number(match[1])}:null
+    }).filter(Boolean)
+  }
+  function updateTestAllocationSummary(box){
+    let sellers=0,reseller=0,toMake=0,allOk=true;
+    box.querySelectorAll('.test-allocation-row').forEach(row=>{
+      const need=Number(row.dataset.need||0);
+      const s=Math.max(0,Math.trunc(Number(row.querySelector('[data-key="sellers"]')?.value||0)));
+      const r=Math.max(0,Math.trunc(Number(row.querySelector('[data-key="reseller"]')?.value||0)));
+      const f=Math.max(0,Math.trunc(Number(row.querySelector('[data-key="toMake"]')?.value||0)));
+      sellers+=s;reseller+=r;toMake+=f;
+      const sum=s+r+f,check=row.querySelector('.test-alloc-check');
+      const realSeller=Number(row.dataset.sellerAvailable||0),realReseller=Number(row.dataset.resellerAvailable||0);
+      if(sum!==need){check.textContent=sum<need?`Faltam ${need-sum}`:`Excede ${sum-need}`;check.className='test-alloc-check bad';allOk=false}
+      else if(s>realSeller||r>realReseller){check.textContent='OK no teste · acima do saldo atual';check.className='test-alloc-check warn'}
+      else{check.textContent='OK';check.className='test-alloc-check ok'}
+    });
+    const set=(key,value)=>{const el=box.querySelector(`[data-summary="${key}"]`);if(el)el.textContent=String(value)};
+    set('sellers',sellers);set('reseller',reseller);set('make',toMake);set('total',sellers+reseller+toMake);
+    const save=box.querySelector('.test-allocation-save');if(save)save.disabled=!allOk;
+    return allOk
+  }
+  async function loadSavedTestAllocation(id,box){
+    try{
+      const data=await request('/api/test-order-allocation?id='+encodeURIComponent(id));
+      for(const entry of Array.isArray(data.allocation)?data.allocation:[]){
+        const row=box.querySelector(`.test-allocation-row[data-product="${entry.productId}"]`);if(!row)continue;
+        for(const key of ['sellers','reseller','toMake']){const input=row.querySelector(`[data-key="${key}"]`);if(input)input.value=Number(entry[key]||0)}
+      }
+      updateTestAllocationSummary(box)
+    }catch{}
+  }
+  function injectTestAllocationPanels(){
+    addIndependentStockCss();
+    const root=document.getElementById('ordersList');if(!root)return;
+    root.querySelectorAll('.order-card').forEach(card=>{
+      const code=String(card.querySelector('.order-code')?.textContent||'').trim();
+      if(!code.startsWith('TESTE-')||card.querySelector('.test-allocation-box'))return;
+      const id=testOrderId(card),items=testItems(card);if(!id||!items.length)return;
+      const box=document.createElement('div');box.className='test-allocation-box';box.dataset.orderId=id;
+      const rows=items.map(item=>{
+        const s=sellerQty(item.productId),r=resellerQty(item.productId);
+        const sellerAvailable=s===null?0:s;
+        return `<div class="test-allocation-row" data-product="${item.productId}" data-need="${item.quantity}" data-seller-available="${sellerAvailable}" data-reseller-available="${r}"><div><b>${escapeHtml(item.name)}</b><small>Pedido ${item.quantity} · saldo atual Vendedores ${s===null?'indisponível':s} · Revendedores ${r}</small></div><label>Vendedores<input data-key="sellers" type="number" min="0" value="0"></label><label>Revendedores<input data-key="reseller" type="number" min="0" value="0"></label><label>Fabricar<input data-key="toMake" type="number" min="0" value="${item.quantity}"></label><strong class="test-alloc-check ok">OK</strong></div>`
+      }).join('');
+      const total=items.reduce((sum,item)=>sum+item.quantity,0);
+      box.innerHTML=`<div class="test-allocation-head"><div><h5>Origem dos alfajores — simulação</h5><p>Escolha quanto sairia de Vendedores, Revendedores ou Fabricar. Pode usar 1, 2 ou as 3 opções no mesmo pedido.</p></div><span class="test-allocation-badge">TESTE · NÃO BAIXA ESTOQUE</span></div>${rows}<div class="test-allocation-summary"><div><small>Vendedores</small><b data-summary="sellers">0</b></div><div><small>Revendedores</small><b data-summary="reseller">0</b></div><div><small>Fabricar</small><b data-summary="make">${total}</b></div><div><small>Total dividido</small><b data-summary="total">${total}</b></div></div><div class="stock-independent-help"><b>Modo teste:</b> você pode simular qualquer divisão. O sistema mostra o saldo real apenas como referência, mas não desconta nenhuma unidade de Vendedores nem de Revendedores.</div><button class="test-allocation-save" onclick="saveTestOrderAllocation('${id}')">Salvar divisão de teste</button>`;
+      card.appendChild(box);
+      box.querySelectorAll('input').forEach(input=>input.addEventListener('input',()=>updateTestAllocationSummary(box)));
+      updateTestAllocationSummary(box);loadSavedTestAllocation(id,box)
+    })
+  }
+  window.saveTestOrderAllocation=async function(id){
+    const box=document.querySelector(`.test-allocation-box[data-order-id="${id}"]`);if(!box)return;
+    if(!updateTestAllocationSummary(box)){alert('A soma de Vendedores + Revendedores + Fabricar precisa bater exatamente com a quantidade de cada sabor.');return}
+    const allocations=[...box.querySelectorAll('.test-allocation-row')].map(row=>({productId:row.dataset.product,sellers:Math.max(0,Math.trunc(Number(row.querySelector('[data-key="sellers"]')?.value||0))),reseller:Math.max(0,Math.trunc(Number(row.querySelector('[data-key="reseller"]')?.value||0))),toMake:Math.max(0,Math.trunc(Number(row.querySelector('[data-key="toMake"]')?.value||0)))}));
+    try{await request('/api/test-order-allocation',{method:'PATCH',body:JSON.stringify({id,allocations})});alert('Divisão de teste salva. Nenhum estoque real foi alterado.')}catch(error){alert(error.message)}
+  };
+  const ordersRoot=document.getElementById('ordersList');
+  if(ordersRoot){new MutationObserver(()=>injectTestAllocationPanels()).observe(ordersRoot,{childList:true,subtree:true});injectTestAllocationPanels()}
+
   const originalOpenAdmin=window.openAdmin;
   window.openAdmin=function(){originalOpenAdmin();if(ceoSession)loadSharedStockRemote(true)};
   if(ceoSession)loadSharedStockRemote(true);
