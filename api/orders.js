@@ -1,3 +1,5 @@
+import { testCustomer, saveTestOrder, listTestOrders, updateTestOrder } from "../server/test-mode.js";
+import { currentCustomer, ensureSchema as ensureCustomers } from "./customer-accounts.js";
 import { createHash, randomBytes } from "node:crypto";
 import { database } from "../server/database.js";
 
@@ -187,11 +189,18 @@ function dueDateTomorrow() {
 export default async function handler(req, res) {
   let insertedOrderId = "";
   try {
+    res.setHeader("Cache-Control","no-store");
     const sql = db();
     await ensureSchema(sql);
 
     if (req.method === "POST") {
-      asaasConfig();
+      const testAccount=await testCustomer(req,sql);
+      if(!testAccount){
+        await ensureCustomers(sql);
+        const account=await currentCustomer(req,sql);
+        if(!account || account.status!=='approved')return res.status(401).json({error:'Entre com uma conta aprovada para enviar pedidos.'});
+        asaasConfig();
+      }
       const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : (req.body || {});
       const purpose = "commerce";
       const calculated = calculate(normalizeItems(body.items), purpose);
@@ -207,6 +216,10 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: "Informe um CPF ou CNPJ válido para gerar o Pix." });
       }
 
+      if(testAccount){
+        const safeDelivery=Object.fromEntries(['cep','city','street','number','complement'].map(k=>[k,clean(delivery[k],180)]));
+        return res.status(201).json({order:await saveTestOrder(sql,calculated,safeDelivery)});
+      }
       const id = randomBytes(16).toString("hex");
       insertedOrderId = id;
       const publicToken = randomBytes(24).toString("hex");
@@ -258,6 +271,7 @@ export default async function handler(req, res) {
     if (!admin) return res.status(401).json({ error: "Acesso administrativo necessário." });
 
     if (req.method === "GET") {
+      if(req.query?.scope==='test')return res.status(200).json({orders:await listTestOrders(sql)});
       const rows = await sql.query("SELECT * FROM reseller_orders ORDER BY created_at DESC LIMIT 200", []);
       return res.status(200).json({ orders: rows.map((row) => serialize(row, false)) });
     }
@@ -267,6 +281,10 @@ export default async function handler(req, res) {
       const id = clean(body.id, 80);
       const status = clean(body.status, 40);
       if (!id || !STATUSES.includes(status)) return res.status(400).json({ error: "Pedido ou status inválido." });
+      if(id.startsWith('test_')){
+        const order=await updateTestOrder(sql,id,status);
+        return res.status(order?200:404).json(order?{order}:{error:'Pedido de teste não encontrado.'});
+      }
       const rows = await sql.query(`UPDATE reseller_orders SET status = $1, updated_at = NOW()
         WHERE id = $2 RETURNING *`, [status, id]);
       if (!rows[0]) return res.status(404).json({ error: "Pedido não encontrado." });

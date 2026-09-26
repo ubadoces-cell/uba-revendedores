@@ -1,3 +1,4 @@
+import { loginTest, testCustomer, logoutTest, clearTestCookie } from "../server/test-mode.js";
 import { createHash, randomBytes, scryptSync, timingSafeEqual } from "node:crypto";
 import { database } from "../server/database.js";
 
@@ -30,7 +31,7 @@ function passwordMatches(password, salt, expected) {
   return actual.length === target.length && timingSafeEqual(actual, target);
 }
 function setCustomerCookie(res, token, maxAge = MAX_AGE) {
-  res.setHeader("Set-Cookie", `${CUSTOMER_COOKIE}=${encodeURIComponent(token)}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${maxAge}`);
+  res.setHeader("Set-Cookie", [`${CUSTOMER_COOKIE}=${encodeURIComponent(token)}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${maxAge}`,clearTestCookie()]);
 }
 function serialize(row) {
   return {
@@ -46,7 +47,7 @@ function serialize(row) {
     updatedAt: row.updated_at,
   };
 }
-async function ensureSchema(sql) {
+export async function ensureSchema(sql) {
   await sql.query(`CREATE TABLE IF NOT EXISTS reseller_customer_accounts (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
@@ -88,7 +89,7 @@ async function requireAdmin(req, sql) {
     [sha256(token), new Date().toISOString()]);
   return rows[0] || null;
 }
-async function currentCustomer(req, sql) {
+export async function currentCustomer(req, sql) {
   const token = cookie(req, CUSTOMER_COOKIE);
   if (!token) return null;
   const rows = await sql.query(`SELECT a.* FROM reseller_customer_sessions s
@@ -111,9 +112,9 @@ export default async function handler(req, res) {
     const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : (req.body || {});
 
     if (req.method === "GET" && String(req.query?.scope || "") === "current") {
-      const account = await currentCustomer(req, sql);
+      const account = await testCustomer(req, sql) || await currentCustomer(req, sql);
       if (!account || account.status !== "approved") return res.status(200).json({ account: null });
-      return res.status(200).json({ account: serialize(account) });
+      return res.status(200).json({ account: account.isTest ? account : serialize(account) });
     }
 
     if (req.method === "POST" && body.action === "register") {
@@ -140,11 +141,13 @@ export default async function handler(req, res) {
     }
 
     if (req.method === "POST" && body.action === "login") {
+      const test = await loginTest(req,res,sql,body);
+      if(test) return res.status(test.error?401:200).json(test);
       const login = normalized(body.login);
       const password = String(body.password || "");
       if (!login || !password) return res.status(400).json({ error: "Digite seu e-mail/telefone e senha." });
       const rows = await sql.query(`SELECT * FROM reseller_customer_accounts
-        WHERE email_norm = $1 OR phone_norm = $2 LIMIT 1`, [login, digits(body.login)]);
+        WHERE ($1 <> '' AND email_norm = $1) OR ($2 <> '' AND phone_norm = $2) LIMIT 1`, [login, digits(body.login)]);
       const account = rows[0];
       if (!account || !passwordMatches(password, account.password_salt, account.password_hash)) {
         return res.status(401).json({ error: "Login ou senha incorretos." });
@@ -159,6 +162,7 @@ export default async function handler(req, res) {
     }
 
     if (req.method === "POST" && body.action === "logout") {
+      await logoutTest(req,sql);
       const token = cookie(req, CUSTOMER_COOKIE);
       if (token) await sql.query(`DELETE FROM reseller_customer_sessions WHERE token_hash = $1`, [sha256(token)]);
       setCustomerCookie(res, "", 0);

@@ -10,9 +10,13 @@
   function applySharedStock(data){
     if(!data||!data.stock)return;
     sharedStock=data.stock;
+    if(data.controles)controlesStockView=data.controles;
+    const status=document.getElementById('controlesStockStatus');
+    if(status)status.textContent=controlesStockView?.available?'Controles • somente leitura':controlesStockView?.reason==='not_configured'?'Vínculo ainda não ativado':'Consulta indisponível';
     stockHistory=Array.isArray(data.history)?data.history:[];
     saveSharedStock();
-    if(typeof renderStockPanel==='function')renderStockPanel()
+    if(typeof renderStockPanel==='function')renderStockPanel();
+    updateAdminMetrics()
   }
   async function loadSharedStockRemote(silent=false){
     if(loadingSharedStock)return;

@@ -5,7 +5,7 @@
   let paymentPoll=null;
 
   async function ordersRequest(options={}){
-    const response=await fetch('/api/orders',{credentials:'same-origin',headers:{'Content-Type':'application/json',...(options.headers||{})},...options});
+    const response=await fetch('/api/orders'+(document.getElementById('showTestOrders')?.checked?'?scope=test':''),{credentials:'same-origin',headers:{'Content-Type':'application/json',...(options.headers||{})},...options});
     const data=await response.json().catch(()=>({}));
     if(!response.ok)throw new Error(data.error||'Não foi possível processar o pedido.');
     return data
@@ -24,14 +24,15 @@
   }
   function paymentStatus(status){
     return ({
-      aguardando_pagamento:'Aguardando Pix',confirmado_asaas:'Pix confirmado pelo Asaas',
+      teste_sem_cobranca:'TESTE — sem cobrança e sem baixa de estoque',aguardando_pagamento:'Aguardando Pix',confirmado_asaas:'Pix confirmado pelo Asaas',
       pago:'Pago',vencido:'Pix vencido',cancelado:'Cancelado',estornado:'Estornado',
       estorno_em_andamento:'Estorno em andamento',contestacao:'Em contestação',erro_pagamento:'Erro no pagamento'
     })[status]||status||'Aguardando Pix'
   }
   function orderPurpose(){return 'Revendedor / comércio'}
   function updateOrderCount(){
-    const count=orders.filter(order=>order.status==='novo').length;
+    if(document.getElementById('showTestOrders')?.checked)return;
+    const count=orders.filter(order=>order.status==='novo'&&!order.isTest).length;
     const metric=document.getElementById('mOrders');if(metric)metric.textContent=String(count);
     const quick=document.getElementById('ordersQuickCount');if(quick)quick.textContent=count?String(count):''
   }
@@ -50,7 +51,7 @@
       return `<article class="order-card">
         <div class="order-card-head">
           <div><span class="order-code">${escapeHtml(order.code)}</span><h4>${escapeHtml(customer.name||'Cliente')}</h4><small>${escapeHtml(when)} • ${escapeHtml(orderPurpose(order.purpose))}</small></div>
-          <div class="order-total"><strong>${orderMoney(order.totalCents)}</strong><span>${Number(order.units||0)} unidades</span></div>
+          <div class="order-total"><strong>${order.isTest?'Simulado: ':''}${orderMoney(order.totalCents)}</strong><span>${Number(order.units||0)} unidades</span></div>
         </div>
         <div class="order-meta"><b>${escapeHtml(customer.store||'Sem nome de loja')}</b><span>${escapeHtml(contact)}</span><span>${escapeHtml(customer.doc||'Documento não informado')}</span></div>
         <div class="order-items">${items.map(item=>`<span><b>${Number(item.quantity||0)}×</b> ${escapeHtml(item.name||item.productId)}</span>`).join('')}</div>
@@ -96,7 +97,9 @@
       if(button){button.textContent='✓ Código copiado';setTimeout(()=>button.textContent='Copiar código Pix',1800)}
     }catch{alert('Não foi possível copiar automaticamente. Selecione o código acima.')}
   };
-  function showSuccess(code){
+  function showSuccess(code,isTest=false){
+    const title=document.querySelector('#success h4');if(title)title.textContent=isTest?'Pedido de teste salvo':'Pedido confirmado';
+    const text=document.querySelector('#success p');if(text)text.innerHTML=(isTest?'Sem cobrança, sem entrega e sem movimentação de estoque. Consulte em Pedidos → Ver somente pedidos de teste.':'Seu pedido foi confirmado.')+'<br><strong id="successOrderCode"></strong>';
     if(paymentPoll){clearInterval(paymentPoll);paymentPoll=null}
     const target=document.getElementById('successOrderCode');if(target)target.textContent=code;
     ['step1','pendingPanel','customerAccount','adminLogin','step2','step3','step4'].forEach(id=>document.getElementById(id)?.classList.remove('active'));
@@ -151,7 +154,7 @@
     if(![11,14].includes(buyerDoc.replace(/\D/g,'').length)){alert('Informe um CPF ou CNPJ válido para gerar o Pix.');goStep(2);return}
 
     const button=document.querySelector('#step4 .checkout-nav .next');
-    if(button){button.disabled=true;button.textContent='Gerando Pix...'}
+    if(button){button.disabled=true;button.textContent=customer.isTest?'Salvando teste...':'Gerando Pix...'}
     try{
       const payload={
         purpose:totals.purpose,
@@ -171,9 +174,9 @@
         items:catalog.filter(product=>Number(qty[product.id]||0)>0).map(product=>({productId:product.id,quantity:Number(qty[product.id])}))
       };
       const data=await ordersRequest({method:'POST',body:JSON.stringify(payload)});
-      showPix(data.order,data.publicToken)
+      if(data.order.isTest)showSuccess(data.order.code,true);else showPix(data.order,data.publicToken)
     }catch(error){alert(error.message)}
-    finally{if(button){button.disabled=false;button.textContent='Gerar Pix'}}
+    finally{if(button){button.disabled=false;button.textContent=getCustomer()?.isTest?'Finalizar teste sem pagar':'Gerar Pix'}}
   };
 
   const previousSetAdminView=window.setAdminView;

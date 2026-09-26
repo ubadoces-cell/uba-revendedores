@@ -1,3 +1,4 @@
+import { controlesStockSummary } from "../server/controles-stock.js";
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
 import { database } from "../server/database.js";
 
@@ -121,12 +122,14 @@ function movement(type, productId, quantity, note, actor) {
 
 export default async function handler(req, res) {
   try {
+    res.setHeader("Cache-Control", "no-store");
     const sql = db();
     await ensureSchema(sql);
     if (req.method === "GET") {
       const admin = await requireAdmin(req, sql);
       if (!admin) return res.status(401).json({ error: "Faça login como CEO para consultar os estoques." });
-      return res.status(200).json(publicState(await loadState(sql)));
+      const summary=await controlesStockSummary(sql);
+      return res.status(200).json({...publicState(await loadState(sql)),controles:summary,controlesIntegration:summary.available});
     }
     if (req.method !== "POST") return res.status(405).json({ error: "Método não permitido." });
     let admin = await requireAdmin(req, sql);

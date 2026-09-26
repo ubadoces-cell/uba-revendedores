@@ -12,6 +12,7 @@ const call=async(fn,req)=>{
  await fn({method:'GET',headers:{},query:{},...req},res);return res;
 };
 try{
+ process.env.VERCEL_ENV='preview';
  assert.throws(()=>databaseUrl({DATABASE_URL:'postgres://shared.test/db'}),/exclusivo/);
  process.env.RESELLER_DATABASE_DATABASE_URL='postgres://isolated.test/db';
  assert.equal(databaseUrl(),process.env.RESELLER_DATABASE_DATABASE_URL);

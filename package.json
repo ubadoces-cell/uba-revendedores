@@ -10,6 +10,6 @@
     "@electric-sql/pglite": "^0.5.8"
   },
   "scripts": {
-    "test": "node --no-warnings --loader ./tests/loader.mjs ./tests/isolation.test.mjs"
+    "test": "node --no-warnings --loader ./tests/loader.mjs ./tests/isolation.test.mjs && node --no-warnings --loader ./tests/loader.mjs ./tests/test-mode.test.mjs"
   }
 }

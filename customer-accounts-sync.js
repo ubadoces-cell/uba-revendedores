@@ -1,5 +1,21 @@
 (function () {
   let customerAccount = null;
+  const baseRenderAll=renderAll;
+  renderAll=function(){
+    baseRenderAll();
+    const isTest=Boolean(customerAccount?.isTest);
+    const banner=document.getElementById('testModeBanner');if(banner)banner.hidden=!isTest;
+    const pay=document.querySelector('#step4 .checkout-nav .next');if(pay)pay.textContent=isTest?'Finalizar teste sem pagar':'Gerar Pix';
+  };
+  const baseGoStep=goStep;
+  goStep=function(step){
+    baseGoStep(step);
+    if(customerAccount?.isTest){
+      const values={buyerName:'Cliente de teste UBA',buyerDoc:'00000000000',buyerStore:'TESTE — não entregar',deliveryCep:'00000000',deliveryCity:'Cidade de teste',deliveryStreet:'Rua de teste',deliveryNumber:'1',deliveryComplement:'Não entregar'};
+      for(const [id,value] of Object.entries(values)){const el=document.getElementById(id);if(el&&!el.value)el.value=value;}
+      const button=document.querySelector('#step4 .checkout-nav .next');if(button)button.textContent='Finalizar teste sem pagar';
+    }
+  };
 
   accounts = [];
   saveAccounts = function () {};
