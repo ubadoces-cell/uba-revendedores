@@ -259,42 +259,84 @@ body.ceo-mode.ceo-editing .inline-editor{display:block}
 }
 
 
-/* ===== V8: carrossel horizontal de alfajores ===== */
-.carousel-hint{
-  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
-  margin:10px 0 14px;padding:10px 12px;border:1px solid var(--line);border-radius:14px;
-  background:var(--surface2);color:var(--muted);font-size:11px;line-height:1.4
-}
-.carousel-hint strong{color:var(--text)}
+/* ===== V12: grade de produtos 2 por linha + quantidade digitável ===== */
+.carousel-hint{display:none!important}
 .products{
-  display:flex !important;
-  gap:18px;
-  overflow-x:auto;
-  overflow-y:hidden;
-  padding:4px 2px 16px;
-  scroll-snap-type:x proximity;
-  -webkit-overflow-scrolling:touch;
-}
-.products::-webkit-scrollbar{height:10px}
-.products::-webkit-scrollbar-track{background:transparent}
-.products::-webkit-scrollbar-thumb{
-  background:rgba(205,198,228,.22);
-  border-radius:999px;
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px;
+  overflow:visible;
+  padding:4px 2px 18px;
 }
 .products .product{
-  flex:0 0 clamp(290px,31vw,410px);
-  min-width:clamp(290px,31vw,410px);
-  scroll-snap-align:start;
+  min-width:0;
+  width:auto;
+  flex:none;
+  scroll-snap-align:none;
 }
-@media(max-width:900px){
-  .products .product{flex-basis:78vw;min-width:78vw}
+.product-meta{
+  display:grid!important;
+  grid-template-columns:1fr;
+  gap:10px;
+  align-items:stretch!important;
+}
+.quantity-entry{
+  display:grid;
+  grid-template-columns:auto minmax(92px,130px);
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding-top:4px;
+}
+.quantity-entry label{
+  color:var(--muted);
+  font-size:11px;
+  font-weight:900;
+}
+.quantity-input{
+  width:100%;
+  min-height:42px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:var(--field);
+  color:var(--text);
+  padding:9px 12px;
+  font-size:17px;
+  font-weight:900;
+  text-align:center;
+  outline:none;
+  appearance:textfield;
+  -moz-appearance:textfield;
+}
+.quantity-input::-webkit-outer-spin-button,
+.quantity-input::-webkit-inner-spin-button{margin:0;-webkit-appearance:none}
+.quantity-input:focus{
+  border-color:#8d7bd0;
+  box-shadow:0 0 0 3px rgba(141,123,208,.13);
 }
 @media(max-width:640px){
-  .carousel-hint{font-size:10px}
-  .products{padding-bottom:12px}
-  .products .product{flex-basis:84vw;min-width:84vw}
+  .products{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding-bottom:14px}
+  .product{border-radius:19px}
+  .product-img{height:148px}
+  .product-body{padding:12px;gap:7px}
+  .product h4{font-size:15px;line-height:1.15}
+  .desc{
+    min-height:32px;
+    font-size:11px;
+    line-height:1.4;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+  }
+  .private-price{font-size:10px;line-height:1.3;align-items:flex-start}
+  .lock-dot{width:24px;height:24px;border-radius:8px;flex:0 0 auto}
+  .price-public b{font-size:15px}
+  .price-public small,.price-public .tier-mini{font-size:9px}
+  .min-order{font-size:10px}
+  .quantity-entry{grid-template-columns:1fr;gap:5px}
+  .quantity-input{min-height:42px;font-size:17px;padding:8px 10px}
 }
-
 
 /* ===== V9: edição somente pelo Painel CEO ===== */
 .ceo-storebar,.ceo-only-note,.inline-editor,.ceo-card-badge{display:none!important}
@@ -1038,22 +1080,28 @@ const defaultPricing={
 
 let catalog=readJson('uba-rev-catalog')||structuredClone(defaultCatalog);
 let pricing=readJson('uba-rev-pricing-v1')||structuredClone(defaultPricing);
+const PRODUCT_IMAGE_VERSION='20260927';
 const defaultImageMap={
-  pistache:'pistache.jpg',
-  chocolate50:'chocolate50.jpg',
-  branco:'branco.jpg',
-  caramelo:'caramelo.jpg',
-  morango:'morango.jpg'
+  // Fotos oficiais/canônicas dos sabores. Não substituir em ajustes de layout sem pedido explícito.
+  pistache:`pistache.jpg?v=${PRODUCT_IMAGE_VERSION}`,
+  chocolate50:`chocolate50.jpg?v=${PRODUCT_IMAGE_VERSION}`,
+  branco:`branco.jpg?v=${PRODUCT_IMAGE_VERSION}`,
+  caramelo:`caramelo.jpg?v=${PRODUCT_IMAGE_VERSION}`,
+  morango:`morango.jpg?v=${PRODUCT_IMAGE_VERSION}`
 };
+const PRODUCT_IMAGE_MIGRATION=`uba-rev-product-images-${PRODUCT_IMAGE_VERSION}`;
+const refreshCanonicalImages=localStorage.getItem(PRODUCT_IMAGE_MIGRATION)!=='1';
 catalog=catalog.map(p=>{
   const wanted=defaultImageMap[p.id];
+  const baseName=String(p.img||'').split('?')[0];
   const oldNames=['pistache.jpg','chocolate50.jpg','branco.jpg','caramelo.jpg','morango.jpg'];
-  if(!p.img || oldNames.includes(String(p.img))) p.img=wanted;
+  if(wanted&&(refreshCanonicalImages||!p.img||oldNames.includes(baseName))) p.img=wanted;
   if(!p.priceGroup){
     p.priceGroup=p.id==='pistache'?'pistache':p.id==='chocolate50'?'chocolate50':'standard';
   }
   return p
 });
+if(refreshCanonicalImages)localStorage.setItem(PRODUCT_IMAGE_MIGRATION,'1');
 
 
 const STOCK_KEY='uba-shared-stock-v1';
@@ -1220,24 +1268,38 @@ function renderProducts(){
         ? `<div class="price-public"><b>${money(unitPrice)}</b><small>/ unidade</small><span class="tier-mini">Faixa ${tier.label} • ${purposeLabel(getOrderPurpose())}</span></div>`
         : `<div class="min-order">📦 Pedido mínimo: 50 unidades</div>`)
       : `<div class="private-price"><span class="lock-dot">🔒</span><span>Preço liberado após aprovação</span></div>`;
+    const currentQty=Number(qty[p.id]||0);
     return `<article class="product">
       <div class="product-img">
         <img src="${p.img}" alt="${escapeHtml(p.name)}">
         ${p.tag?`<span class="tag ${p.tag==='Mais vendido'?'pop':p.tag==='Novo'?'new':''}">${escapeHtml(p.tag)}</span>`:''}
-        
       </div>
       <div class="product-body">
         <h4>${escapeHtml(p.name)}</h4>
         <div class="desc">${escapeHtml(p.desc)}</div>
         <div class="product-meta">
           ${priceBlock}
-          <div class="qty">
-            <button onclick="changeQty('${p.id}',-1)">−</button>
-            <span id="qty-${p.id}">${qty[p.id]||0}</span>
-            <button onclick="changeQty('${p.id}',1)">+</button>
+          <div class="quantity-entry">
+            <label for="qty-${p.id}">Quantidade</label>
+            <input
+              id="qty-${p.id}"
+              class="quantity-input"
+              type="number"
+              min="0"
+              max="99999"
+              step="1"
+              inputmode="numeric"
+              autocomplete="off"
+              value="${currentQty||''}"
+              placeholder="0"
+              aria-label="Quantidade de ${escapeHtml(p.name)}"
+              onfocus="this.select()"
+              oninput="setQtyFromInput('${p.id}',this.value)"
+              onchange="finishQtyInput('${p.id}',this)"
+              onkeydown="if(event.key==='Enter')this.blur()"
+            >
           </div>
         </div>
-        <button class="add" onclick="changeQty('${p.id}',1)">Adicionar ao carrinho</button>
       </div>
     </article>`
   }).join('')||'<div class="empty" style="grid-column:1/-1">Nenhum produto encontrado.</div>';
@@ -1250,12 +1312,21 @@ function setFilter(btn,filter){
   renderProducts()
 }
 function filterProducts(){renderProducts()}
-function changeQty(id,d){
+function setQtyFromInput(id,value){
   const p=catalog.find(x=>x.id===id);
   if(!p||!p.active)return;
-  qty[id]=Math.max(0,(qty[id]||0)+d);
-  renderProducts();
-  updateCart()
+  if(String(value).trim()===''){
+    qty[id]=0;
+  }else{
+    const parsed=Number(value);
+    qty[id]=Number.isFinite(parsed)?Math.max(0,Math.min(99999,Math.trunc(parsed))):0;
+  }
+  updateCart();
+  updatePriceVisibilityNote()
+}
+function finishQtyInput(id,input){
+  setQtyFromInput(id,input.value);
+  renderProducts()
 }
 function getTotals(){
   let count=0;
