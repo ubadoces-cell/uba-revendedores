@@ -4,6 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#4A388E" />
+<meta name="uba-app-version" content="2.0.0" />
 <title>UBA Revendedores</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -737,6 +738,33 @@ html[data-theme="light"] .admin-dashboard-summary .metric strong,html[data-theme
 html[data-theme="light"] .admin-dashboard-summary .metric small,html[data-theme="light"] .admin-dashboard-note span,html[data-theme="light"] .admin-quick-label span{color:var(--muted)}
 @media(max-width:1050px){.admin-dashboard-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-head h2{font-size:23px}.admin-f1-hint{display:none}}
 @media(max-width:640px){.admin-dashboard-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-dashboard-summary .metric{flex-direction:column;align-items:center;text-align:center;padding:14px 8px}.admin-dashboard-summary .metric:last-child{grid-column:1/-1}.admin-quick{grid-template-columns:1fr}.admin-session-tools{margin-left:0;flex:1;justify-content:flex-end}.admin-brand-copy{min-width:0}.admin-quick button{font-size:14px}.admin-head{padding:14px}.admin-head h2{font-size:19px}}
+
+/* ===== UBA REVENDEDORES v2.0 ===== */
+body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transparent 34%),linear-gradient(180deg,#100b1d 0%,#0b0814 100%);font-family:"Montserrat",Arial,Helvetica,sans-serif}
+.app{max-width:1240px;padding-top:10px}
+.topbar{top:0;padding:6px 0 10px;border-bottom:0;background:linear-gradient(180deg,rgba(12,8,24,.94),rgba(12,8,24,.68),transparent)}
+.header{min-height:82px;padding:14px 20px;border-radius:26px;background:radial-gradient(circle at 88% 0%,rgba(194,159,255,.32),transparent 28%),linear-gradient(105deg,#5638a7 0%,#4a2b9a 48%,#6443b6 100%);box-shadow:0 18px 50px rgba(42,17,91,.38);border:1px solid rgba(255,255,255,.08)}
+.brand-title-row{display:flex;align-items:center;gap:9px}.brand h1{font-size:22px;letter-spacing:-.6px}.brand p{margin-top:3px;font-size:11px;color:#efe9ff;font-weight:700}
+.app-version{display:inline-flex;align-items:center;justify-content:center;padding:4px 7px;border:1px solid rgba(255,255,255,.26);border-radius:999px;background:rgba(255,255,255,.1);color:#fff;font-size:9px;font-weight:900}
+.header-actions{gap:8px}.icon-btn,.login-btn{min-height:46px;border-radius:14px;padding:10px 14px;border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.08)}
+.v2-hero{min-height:465px;margin:6px 0 16px;padding:42px 44px;grid-template-columns:1.04fr .96fr;gap:24px;align-items:center;border:0;border-radius:32px;background:radial-gradient(circle at -5% 83%,#5b2cc6 0 7%,transparent 7.5%),radial-gradient(circle at 39% 103%,#6d35d7 0 10%,transparent 10.5%),linear-gradient(120deg,#fff4e8 0%,#fff0df 64%,#f3dfcf 100%);color:#171238;box-shadow:0 22px 60px rgba(0,0,0,.28);overflow:hidden;position:relative}
+.v2-hero:before{content:"";position:absolute;inset:auto -40px -70px auto;width:310px;height:210px;border-radius:58% 42% 20% 80%;background:#6031ca;opacity:.97;transform:rotate(-8deg)}
+.hero-copy{position:relative;z-index:2}.v2-hero .hero-copy>small{display:block;margin-bottom:12px;color:#4f23bd;font-size:12px;letter-spacing:.05em;font-weight:1000}
+.v2-hero h2{margin:0 0 16px;max-width:610px;font-size:clamp(42px,5.6vw,72px);line-height:.88;letter-spacing:-3.8px}.v2-hero h2 span{display:block;color:#171238}.v2-hero h2 strong{display:block;margin-top:8px;color:#6333d1;font-weight:900}
+.v2-hero .hero-copy>p{max-width:590px;margin:0 0 22px;color:#342d4e;font-size:14px;line-height:1.55;font-weight:700}
+.hero-benefits{display:flex;gap:16px;flex-wrap:wrap;margin:0 0 22px}.hero-benefit{display:flex;align-items:center;gap:9px;min-width:145px}.hero-benefit-icon{width:42px;height:42px;display:grid;place-items:center;flex:0 0 auto;border-radius:13px;background:#d9c0ff;color:#4b22ae;font-size:20px;font-weight:1000}.hero-benefit b{display:block;color:#231943;font-size:11px}.hero-benefit small{display:block;margin-top:2px;color:#544b68;font-size:9px;line-height:1.25;text-transform:none;letter-spacing:0}
+.hero-cta{min-width:230px;min-height:50px;border:0;border-radius:14px;background:linear-gradient(135deg,#7140e3,#5122bc);color:#fff;padding:13px 24px;font-weight:900;font-size:15px;box-shadow:0 12px 24px rgba(82,34,188,.24)}.hero-cta span{margin-left:12px;font-size:20px}
+.hero-visual{position:relative;z-index:2;min-height:390px;display:grid;place-items:center}.hero-art{position:relative;width:100%;height:390px;display:grid;place-items:center}.hero-purple-blob{position:absolute;width:92%;height:82%;right:-6%;top:6%;border-radius:42% 58% 56% 44% / 50% 37% 63% 50%;background:linear-gradient(145deg,#6f3be5,#4b1da8);transform:rotate(-7deg);box-shadow:0 24px 55px rgba(87,36,190,.28)}
+.hero-art>img{position:relative;z-index:2;width:min(95%,470px);height:330px;object-fit:cover;border-radius:31px;transform:rotate(-3deg);box-shadow:0 24px 48px rgba(40,16,68,.28);border:5px solid rgba(255,255,255,.24)}
+.hero-speech{position:absolute;z-index:4;right:-7px;top:8px;width:150px;min-height:142px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:45% 55% 49% 51%;background:#171238;color:white;font-size:19px;line-height:1.02;text-align:center;font-weight:900;transform:rotate(-7deg);box-shadow:0 15px 28px rgba(20,12,50,.24)}.hero-speech b{font-size:21px}.hero-speech span{font-size:17px;margin-top:4px}
+.hero-result-badge{position:absolute;z-index:5;right:-10px;bottom:8px;display:flex;align-items:center;gap:8px;padding:12px 14px;border-radius:18px;background:#f0e5ff;color:#482092;box-shadow:0 12px 22px rgba(70,34,130,.18);transform:rotate(4deg)}.hero-result-badge>b{font-size:25px}.hero-result-badge span{font-size:10px;line-height:1.25}.hero-result-badge strong{color:#6d2bd2}
+.toolbar{margin:12px 0 14px;padding:12px;border:1px solid #2c2346;border-radius:19px;background:linear-gradient(145deg,#171128,#100c1e);box-shadow:0 12px 28px rgba(0,0,0,.22)}.search{border-color:#574488;background:#171129;border-radius:15px}.filters{align-items:center}.filter{min-height:42px;border-radius:13px;border-color:#514073;background:#171129;color:#f4efff;padding:9px 15px;font-size:11px}.filter.active{background:#d7c3ff;color:#32166c}
+.section-head{margin:15px 2px 13px;align-items:center}.section-head h3{font-size:25px;letter-spacing:-.7px}.section-head p{font-size:11px;color:#b8accd}.private-note{color:#c6b8db;font-size:10px;font-weight:700;max-width:none}
+.products{gap:14px!important}.product{border-radius:21px;border:1px solid #51416f;background:linear-gradient(180deg,#21183b 0%,#171128 100%);box-shadow:0 14px 34px rgba(0,0,0,.28);overflow:hidden}.product-img{height:235px;background:#f0d2a6}.product-img img{object-fit:cover}.tag{top:10px;left:10px;border-radius:999px;background:#221847;border:1px solid rgba(255,255,255,.12);font-size:10px;padding:7px 10px}.tag.pop{background:#6332d2}.product-body{padding:15px 16px 16px;gap:8px}.product h4{font-size:18px;color:#fff}.desc{color:#c4bad6;font-size:11px;min-height:32px}.private-price{color:#d8cfea;font-size:10px}.lock-dot{border-color:#4d3f6b;background:#2b2145}.quantity-entry{grid-template-columns:auto minmax(86px,112px)!important;gap:8px!important;padding:8px 0 0;border-top:1px solid rgba(255,255,255,.06)}.quantity-entry label{color:#b9add0;font-size:10px}.quantity-input{min-height:40px!important;border-radius:11px!important;border-color:#574488!important;background:#22183c!important;color:#fff!important;font-size:16px!important}
+.reseller-cta{margin:18px 0 8px;padding:19px 22px;border-radius:25px;color:#fff;background:linear-gradient(105deg,#4c2a9e,#6a3ccc 58%,#4c25a1);display:grid;grid-template-columns:auto 1fr auto;gap:15px;align-items:center;box-shadow:0 18px 40px rgba(62,28,139,.32)}.reseller-heart{font-size:40px;color:#d9b8ff}.reseller-cta strong{display:block;font-size:18px}.reseller-cta span{display:block;margin-top:4px;font-size:11px;color:#eee7ff}.reseller-cta button{min-width:180px;border:0;border-radius:14px;background:#e5d5ff;color:#482092;padding:13px 17px;font-weight:900}
+@media(max-width:900px){.v2-hero{grid-template-columns:1fr;padding:32px;gap:12px}.hero-visual{min-height:330px}.hero-art{height:330px}.hero-art>img{height:280px}}
+@media(max-width:640px){.app{padding-left:8px;padding-right:8px}.header{padding:11px 12px;border-radius:21px;min-height:70px}.logo{width:48px;height:48px}.brand h1{font-size:16px}.brand p{display:block!important;font-size:8px}.app-version{font-size:8px;padding:3px 5px}.header-actions{gap:5px}.header-actions .icon-btn,.header-actions .login-btn{min-height:39px;padding:8px 9px}.header-actions .btn-label{display:none}.v2-hero{min-height:0;margin-top:3px;padding:26px 20px;border-radius:24px}.v2-hero h2{font-size:43px;letter-spacing:-2.5px}.v2-hero .hero-copy>p{font-size:11px}.hero-benefits{gap:9px}.hero-benefit{min-width:calc(50% - 6px)}.hero-benefit:nth-child(3){min-width:100%}.hero-benefit-icon{width:36px;height:36px;border-radius:11px;font-size:16px}.hero-cta{width:100%;min-width:0}.hero-visual{min-height:250px}.hero-art{height:250px}.hero-art>img{height:210px;width:92%;border-radius:22px}.hero-speech{width:105px;min-height:100px;font-size:13px;right:0;top:-2px}.hero-speech b{font-size:14px}.hero-result-badge{right:0;bottom:-3px;padding:8px 10px}.hero-result-badge>b{font-size:18px}.hero-result-badge span{font-size:7px}.toolbar{grid-template-columns:1fr;padding:9px;gap:8px}.filters{overflow-x:auto;padding-bottom:2px}.filter{flex:0 0 auto;min-height:38px;padding:8px 12px;font-size:9px}.section-head{align-items:flex-start;flex-direction:column;gap:5px}.section-head h3{font-size:21px}.private-note{text-align:left}.products{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}.product{border-radius:16px}.product-img{height:130px}.product-body{padding:10px;gap:6px}.product h4{font-size:14px}.desc{font-size:9px;min-height:26px}.private-price{font-size:8px}.lock-dot{width:21px;height:21px;font-size:9px}.quantity-entry{grid-template-columns:1fr!important;gap:4px!important}.quantity-entry label{font-size:8px}.quantity-input{min-height:38px!important;font-size:15px!important}.reseller-cta{grid-template-columns:auto 1fr;padding:15px;border-radius:20px}.reseller-heart{font-size:30px}.reseller-cta strong{font-size:14px}.reseller-cta span{font-size:9px}.reseller-cta button{grid-column:1/-1;width:100%;min-width:0}}
+
 </style>
 </head>
 <body>
@@ -745,7 +773,7 @@ html[data-theme="light"] .admin-dashboard-summary .metric small,html[data-theme=
 <div class="app">
   <div class="topbar">
     <header class="header">
-      <div class="brand"><img class="logo" src="logo.jpg" alt="UBA DOCES"><div><h1>UBA Revendedores</h1><p>Pedidos para parceiros e comerciantes</p></div></div>
+      <div class="brand"><img class="logo" src="logo.jpg" alt="UBA DOCES"><div><div class="brand-title-row"><h1>UBA Revendedores</h1><span class="app-version">v2.0</span></div><p>Produtos para revenda e consumo.</p></div></div>
       <div class="header-actions">
         <button class="login-btn ceo-header-login" onclick="openAdmin()"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 4v5c0 4.5-2.9 7.8-7 9-4.1-1.2-7-4.5-7-9V7l7-4z"></path><path d="M9.5 12.5l1.6 1.6 3.4-3.8"></path></svg><span class="btn-label">Painel CEO</span></button>
         <button class="icon-btn" id="themeBtn" data-theme-toggle onclick="toggleTheme()" title="Alternar tema" aria-label="Alternar tema"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"></path></svg></button>
@@ -756,14 +784,36 @@ html[data-theme="light"] .admin-dashboard-summary .metric small,html[data-theme=
   </div>
 
 
-  <section class="hero">
-    <div><small>Catálogo para revendedores</small><h2>Escolha seus sabores. A UBA cuida do resto.</h2><p>Monte o pedido primeiro sem precisar criar conta. Os preços ficam protegidos até seu cadastro ser aprovado pela UBA.</p><div class="hero-note">🔒 Preços de revenda aparecem somente para contas aprovadas e conectadas.</div></div>
-    <div class="hero-side"><div class="hero-card"><span class="bubble">PEDIDO B2B</span><img src="/equipe-uba.jpg?v=5" alt="Equipe UBA DOCES" loading="eager" decoding="async"><b>Venda mais com UBA DOCES.</b><span>Escolha sabores, quantidades e finalize com Pix. Seus dados ficam salvos para os próximos pedidos.</span><span class="hero-team-note"><span class="hero-check">✓</span>Equipe UBA pronta para atender seu comércio.</span></div></div>
+  <section class="hero v2-hero">
+    <div class="hero-copy">
+      <small>CATÁLOGO PARA REVENDEDORES</small>
+      <h2><span>Escolha<br>seus sabores.</span><strong>A UBA cuida do resto.</strong></h2>
+      <p>Alfajores artesanais de alta qualidade, prontos para revenda. Monte seu carrinho, envie o pedido e receba com praticidade.</p>
+      <div class="hero-benefits" aria-label="Vantagens para revendedores">
+        <div class="hero-benefit"><span class="hero-benefit-icon">▣</span><span><b>Produtos</b><small>prontos para revenda</small></span></div>
+        <div class="hero-benefit"><span class="hero-benefit-icon">▱</span><span><b>Entrega segura</b><small>e no prazo</small></span></div>
+        <div class="hero-benefit"><span class="hero-benefit-icon">✓</span><span><b>Qualidade UBA</b><small>em cada sabor</small></span></div>
+      </div>
+      <button class="hero-cta" type="button" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth',block:'start'})">Ver catálogo <span>→</span></button>
+    </div>
+    <div class="hero-visual" aria-label="Alfajor UBA em destaque">
+      <div class="hero-art">
+        <div class="hero-purple-blob"></div>
+        <img src="pistache.jpg?v=20260927" alt="Alfajor de pistache UBA DOCES" loading="eager" decoding="async">
+        <div class="hero-speech">Venda<br>mais com<br><b>UBA DOCES.</b><span>♥</span></div>
+        <div class="hero-result-badge"><b>↗</b><span>Doces que dão <strong>resultado</strong><br>no seu negócio.</span></div>
+      </div>
+    </div>
   </section>
 
-  <div class="toolbar"><form id="catalogSearchForm" class="search" role="search" autocomplete="off" onsubmit="event.preventDefault()"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.4-3.4"></path></svg><input id="search" name="catalog-search" type="search" inputmode="search" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" aria-label="Buscar sabor no catálogo" data-lpignore="true" data-1p-ignore="true" placeholder="Buscar sabor..." oninput="filterProducts()"></form><div class="filters"><button class="filter active" onclick="setFilter(this,'all')">Todos</button><button class="filter" onclick="setFilter(this,'featured')">Destaques</button><button class="filter" onclick="setFilter(this,'available')">Disponíveis</button></div></div>
-  <div class="section-head"><div><h3>Alfajores artesanais</h3><p>Escolha a quantidade de cada sabor.</p></div><div class="private-note" id="priceVisibilityNote">🔐 Entre com uma conta aprovada para ver os preços</div></div>
+  <div class="toolbar"><form id="catalogSearchForm" class="search" role="search" autocomplete="off" onsubmit="event.preventDefault()"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.4-3.4"></path></svg><input id="search" name="catalog-search" type="search" inputmode="search" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" aria-label="Buscar sabor no catálogo" data-lpignore="true" data-1p-ignore="true" placeholder="Buscar sabor..." oninput="filterProducts()"></form><div class="filters"><button class="filter active" onclick="setFilter(this,'all')">Todos</button><button class="filter" onclick="setFilter(this,'featured')">Destaques</button><button class="filter" onclick="setFilter(this,'popular')">Mais vendidos</button><button class="filter" onclick="setFilter(this,'new')">Novidades</button></div></div>
+  <div class="section-head"><div><h3>Alfajores artesanais</h3><p>Sabores prontos para revenda. Qualidade, sabor e alta procura.</p></div><div class="private-note" id="priceVisibilityNote">● Estoque em tempo real, sujeito à alteração.</div></div>
   <div class="test-mode-banner" id="testModeBanner" hidden role="status">MODO TESTE — pedidos sem cobrança e sem movimentação de estoque.</div><section class="products" id="products"></section>
+  <section class="reseller-cta">
+    <div class="reseller-heart">♥</div>
+    <div><strong>Seja um revendedor UBA DOCES</strong><span>Produtos de alta qualidade, sabores que vendem e todo o suporte que você precisa.</span></div>
+    <button type="button" onclick="openCustomerEntry()">Quero revender <b>→</b></button>
+  </section>
 </div>
 
 <div class="mobile-cart" id="mobileCart"><div><strong id="mobileItems">0 itens no carrinho</strong><small id="mobilePriceHint">Preços protegidos até aprovação</small></div><button onclick="openCart()">Ver carrinho</button></div>
@@ -1251,8 +1301,9 @@ function getVisibleCatalog(){
   let list=catalog.filter(p=>p.active);
   const q=(document.getElementById('search')?.value||'').toLowerCase().trim();
   if(q)list=list.filter(p=>p.name.toLowerCase().includes(q)||p.desc.toLowerCase().includes(q));
-  if(currentFilter==='featured')list=list.filter(p=>p.tag);
-  if(currentFilter==='available')list=list.filter(p=>p.stock>0&&p.active);
+  if(currentFilter==='featured')list=list.filter(p=>p.tag==='Destaque');
+  if(currentFilter==='popular')list=list.filter(p=>p.tag==='Mais vendido');
+  if(currentFilter==='new')list=list.filter(p=>p.tag==='Novo');
   return list
 }
 function renderProducts(){
@@ -1385,7 +1436,7 @@ function updatePriceVisibilityNote(){
       ? `✓ ${purposeLabel(customer.purpose)} • faixa ${tier.label} pelo total do pedido`
       : `✓ ${purposeLabel(customer.purpose)} • adicione pelo menos 50 unidades para aplicar a tabela`;
   }
-  else note.textContent='🔐 Entre com uma conta aprovada para ver os preços'
+  else note.textContent='● Estoque em tempo real, sujeito à alteração.'
 }
 
 function openCart(){
