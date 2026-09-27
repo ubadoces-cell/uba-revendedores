@@ -765,6 +765,12 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
 @media(max-width:900px){.v2-hero{grid-template-columns:1fr;padding:32px;gap:12px}.hero-visual{min-height:330px}.hero-art{height:330px}.hero-art>img{height:280px}}
 @media(max-width:640px){.app{padding-left:8px;padding-right:8px}.header{padding:11px 12px;border-radius:21px;min-height:70px}.logo{width:48px;height:48px}.brand h1{font-size:16px}.brand p{display:block!important;font-size:8px}.app-version{font-size:8px;padding:3px 5px}.header-actions{gap:5px}.header-actions .icon-btn,.header-actions .login-btn{min-height:39px;padding:8px 9px}.header-actions .btn-label{display:none}.v2-hero{min-height:0;margin-top:3px;padding:26px 20px;border-radius:24px}.v2-hero h2{font-size:43px;letter-spacing:-2.5px}.v2-hero .hero-copy>p{font-size:11px}.hero-benefits{gap:9px}.hero-benefit{min-width:calc(50% - 6px)}.hero-benefit:nth-child(3){min-width:100%}.hero-benefit-icon{width:36px;height:36px;border-radius:11px;font-size:16px}.hero-cta{width:100%;min-width:0}.hero-visual{min-height:250px}.hero-art{height:250px}.hero-art>img{height:210px;width:92%;border-radius:22px}.hero-speech{width:105px;min-height:100px;font-size:13px;right:0;top:-2px}.hero-speech b{font-size:14px}.hero-result-badge{right:0;bottom:-3px;padding:8px 10px}.hero-result-badge>b{font-size:18px}.hero-result-badge span{font-size:7px}.toolbar{grid-template-columns:1fr;padding:9px;gap:8px}.filters{overflow-x:auto;padding-bottom:2px}.filter{flex:0 0 auto;min-height:38px;padding:8px 12px;font-size:9px}.section-head{align-items:flex-start;flex-direction:column;gap:5px}.section-head h3{font-size:21px}.private-note{text-align:left}.products{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}.product{border-radius:16px}.product-img{height:130px}.product-body{padding:10px;gap:6px}.product h4{font-size:14px}.desc{font-size:9px;min-height:26px}.private-price{font-size:8px}.lock-dot{width:21px;height:21px;font-size:9px}.quantity-entry{grid-template-columns:1fr!important;gap:4px!important}.quantity-entry label{font-size:8px}.quantity-input{min-height:38px!important;font-size:15px!important}.reseller-cta{grid-template-columns:auto 1fr;padding:15px;border-radius:20px}.reseller-heart{font-size:30px}.reseller-cta strong{font-size:14px}.reseller-cta span{font-size:9px}.reseller-cta button{grid-column:1/-1;width:100%;min-width:0}}
 
+
+/* v2.0 — card de próximos sabores */
+.coming-soon-card{min-height:100%;border:1px dashed #c3a7f2;border-radius:21px;background:linear-gradient(135deg,#fff5e9,#efe3ff);color:#482092;display:grid;grid-template-columns:1.1fr .9fr;gap:12px;padding:20px;position:relative;overflow:hidden}
+.coming-badge{grid-column:1/-1;justify-self:start;padding:7px 10px;border-radius:999px;background:#d8c1ff;color:#4b20a4;font-size:10px;font-weight:900}
+.coming-copy{align-self:center}.coming-copy h4{margin:0 0 8px;font-size:30px;line-height:.94;letter-spacing:-1.4px}.coming-copy p{margin:0 0 14px;color:#5f5571;font-size:11px;line-height:1.45}.coming-copy button{border:0;border-radius:12px;background:#d7c2ff;color:#4d22a8;padding:11px 13px;font-size:10px;font-weight:900}.coming-visual{display:grid;place-items:center}.coming-visual span{width:150px;height:150px;display:grid;place-items:center;border-radius:43% 57% 50% 50%;background:#32126b;color:#cba8ff;font-size:78px;font-weight:900;transform:rotate(6deg)}
+@media(max-width:640px){.coming-soon-card{grid-template-columns:1fr;padding:12px}.coming-badge{font-size:8px;padding:5px 7px}.coming-copy h4{font-size:20px}.coming-copy p{font-size:8px}.coming-copy button{width:100%;font-size:8px;padding:8px}.coming-visual{display:none}}
 </style>
 </head>
 <body>
@@ -1354,6 +1360,14 @@ function renderProducts(){
       </div>
     </article>`
   }).join('')||'<div class="empty" style="grid-column:1/-1">Nenhum produto encontrado.</div>';
+  const searchValue=(document.getElementById('search')?.value||'').trim();
+  if(currentFilter==='all'&&!searchValue&&list.length){
+    products.insertAdjacentHTML('beforeend',`<article class="coming-soon-card">
+      <div class="coming-badge">⌛ Em breve</div>
+      <div class="coming-copy"><h4>Novos sabores<br>a caminho!</h4><p>Estamos preparando ainda mais sabores para você revender e aumentar seus resultados.</p><button type="button" onclick="openCustomerEntry()">🔔 Quero ser avisado</button></div>
+      <div class="coming-visual"><span>?</span></div>
+    </article>`);
+  }
   updatePriceVisibilityNote()
 }
 function setFilter(btn,filter){
