@@ -739,6 +739,38 @@ html[data-theme="light"] .admin-dashboard-summary .metric small,html[data-theme=
 @media(max-width:1050px){.admin-dashboard-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-head h2{font-size:23px}.admin-f1-hint{display:none}}
 @media(max-width:640px){.admin-dashboard-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-dashboard-summary .metric{flex-direction:column;align-items:center;text-align:center;padding:14px 8px}.admin-dashboard-summary .metric:last-child{grid-column:1/-1}.admin-quick{grid-template-columns:1fr}.admin-session-tools{margin-left:0;flex:1;justify-content:flex-end}.admin-brand-copy{min-width:0}.admin-quick button{font-size:14px}.admin-head{padding:14px}.admin-head h2{font-size:19px}}
 
+/* ===== v2.0: ações principais no topo do Painel CEO ===== */
+.admin-head-left{display:flex;align-items:center;gap:12px;min-width:0;flex:1}
+.admin-top-text-btn{
+  min-height:44px;border-radius:14px;padding:0 13px;border:1px solid #3B1F65;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-weight:900;white-space:nowrap
+}
+.admin-top-text-btn .ui-icon{width:19px;height:19px}
+.admin-exit-btn{
+  flex:0 0 auto;color:#FFC5CA;background:#351922;border-color:#6D3239
+}
+.admin-exit-btn:hover{background:#48212B}
+.admin-store-btn{
+  color:#fff;background:linear-gradient(135deg,#7A35EB,#5420C2);
+  border-color:rgba(191,145,255,.38);box-shadow:0 8px 20px rgba(82,32,194,.28)
+}
+.admin-store-btn:hover{filter:brightness(1.08)}
+.admin-store-btn .shortcut-key{position:static;margin-left:2px}
+.admin-session-tools{flex:0 0 auto}
+@media(max-width:760px){
+  .admin-head{flex-wrap:wrap}
+  .admin-head-left{width:100%;flex-basis:100%}
+  .admin-session-tools{width:100%;margin-left:0;justify-content:flex-end}
+}
+@media(max-width:520px){
+  .admin-head-left{gap:8px}
+  .admin-exit-btn{width:42px;padding:0}
+  .admin-exit-btn span{display:none}
+  .admin-store-btn{padding:0 10px}
+  .admin-store-btn .shortcut-key{display:none}
+}
+
 /* ===== UBA REVENDEDORES v2.0 ===== */
 body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transparent 34%),linear-gradient(180deg,#100b1d 0%,#0b0814 100%);font-family:"Montserrat",Arial,Helvetica,sans-serif}
 .app{max-width:1240px;padding-top:10px}
@@ -925,16 +957,26 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
   <div class="admin-wrap">
     <div class="admin-top">
       <header class="admin-head">
-        <img src="logo.jpg" alt="UBA DOCES">
-        <div class="admin-brand-copy">
-          <h2>UBA Revendedores</h2>
-          <p>Produtos • estoques • clientes e pedidos</p>
+        <div class="admin-head-left">
+          <button class="admin-top-text-btn admin-exit-btn" onclick="logoutAdmin()" aria-label="Sair do painel CEO" title="Sair do painel">
+            <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5"></path><path d="M15 12H3"></path><path d="M14 3h6v18h-6"></path></svg>
+            <span>Sair</span>
+          </button>
+          <img src="logo.jpg" alt="UBA DOCES">
+          <div class="admin-brand-copy">
+            <h2>UBA Revendedores</h2>
+            <p>Produtos • estoques • clientes e pedidos</p>
+          </div>
         </div>
         <div class="admin-session-tools">
           <button class="icon-btn" id="adminThemeBtn" data-theme-toggle onclick="toggleTheme()" title="Alternar tema" aria-label="Alternar tema"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"></path></svg></button>
           <span class="admin-session-badge">CEO • UBA</span>
           <span class="admin-f1-hint">F1 alterna loja / painel</span>
-          <button class="admin-logout-btn" onclick="logoutAdmin()" aria-label="Sair do painel CEO" title="Sair"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5"></path><path d="M15 12H3"></path><path d="M14 3h6v18h-6"></path></svg></button>
+          <button class="admin-top-text-btn admin-store-btn" onclick="closeAdmin()" aria-label="Ver loja" title="Ver loja">
+            <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-8 9 8"></path><path d="M5 10v11h14V10"></path></svg>
+            <span>Ver loja</span>
+            <small class="shortcut-key">F1</small>
+          </button>
         </div>
       </header>
     </div>
@@ -956,8 +998,6 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
         <button onclick="setAdminView('stocks')"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M4 7l8-4 8 4-8 4-8-4z"></path><path d="M4 7v10l8 4 8-4V7"></path></svg>Estoques</button>
         <button onclick="setAdminView('orders')"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3z"></path><path d="M9 8h6M9 12h6"></path></svg>Pedidos <b class="quick-count" id="ordersQuickCount"></b></button>
         <button onclick="openLogins()"><svg class="ui-icon" viewBox="0 0 24 24"><circle cx="10" cy="8" r="3"></circle><path d="M4 20a6 6 0 0 1 12 0M17 11l4 4M21 11l-4 4"></path></svg>Logins de clientes</button>
-        <button onclick="closeAdmin()"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"></path><path d="M5 10v11h14V10"></path></svg>Ver loja <small class="shortcut-key">F1</small></button>
-        <button onclick="logoutAdmin()"><svg class="ui-icon" viewBox="0 0 24 24"><path d="M10 17l5-5-5-5"></path><path d="M15 12H3"></path><path d="M14 3h6v18h-6"></path></svg>Sair do painel</button>
       </div>
 
       <div class="admin-dashboard-note">
