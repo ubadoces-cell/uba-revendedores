@@ -21,6 +21,25 @@ const PRICING = {
   ],
 };
 
+const DELIVERY_FEES = [
+  { neighborhood: "Socorro", cents: 399 },
+  { neighborhood: "Pitombeira", cents: 424 },
+  { neighborhood: "Brotolândia", cents: 449 },
+  { neighborhood: "Centro", cents: 474 },
+  { neighborhood: "Dr José Simões", cents: 499 },
+  { neighborhood: "João XXIII", cents: 524 },
+  { neighborhood: "Monsenhor Otávio", cents: 549 },
+  { neighborhood: "Santa Luzia", cents: 574 },
+  { neighborhood: "Antônio Holanda", cents: 599 },
+  { neighborhood: "Bom Jesus", cents: 624 },
+  { neighborhood: "Limoeirinho", cents: 649 },
+  { neighborhood: "Bom Nome", cents: 674 },
+  { neighborhood: "Boa Fé", cents: 699 },
+  { neighborhood: "Luis Alves de Freitas", cents: 724 },
+  { neighborhood: "Ilha", cents: 749 },
+  { neighborhood: "Bom Jesus do Cruzeiro", cents: 774 },
+];
+
 function db() { return database(); }
 function sha256(value) { return createHash("sha256").update(value).digest("hex"); }
 function clean(value, max = 180) { return String(value || "").trim().slice(0, max); }
@@ -28,6 +47,13 @@ function digits(value) { return String(value || "").replace(/\D/g, ""); }
 function int(value) {
   const number = Number(value);
   return Number.isFinite(number) ? Math.max(0, Math.trunc(number)) : 0;
+}
+function normalizedNeighborhood(value) {
+  return clean(value, 100).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/\s+/g, " ");
+}
+function deliveryFee(value) {
+  const wanted = normalizedNeighborhood(value);
+  return DELIVERY_FEES.find((item) => normalizedNeighborhood(item.neighborhood) === wanted) || null;
 }
 function cookie(req, name) {
   for (const part of String(req.headers.cookie || "").split(";")) {
@@ -101,6 +127,9 @@ function calculate(items, purpose) {
   return { units, totalCents, items: pricedItems };
 }
 function serialize(row, includePix = false) {
+  const delivery = row.delivery && typeof row.delivery === "object" ? row.delivery : {};
+  const feeCents = int(delivery.deliveryFeeCents);
+  const totalCents = Number(row.total_cents);
   const order = {
     id: row.id,
     code: row.code,
@@ -118,10 +147,12 @@ function serialize(row, includePix = false) {
       doc: row.customer_doc,
     },
     purpose: row.purpose,
-    delivery: row.delivery,
+    delivery,
     items: row.items,
     units: Number(row.units),
-    totalCents: Number(row.total_cents),
+    productTotalCents: Math.max(0, totalCents - feeCents),
+    deliveryFeeCents: feeCents,
+    totalCents,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
@@ -195,24 +226,34 @@ export default async function handler(req, res) {
       const customer = body.customer && typeof body.customer === "object" ? body.customer : {};
       const buyer = body.buyer && typeof body.buyer === "object" ? body.buyer : {};
       const delivery = body.delivery && typeof body.delivery === "object" ? body.delivery : {};
+      const selectedDelivery = deliveryFee(delivery.neighborhood);
+      if (!selectedDelivery) return res.status(400).json({ error: "Selecione um bairro atendido para calcular a taxa de entrega." });
+      const productTotalCents = calculated.totalCents;
+      const totalCents = productTotalCents + selectedDelivery.cents;
+      const calculatedWithDelivery = { ...calculated, totalCents };
       const customerName = clean(buyer.name || customer.name, 140);
       const customerDoc = digits(buyer.doc || customer.doc);
       if (!customerName) return res.status(400).json({ error: "Informe o nome do comprador." });
       if (![11, 14].includes(customerDoc.length)) return res.status(400).json({ error: "Informe um CPF ou CNPJ válido para gerar o Pix." });
 
+      const safeDelivery = {
+        cep: clean(delivery.cep, 20),
+        city: clean(delivery.city, 100) || "Limoeiro do Norte",
+        neighborhood: selectedDelivery.neighborhood,
+        street: clean(delivery.street, 180),
+        number: clean(delivery.number, 30),
+        complement: clean(delivery.complement, 120),
+        deliveryFeeCents: selectedDelivery.cents,
+      };
+
       if (testAccount) {
-        const safeDelivery = Object.fromEntries(["cep", "city", "street", "number", "complement"].map((key) => [key, clean(delivery[key], 180)]));
-        return res.status(201).json({ order: await saveTestOrder(sql, calculated, safeDelivery) });
+        return res.status(201).json({ order: await saveTestOrder(sql, calculatedWithDelivery, safeDelivery) });
       }
 
       const id = randomBytes(16).toString("hex");
       insertedOrderId = id;
       const publicToken = randomBytes(24).toString("hex");
       const code = `UBA-${Date.now().toString(36).toUpperCase()}-${randomBytes(2).toString("hex").toUpperCase()}`;
-      const safeDelivery = {
-        cep: clean(delivery.cep, 20), city: clean(delivery.city, 100), street: clean(delivery.street, 180),
-        number: clean(delivery.number, 30), complement: clean(delivery.complement, 120),
-      };
       const email = clean(customer.email, 180);
       const phone = clean(customer.phone, 60);
       await sql.query(`INSERT INTO reseller_orders
@@ -221,13 +262,13 @@ export default async function handler(req, res) {
         VALUES ($1,$2,'novo','aguardando_pagamento',$3,$4,$5,$6,$7,$8,$9,$10,$11::jsonb,$12::jsonb,$13,$14)`, [
         id, code, sha256(publicToken), account?.id || null, customerName, email, phone,
         clean(buyer.store || customer.store, 140), customerDoc, purpose,
-        JSON.stringify(safeDelivery), JSON.stringify(calculated.items), calculated.units, calculated.totalCents,
+        JSON.stringify(safeDelivery), JSON.stringify(calculated.items), calculated.units, totalCents,
       ]);
 
       const asaasCustomerId = await findOrCreateCustomer({ name: customerName, doc: customerDoc, email, phone, reference: code });
       const payment = await asaas("/payments", {
         method: "POST",
-        body: JSON.stringify({ customer: asaasCustomerId, billingType: "PIX", value: calculated.totalCents / 100, dueDate: dueDateTomorrow(), description: `Pedido UBA Doces ${code}`, externalReference: code }),
+        body: JSON.stringify({ customer: asaasCustomerId, billingType: "PIX", value: totalCents / 100, dueDate: dueDateTomorrow(), description: `Pedido UBA Doces ${code} • Entrega ${selectedDelivery.neighborhood}`, externalReference: code }),
       });
       if (!payment.id) throw Object.assign(new Error("O Asaas não retornou a cobrança Pix."), { statusCode: 502 });
       const qr = await asaas(`/payments/${encodeURIComponent(payment.id)}/pixQrCode`);
