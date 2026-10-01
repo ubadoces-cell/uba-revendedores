@@ -96,6 +96,10 @@
     }
   }
 
+  function validCustomerPassword(password) {
+    return String(password || '').length >= 6 && /[A-Za-zÀ-ÖØ-öø-ÿ]/.test(String(password || '')) && /\d/.test(String(password || ''));
+  }
+
   registerCustomer = async function () {
     const name = document.getElementById("regName").value.trim();
     const email = document.getElementById("regEmail").value.trim();
@@ -104,8 +108,12 @@
     const store = document.getElementById("regStore").value.trim();
     const purpose = "commerce";
     const password = document.getElementById("regPass").value;
-    if (!name || (!email && !phone) || !doc || password.length < 6) {
-      setAuthMessage("Preencha nome, e-mail ou telefone, CPF/CNPJ e uma senha com pelo menos 6 caracteres.", "bad");
+    if (!name || (!email && !phone) || !doc) {
+      setAuthMessage("Preencha nome, e-mail ou telefone e CPF/CNPJ.", "bad");
+      return;
+    }
+    if (!validCustomerPassword(password)) {
+      setAuthMessage("A senha precisa ter no mínimo 6 caracteres, com pelo menos 1 letra e 1 número.", "bad");
       return;
     }
     try {
@@ -123,7 +131,7 @@
     const login = normalizeLogin(document.getElementById("customerLogin").value);
     const password = document.getElementById("customerPass").value;
     if (!login || !password) {
-      setAuthMessage("Digite seu e-mail/telefone e senha.", "bad");
+      setAuthMessage("Digite seu e-mail, telefone ou CPF/CNPJ e a senha.", "bad");
       return;
     }
     try {
@@ -197,8 +205,8 @@
     const purpose = "commerce";
     const password = document.getElementById("accountPassword").value;
     if (!name || (!email && !phone)) { alert("Informe nome e pelo menos e-mail ou telefone."); return; }
-    if (!id && password.length < 6) { alert("Ao criar um login, informe uma senha com pelo menos 6 caracteres."); return; }
-    if (password && password.length < 6) { alert("A nova senha precisa ter pelo menos 6 caracteres."); return; }
+    if (!id && !validCustomerPassword(password)) { alert("Ao criar um login, a senha precisa ter no mínimo 6 caracteres, com pelo menos 1 letra e 1 número."); return; }
+    if (password && !validCustomerPassword(password)) { alert("A nova senha precisa ter no mínimo 6 caracteres, com pelo menos 1 letra e 1 número."); return; }
     try {
       const data = await request({
         method: id ? "PATCH" : "POST",
@@ -250,7 +258,7 @@
     try{
       const response=await fetch('/api/orders?scope=mine',{credentials:'same-origin'});const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.error||'Não foi possível carregar seus pedidos.');
       const orders=Array.isArray(data.orders)?data.orders:[];
-      root.innerHTML=orders.length?orders.map(order=>`<div class="customer-order-row"><div class="customer-order-head"><div><b>${escapeHtml(order.code)}</b><small>${new Date(order.createdAt).toLocaleString('pt-BR')} · ${Number(order.units||0)} unidades</small></div><b>${(Number(order.totalCents||0)/100).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}</b></div><span class="customer-order-status">${escapeHtml(orderStatusLabel(order.status))} · ${escapeHtml(paymentLabel(order.paymentStatus))}</span>${order.customerNote?`<div class="customer-order-note"><b>Mensagem da UBA:</b><br>${escapeHtml(order.customerNote)}</div>`:''}</div>`).join(''):'<div class="muted">Você ainda não possui pedidos.</div>'
+      root.innerHTML=orders.length?orders.map(order=>`<div class="customer-order-row"><div class="customer-order-head"><div><b>${escapeHtml(order.code)}</b><small>${new Date(order.createdAt).toLocaleString('pt-BR')} · ${Number(order.units||0)} unidades</small></div><b>${(Number(order.totalCents||0)/100).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}</b></div><span class="customer-order-status">${escapeHtml(orderStatusLabel(order.status))} · ${escapeHtml(paymentLabel(order.paymentStatus))}</span>${order.delivery?.neighborhood?`<small style="display:block;margin-top:7px">Entrega: ${escapeHtml(order.delivery.neighborhood)} · ${(Number(order.deliveryFeeCents||0)/100).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}</small>`:''}${order.customerNote?`<div class="customer-order-note"><b>Mensagem da UBA:</b><br>${escapeHtml(order.customerNote)}</div>`:''}</div>`).join(''):'<div class="muted">Você ainda não possui pedidos.</div>'
     }catch(error){root.innerHTML=`<div class="muted">${escapeHtml(error.message)}</div>`}
   }
   window.loadMyOrders=loadMyOrders;
@@ -261,4 +269,12 @@
   renderAll();
   loadCurrentCustomer();
   setInterval(() => { if (ceoSession && !document.hidden) loadAccounts(true); }, 15000);
+})();
+
+(function loadDeliveryFees(){
+  if(document.querySelector('script[data-uba-delivery-fees]'))return;
+  const script=document.createElement('script');
+  script.src='delivery-fees.js?v=20261001';
+  script.dataset.ubaDeliveryFees='1';
+  document.body.appendChild(script);
 })();
