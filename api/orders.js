@@ -22,22 +22,22 @@ const PRICING = {
 };
 
 const DELIVERY_FEES = [
-  { neighborhood: "Socorro", cents: 399 },
-  { neighborhood: "Pitombeira", cents: 424 },
-  { neighborhood: "Brotolândia", cents: 449 },
-  { neighborhood: "Centro", cents: 474 },
-  { neighborhood: "Dr José Simões", cents: 499 },
-  { neighborhood: "João XXIII", cents: 524 },
-  { neighborhood: "Monsenhor Otávio", cents: 549 },
-  { neighborhood: "Santa Luzia", cents: 574 },
-  { neighborhood: "Antônio Holanda", cents: 599 },
-  { neighborhood: "Bom Jesus", cents: 624 },
-  { neighborhood: "Limoeirinho", cents: 649 },
-  { neighborhood: "Bom Nome", cents: 674 },
-  { neighborhood: "Boa Fé", cents: 699 },
-  { neighborhood: "Luis Alves de Freitas", cents: 724 },
-  { neighborhood: "Ilha", cents: 749 },
-  { neighborhood: "Bom Jesus do Cruzeiro", cents: 774 },
+  { neighborhood: "Socorro", cents: 199 },
+  { neighborhood: "Pitombeira", cents: 224 },
+  { neighborhood: "Brotolândia", cents: 249 },
+  { neighborhood: "Centro", cents: 274 },
+  { neighborhood: "Dr José Simões", cents: 299 },
+  { neighborhood: "João XXIII", cents: 324 },
+  { neighborhood: "Monsenhor Otávio", cents: 349 },
+  { neighborhood: "Santa Luzia", cents: 374 },
+  { neighborhood: "Antônio Holanda", cents: 399 },
+  { neighborhood: "Bom Jesus", cents: 424 },
+  { neighborhood: "Limoeirinho", cents: 449 },
+  { neighborhood: "Bom Nome", cents: 474 },
+  { neighborhood: "Boa Fé", cents: 499 },
+  { neighborhood: "Luis Alves de Freitas", cents: 524 },
+  { neighborhood: "Ilha", cents: 549 },
+  { neighborhood: "Bom Jesus do Cruzeiro", cents: 574 },
 ];
 
 function db() { return database(); }
