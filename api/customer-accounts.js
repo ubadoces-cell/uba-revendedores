@@ -53,6 +53,7 @@ function serialize(row) {
     store: row.store || "",
     purpose: row.purpose || "commerce",
     status: row.status || "pending",
+    passwordConfigured: Boolean(row.password_hash),
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
@@ -157,13 +158,17 @@ export default async function handler(req, res) {
       const test = await loginTest(req,res,sql,body);
       if(test) return res.status(test.error?401:200).json(test);
       const login = normalized(body.login);
+      const loginDigits = digits(body.login);
       const password = String(body.password || "");
-      if (!login || !password) return res.status(400).json({ error: "Digite seu e-mail/telefone e senha." });
+      if (!login || !password) return res.status(400).json({ error: "Digite seu e-mail, telefone ou CPF/CNPJ e a senha." });
       const rows = await sql.query(`SELECT * FROM reseller_customer_accounts
-        WHERE ($1 <> '' AND email_norm = $1) OR ($2 <> '' AND phone_norm = $2) LIMIT 1`, [login, digits(body.login)]);
+        WHERE ($1 <> '' AND email_norm = $1)
+           OR ($2 <> '' AND phone_norm = $2)
+           OR ($2 <> '' AND doc_norm = $2)
+        LIMIT 1`, [login, loginDigits]);
       const account = rows[0];
       if (!account || !passwordMatches(password, account.password_salt, account.password_hash)) {
-        return res.status(401).json({ error: "Login ou senha incorretos." });
+        return res.status(401).json({ error: "Login ou senha incorretos. Use o e-mail, telefone ou CPF/CNPJ cadastrado; o nome do responsável não é o login." });
       }
       if (account.status === "pending") return res.status(403).json({ error: "Seu cadastro existe, mas ainda está aguardando aprovação da UBA." });
       if (account.status === "blocked") return res.status(403).json({ error: "Este login está bloqueado/desativado. Fale com a UBA para liberar o acesso." });
