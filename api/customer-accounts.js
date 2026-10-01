@@ -30,6 +30,16 @@ function passwordMatches(password, salt, expected) {
   const target = Buffer.from(String(expected || ""), "hex");
   return actual.length === target.length && timingSafeEqual(actual, target);
 }
+function validPassword(password) {
+  const value = String(password || "");
+  return value.length >= 6
+    && value.length <= 128
+    && /[A-Za-zÀ-ÖØ-öø-ÿ]/.test(value)
+    && /\d/.test(value);
+}
+function passwordRuleMessage(prefix = "A senha") {
+  return `${prefix} precisa ter no mínimo 6 caracteres, com pelo menos 1 letra e 1 número.`;
+}
 function setCustomerCookie(res, token, maxAge = MAX_AGE) {
   res.setHeader("Set-Cookie", [`${CUSTOMER_COOKIE}=${encodeURIComponent(token)}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${maxAge}`,clearTestCookie()]);
 }
@@ -125,8 +135,11 @@ export default async function handler(req, res) {
       const store = clean(body.store, 140);
       const purpose = VALID_PURPOSE.has(body.purpose) ? body.purpose : "commerce";
       const password = String(body.password || "");
-      if (!name || (!email && !phone) || ![11, 14].includes(digits(doc).length) || password.length < 6) {
-        return res.status(400).json({ error: "Preencha nome, e-mail ou telefone, CPF/CNPJ e uma senha com pelo menos 6 caracteres." });
+      if (!name || (!email && !phone) || ![11, 14].includes(digits(doc).length)) {
+        return res.status(400).json({ error: "Preencha nome, e-mail ou telefone e um CPF/CNPJ válido." });
+      }
+      if (!validPassword(password)) {
+        return res.status(400).json({ error: passwordRuleMessage() });
       }
       if (await duplicateAccount(sql, { email, phone, doc })) {
         return res.status(409).json({ error: "Já existe um cadastro com esse e-mail, telefone ou documento." });
@@ -137,7 +150,7 @@ export default async function handler(req, res) {
         (id, name, email, email_norm, phone, phone_norm, doc, doc_norm, store, purpose, status, password_hash, password_salt)
         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,'pending',$11,$12) RETURNING *`,
         [id, name, email, normalized(email), phone, digits(phone), doc, digits(doc), store, purpose, passwordHash(password, salt), salt]);
-      return res.status(201).json({ account: serialize(rows[0]) });
+      return res.status(201).json({ account: serialize(rows[0]), passwordConfigured: true });
     }
 
     if (req.method === "POST" && body.action === "login") {
@@ -186,8 +199,11 @@ export default async function handler(req, res) {
       const purpose = VALID_PURPOSE.has(body.purpose) ? body.purpose : "commerce";
       const status = VALID_STATUS.has(body.status) ? body.status : "approved";
       const password = String(body.password || "");
-      if (!name || (!email && !phone) || password.length < 6) {
-        return res.status(400).json({ error: "Informe nome, contato e uma senha com pelo menos 6 caracteres." });
+      if (!name || (!email && !phone)) {
+        return res.status(400).json({ error: "Informe nome e pelo menos e-mail ou telefone." });
+      }
+      if (!validPassword(password)) {
+        return res.status(400).json({ error: passwordRuleMessage() });
       }
       if (await duplicateAccount(sql, { email, phone, doc })) return res.status(409).json({ error: "Já existe outro login com esses dados." });
       const salt = randomBytes(16).toString("hex");
@@ -196,7 +212,7 @@ export default async function handler(req, res) {
         (id,name,email,email_norm,phone,phone_norm,doc,doc_norm,store,purpose,status,password_hash,password_salt)
         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING *`,
         [id,name,email,normalized(email),phone,digits(phone),doc,digits(doc),store,purpose,status,passwordHash(password,salt),salt]);
-      return res.status(201).json({ account: serialize(rows[0]) });
+      return res.status(201).json({ account: serialize(rows[0]), passwordConfigured: true });
     }
 
     if (req.method === "PATCH") {
@@ -210,7 +226,9 @@ export default async function handler(req, res) {
       const status = VALID_STATUS.has(body.status) ? body.status : "pending";
       const password = String(body.password || "");
       if (!id || !name || (!email && !phone)) return res.status(400).json({ error: "Dados do login incompletos." });
-      if (password && password.length < 6) return res.status(400).json({ error: "A nova senha precisa ter pelo menos 6 caracteres." });
+      if (password && !validPassword(password)) {
+        return res.status(400).json({ error: passwordRuleMessage("A nova senha") });
+      }
       if (await duplicateAccount(sql, { email, phone, doc }, id)) return res.status(409).json({ error: "Já existe outro login com esses dados." });
       let rows;
       if (password) {
@@ -224,8 +242,11 @@ export default async function handler(req, res) {
           [id,name,email,normalized(email),phone,digits(phone),doc,digits(doc),store,purpose,status]);
       }
       if (!rows[0]) return res.status(404).json({ error: "Login não encontrado." });
-      if (status !== "approved") await sql.query(`DELETE FROM reseller_customer_sessions WHERE account_id = $1`, [id]);
-      return res.status(200).json({ account: serialize(rows[0]) });
+
+      if (password || status !== "approved") {
+        await sql.query(`DELETE FROM reseller_customer_sessions WHERE account_id = $1`, [id]);
+      }
+      return res.status(200).json({ account: serialize(rows[0]), passwordUpdated: Boolean(password) });
     }
 
     if (req.method === "DELETE") {
