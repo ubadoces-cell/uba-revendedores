@@ -208,23 +208,88 @@
   }
   function showPix(order,publicToken){
     const payment=order.payment||{},qr=document.getElementById('pixQrImage');if(qr)qr.src='data:image/png;base64,'+(payment.encodedImage||'');
-    const copy=document.getElementById('pixCopyCode');if(copy)copy.textContent=payment.payload||'';const orderCode=document.getElementById('pixOrderCode');if(orderCode)orderCode.textContent=order.code;const status=document.getElementById('pixWaitingStatus');if(status)status.textContent='Aguardando pagamento Pix...';document.getElementById('pixPaymentArea')?.classList.add('show');document.getElementById('generatePixArea')?.classList.add('hidden');beginPaymentPolling(order.code,publicToken)
+    const copy=document.getElementById('pixCopyCode');if(copy)copy.textContent=payment.payload||'';const orderCode=document.getElementById('pixOrderCode');if(orderCode)orderCode.textContent=order.code;const status=document.getElementById('pixWaitingStatus');if(status)status.textContent='Aguardando pagamento Pix...';
+    document.getElementById('pixLoadingArea')?.classList.remove('show');
+    document.getElementById('pixPaymentArea')?.classList.add('show');
+    document.getElementById('generatePixArea')?.classList.add('hidden');
+    beginPaymentPolling(order.code,publicToken)
   }
 
+  let pixGenerating=false;
+  let pixProgressTimers=[];
+  const PIX_DELIVERY_FEES={Socorro:199,Pitombeira:224,'Brotolândia':249,Centro:274,'Dr José Simões':299,'João XXIII':324,'Monsenhor Otávio':349,'Santa Luzia':374,'Antônio Holanda':399,'Bom Jesus':424,Limoeirinho:449,'Bom Nome':474,'Boa Fé':499,'Luis Alves de Freitas':524,Ilha:549,'Bom Jesus do Cruzeiro':574};
+  function clearPixProgressTimers(){pixProgressTimers.forEach(clearTimeout);pixProgressTimers=[]}
+  function pixDeliveryInfo(){
+    const neighborhood=document.getElementById('deliveryNeighborhood')?.value||'';
+    return {neighborhood,cents:Number(PIX_DELIVERY_FEES[neighborhood]||0)}
+  }
+  function updatePixCheckoutSummary(){
+    const totals=typeof getTotals==='function'?getTotals():{total:0};
+    const productCents=Math.round(Number(totals.total||0)*100);
+    const delivery=pixDeliveryInfo();
+    const customer=typeof getCustomer==='function'?getCustomer():null;
+    const product=document.getElementById('pixProductsSummary'),deliveryValue=document.getElementById('pixDeliverySummary'),deliveryLabel=document.getElementById('pixDeliveryLabel'),total=document.getElementById('pixTotal');
+    if(product)product.textContent=orderMoney(productCents);
+    if(deliveryValue)deliveryValue.textContent=orderMoney(delivery.cents);
+    if(deliveryLabel)deliveryLabel.textContent='Entrega'+(customer?.name?' - '+customer.name:'');
+    if(total)total.textContent=orderMoney(productCents+delivery.cents)
+  }
+  window.updatePixCheckoutSummary=updatePixCheckoutSummary;
+  function setPixProgress(percent,status,detail){
+    const safe=Math.max(0,Math.min(100,Math.round(Number(percent||0))));
+    const fill=document.getElementById('pixProgressFill'),pct=document.getElementById('pixProgressPercent'),head=document.getElementById('pixProgressStatus'),line=document.getElementById('pixLoadingStatus');
+    if(fill)fill.style.width=safe+'%';if(pct)pct.textContent=safe+'%';if(head&&status)head.textContent=status;if(line&&detail)line.textContent=detail
+  }
+  function beginPixLoading(){
+    clearPixProgressTimers();pixGenerating=true;updatePixCheckoutSummary();
+    document.getElementById('generatePixArea')?.classList.add('hidden');
+    document.getElementById('pixPaymentArea')?.classList.remove('show');
+    document.getElementById('pixLoadingArea')?.classList.add('show');
+    const title=document.getElementById('pixLoadingTitle'),text=document.getElementById('pixLoadingText'),error=document.getElementById('pixLoadingError'),spinner=document.getElementById('pixLoadingSpinner'),button=document.getElementById('generatePixBtn'),back=document.getElementById('pixBackBtn');
+    if(title)title.textContent='Gerando Pix';
+    if(text)text.textContent='Estamos preparando sua cobrança de forma segura com o Asaas. Em instantes o QR Code e o código copia e cola serão exibidos.';
+    if(error){error.textContent='';error.classList.remove('show')}
+    if(spinner)spinner.style.display='';
+    if(button){button.disabled=true;button.classList.add('pix-generating');button.textContent='Gerando Pix...'}
+    if(back)back.disabled=true;
+    setPixProgress(20,'Preparando cobrança...','Enviando dados com segurança...');
+    pixProgressTimers.push(setTimeout(()=>setPixProgress(45,'Criando cobrança...','Criando cobrança segura no Asaas...'),280));
+    pixProgressTimers.push(setTimeout(()=>setPixProgress(70,'Preparando QR Code...','Aguardando QR Code e código copia e cola...'),850))
+  }
+  function completePixLoading(){
+    clearPixProgressTimers();setPixProgress(100,'Pix gerado','QR Code recebido com segurança.');
+    pixGenerating=false;
+    const button=document.getElementById('generatePixBtn'),back=document.getElementById('pixBackBtn');
+    if(button){button.disabled=false;button.classList.remove('pix-generating');button.textContent='Gerar Pix'}
+    if(back)back.disabled=false
+  }
+  function failPixLoading(message){
+    clearPixProgressTimers();pixGenerating=false;
+    const title=document.getElementById('pixLoadingTitle'),text=document.getElementById('pixLoadingText'),error=document.getElementById('pixLoadingError'),spinner=document.getElementById('pixLoadingSpinner'),button=document.getElementById('generatePixBtn'),back=document.getElementById('pixBackBtn');
+    if(title)title.textContent='Não foi possível gerar o Pix';
+    if(text)text.textContent='A cobrança não foi concluída. Você pode tentar novamente sem duplicar o clique.';
+    if(error){error.textContent=message||'Tente novamente em instantes.';error.classList.add('show')}
+    if(spinner)spinner.style.display='none';
+    if(button){button.disabled=false;button.classList.remove('pix-generating');button.textContent='Tentar novamente'}
+    if(back)back.disabled=false
+  }
   window.finishDemo=async function(){
+    if(pixGenerating)return;
     const customer=getCustomer();if(!customer){showPanel('step1');setAuthMessage('É necessário um login aprovado para gerar o Pix.','warn');return}
     const totals=getTotals();if(totals.count<50){alert('O pedido mínimo é de 50 unidades.');return}
     const buyerName=document.getElementById('buyerName')?.value.trim()||customer.name||'',buyerDoc=document.getElementById('buyerDoc')?.value.trim()||customer.doc||'';
     if(!buyerName){alert('Informe o nome do comprador.');goStep(2);return}if(![11,14].includes(buyerDoc.replace(/\D/g,'').length)){alert('Informe um CPF ou CNPJ válido para gerar o Pix.');goStep(2);return}
-    const button=document.querySelector('#step4 .checkout-nav .next');if(button){button.disabled=true;button.textContent=customer.isTest?'Salvando teste...':'Gerando Pix...'}
+    beginPixLoading();
     try{
       const payload={purpose:totals.purpose,customer:{name:customer.name,email:customer.email,phone:customer.phone,store:customer.store,doc:customer.doc},buyer:{name:buyerName,doc:buyerDoc,store:document.getElementById('buyerStore')?.value||''},delivery:{cep:document.getElementById('deliveryCep')?.value||'',city:document.getElementById('deliveryCity')?.value||'',street:document.getElementById('deliveryStreet')?.value||'',number:document.getElementById('deliveryNumber')?.value||'',complement:document.getElementById('deliveryComplement')?.value||''},items:catalog.filter(product=>Number(qty[product.id]||0)>0).map(product=>({productId:product.id,quantity:Number(qty[product.id])}))};
-      const data=await ordersRequest({method:'POST',body:JSON.stringify(payload)});if(data.order.isTest)showSuccess(data.order.code,true);else showPix(data.order,data.publicToken)
-    }catch(error){alert(error.message)}finally{if(button){button.disabled=false;button.textContent=getCustomer()?.isTest?'Finalizar teste sem pagar':'Gerar Pix'}}
+      const data=await ordersRequest({method:'POST',body:JSON.stringify(payload)});
+      completePixLoading();
+      if(data.order.isTest)showSuccess(data.order.code,true);else showPix(data.order,data.publicToken)
+    }catch(error){failPixLoading(error.message)}
   };
   const previousOpenAdmin=window.openAdmin;
   window.openAdmin=function(){previousOpenAdmin();ensureRevenueView();if(ceoSession){loadOrdersRemote(true);if(typeof window.loadSharedStockRemote==='function')window.loadSharedStockRemote(true)}};
   const previousResetDemo=window.resetDemo;
-  window.resetDemo=function(){if(paymentPoll){clearInterval(paymentPoll);paymentPoll=null}document.getElementById('pixPaymentArea')?.classList.remove('show');document.getElementById('generatePixArea')?.classList.remove('hidden');previousResetDemo()};
+  window.resetDemo=function(){if(paymentPoll){clearInterval(paymentPoll);paymentPoll=null}clearPixProgressTimers();pixGenerating=false;document.getElementById('pixPaymentArea')?.classList.remove('show');document.getElementById('pixLoadingArea')?.classList.remove('show');document.getElementById('generatePixArea')?.classList.remove('hidden');const b=document.getElementById('generatePixBtn'),back=document.getElementById('pixBackBtn');if(b){b.disabled=false;b.classList.remove('pix-generating');b.textContent='Gerar Pix'}if(back)back.disabled=false;previousResetDemo()};
   setInterval(()=>{if(ceoSession&&['orders','revenue'].includes(adminView)&&!document.hidden)loadOrdersRemote(true)},20000);
 })();
