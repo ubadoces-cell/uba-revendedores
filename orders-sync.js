@@ -155,6 +155,43 @@
     const rev=document.getElementById('adminRevenueView');if(rev)rev.hidden=true;previousSetAdminView(view);if(view==='orders')loadOrdersRemote(true)
   };
 
+
+  async function customerOrdersRequest(){
+    const response=await fetch('/api/orders?scope=mine',{credentials:'same-origin',headers:{'Content-Type':'application/json'}});
+    const data=await response.json().catch(()=>({}));
+    if(!response.ok)throw new Error(data.error||'Não foi possível carregar seus pedidos.');
+    return data
+  }
+  function ensureCustomerOrdersPanel(){
+    const box=document.querySelector('#customerAccount .account-box');if(!box)return null;
+    let root=document.getElementById('customerOrdersHistory');
+    if(root)return root;
+    if(!document.getElementById('customer-orders-history-css')){
+      const style=document.createElement('style');style.id='customer-orders-history-css';style.textContent='.customer-orders-history{margin-top:15px;padding-top:14px;border-top:1px solid var(--line)}.customer-orders-history h5{margin:0 0 9px;font-size:15px}.customer-order-history-card{padding:11px;border:1px solid var(--line);border-radius:13px;background:var(--surface);margin-top:7px}.customer-order-history-card strong{display:block}.customer-order-history-card small{display:block;color:var(--muted);font-size:9px;margin-top:3px;line-height:1.45}.customer-order-history-items{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}.customer-order-history-items span{padding:5px 7px;border:1px solid var(--line);border-radius:8px;background:var(--surface2);font-size:8px}.customer-order-history-note{margin-top:7px;padding:8px 9px;border:1px solid #27425F;border-radius:9px;background:#0B1621;color:#B9D6ED;font-size:9px;line-height:1.4}.customer-order-history-empty{padding:13px;text-align:center;color:var(--muted);font-size:10px}';document.head.appendChild(style)
+    }
+    const wrap=document.createElement('div');wrap.className='customer-orders-history';wrap.innerHTML='<h5>Meus pedidos</h5><div id="customerOrdersHistory"><div class="customer-order-history-empty">Carregando pedidos...</div></div>';box.appendChild(wrap);
+    return document.getElementById('customerOrdersHistory')
+  }
+  async function loadCustomerOrderHistory(){
+    const root=ensureCustomerOrdersPanel();if(!root||!getCustomer())return;
+    root.innerHTML='<div class="customer-order-history-empty">Carregando pedidos...</div>';
+    try{
+      const data=await customerOrdersRequest(),list=Array.isArray(data.orders)?data.orders:[];
+      if(!list.length){root.innerHTML='<div class="customer-order-history-empty">Você ainda não possui pedidos.</div>';return}
+      root.innerHTML=list.map(order=>{
+        const items=Array.isArray(order.items)?order.items:[];
+        const note=order.customerNote?'<div class="customer-order-history-note"><b>Observação da UBA:</b> '+escapeHtml(order.customerNote)+'</div>':'';
+        const chips=items.map(item=>'<span><b>'+Number(item.quantity||0)+'×</b> '+escapeHtml(item.name||item.productId)+'</span>').join('');
+        return '<div class="customer-order-history-card"><strong>'+escapeHtml(order.code)+' · '+escapeHtml(orderStatus(order.status))+'</strong><small>'+Number(order.units||0)+' unidades · '+orderMoney(order.totalCents)+' · '+escapeHtml(paymentStatus(order.paymentStatus))+'</small><div class="customer-order-history-items">'+chips+'</div>'+note+'</div>'
+      }).join('')
+    }catch(error){root.innerHTML='<div class="customer-order-history-empty">'+escapeHtml(error.message)+'</div>'}
+  }
+  const previousOpenCustomerEntry=window.openCustomerEntry;
+  window.openCustomerEntry=function(){
+    previousOpenCustomerEntry();
+    if(getCustomer())loadCustomerOrderHistory()
+  };
+
   window.copyPixCode=async function(){
     const value=document.getElementById('pixCopyCode')?.textContent||'';if(!value)return;
     try{await navigator.clipboard.writeText(value);const button=document.getElementById('copyPixBtn');if(button){button.textContent='✓ Código copiado';setTimeout(()=>button.textContent='Copiar código Pix',1800)}}catch{alert('Não foi possível copiar automaticamente. Selecione o código acima.')}
