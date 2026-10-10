@@ -1,0 +1,333 @@
+/* UBA Revendedores — barra inferior Liquid Glass.
+   Dimensões e comportamento visuais alinhados ao UBA Controles. */
+
+.admin-shell.show .admin-wrap{
+  padding-bottom:122px!important;
+}
+
+.uba-rev-bottom-tabs{
+  display:flex;
+  position:fixed;
+  z-index:90;
+  left:50%;
+  right:auto;
+  bottom:14px;
+  width:calc(100% - 34px);
+  max-width:1180px;
+  min-height:82px;
+  transform:translateX(-50%) translateZ(0);
+  align-items:center;
+  justify-content:space-between;
+  gap:6px;
+  padding:8px 10px;
+  overflow:visible;
+  isolation:isolate;
+  border:.8px solid rgba(254,242,228,.76);
+  border-radius:38px;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.022) 0%,rgba(205,198,228,.009) 48%,rgba(74,56,142,.006) 100%),
+    rgba(12,7,22,.004);
+  box-shadow:
+    0 24px 68px rgba(0,0,0,.34),
+    0 0 34px rgba(124,60,255,.15),
+    inset 0 1px 0 rgba(255,255,255,.88),
+    inset 0 -.8px 0 rgba(205,198,228,.22),
+    inset .8px 0 0 rgba(255,255,255,.22),
+    inset -.8px 0 0 rgba(255,255,255,.16),
+    0 0 0 .35px rgba(205,198,228,.12);
+  -webkit-backdrop-filter:blur(2.5px) saturate(118%) brightness(1.02);
+  backdrop-filter:blur(2.5px) saturate(118%) brightness(1.02);
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-touch-callout:none;
+}
+
+.uba-rev-bottom-tabs::after{
+  content:"";
+  position:absolute;
+  z-index:0;
+  pointer-events:none;
+  left:5%;
+  right:4%;
+  bottom:-52%;
+  height:88%;
+  border-radius:50%;
+  background:
+    radial-gradient(ellipse at 24% 34%,rgba(254,242,228,.14),transparent 38%),
+    radial-gradient(ellipse at 72% 36%,rgba(188,142,255,.18),transparent 48%);
+  filter:blur(16px);
+  opacity:.24;
+}
+
+.uba-rev-bottom-tabs > button{
+  position:relative;
+  z-index:2;
+  min-width:0;
+  flex:1 1 0;
+  min-height:62px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  padding:11px 14px;
+  overflow:hidden;
+  border:.8px solid transparent;
+  border-radius:27px;
+  color:rgba(254,242,228,.88);
+  background:transparent;
+  box-shadow:none;
+  font-family:"Montserrat",Arial,sans-serif;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:-.01em;
+  text-shadow:0 1px 8px rgba(0,0,0,.40);
+  transition:
+    transform .18s ease,
+    color .18s ease,
+    border-color .18s ease,
+    background .18s ease,
+    box-shadow .18s ease,
+    filter .18s ease;
+  touch-action:manipulation;
+}
+
+.uba-rev-bottom-tabs > button:not(.active),
+.uba-rev-bottom-tabs > button:not(.active):hover{
+  border-color:transparent;
+  background:transparent;
+  box-shadow:none;
+  transform:none;
+  filter:none;
+}
+
+.uba-rev-bottom-tabs > button.active{
+  color:#fff;
+  border-color:rgba(255,255,255,.06);
+  background:
+    linear-gradient(180deg,rgba(8,7,13,.84),rgba(3,3,7,.78)),
+    rgba(0,0,0,.70);
+  box-shadow:
+    0 8px 20px rgba(0,0,0,.24),
+    inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+.uba-rev-bottom-tabs .uba-rev-nav-icon{
+  width:22px;
+  height:22px;
+  flex:0 0 22px;
+  stroke:currentColor;
+  fill:none;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  filter:drop-shadow(0 1px 5px rgba(0,0,0,.28));
+}
+
+.uba-rev-bottom-tabs > button.uba-liquid-pop{
+  animation:ubaRevLiquidPop .26s cubic-bezier(.2,.8,.2,1);
+}
+@keyframes ubaRevLiquidPop{
+  0%{transform:scale(1)}
+  46%{transform:scale(.965)}
+  100%{transform:scale(1)}
+}
+
+/* Mesma lente ampliadora do UBA Controles. */
+.uba-rev-video-liquid-lens{
+  position:absolute;
+  z-index:8;
+  left:0;
+  top:0;
+  width:200px;
+  height:104px;
+  pointer-events:none;
+  opacity:0;
+  overflow:hidden;
+  border:.9px solid rgba(255,255,255,.20);
+  border-radius:42px;
+  background:
+    radial-gradient(72% 84% at 72% 82%,rgba(145,94,232,.055),transparent 72%),
+    linear-gradient(180deg,rgba(20,18,28,.20),rgba(6,6,11,.34)),
+    rgba(10,9,15,.26);
+  box-shadow:
+    0 10px 26px rgba(0,0,0,.22),
+    inset 0 0 0 .55px rgba(255,255,255,.10),
+    inset 0 -1px 0 rgba(205,198,228,.08);
+  -webkit-backdrop-filter:blur(4px) saturate(135%) contrast(1.04);
+  backdrop-filter:blur(4px) saturate(135%) contrast(1.04);
+  transform:translate3d(-240px,-120px,0);
+  transform-origin:50% 50%;
+  will-change:transform,opacity;
+  transition:opacity .18s ease;
+  contain:layout paint style;
+}
+
+.uba-rev-video-liquid-lens.is-visible{opacity:1}
+
+.uba-rev-video-liquid-lens::before{
+  content:"";
+  position:absolute;
+  z-index:3;
+  inset:-1px;
+  pointer-events:none;
+  border-radius:inherit;
+  background:
+    radial-gradient(26px 40px at 0% 50%,rgba(0,205,255,.30),transparent 70%),
+    radial-gradient(32px 28px at 4% 96%,rgba(124,82,255,.32),transparent 72%),
+    radial-gradient(30px 28px at 98% 8%,rgba(255,60,155,.30),transparent 72%),
+    radial-gradient(32px 32px at 100% 84%,rgba(255,205,38,.30),transparent 72%);
+  mix-blend-mode:screen;
+  filter:blur(.8px) saturate(190%);
+  opacity:.76;
+}
+
+.uba-rev-video-liquid-lens::after{
+  content:"";
+  position:absolute;
+  z-index:4;
+  inset:2px;
+  pointer-events:none;
+  border-radius:39px;
+  box-shadow:
+    inset 0 0 0 .45px rgba(255,255,255,.09),
+    inset 0 0 12px rgba(160,120,255,.018);
+}
+
+.uba-rev-video-liquid-mirror{
+  position:absolute;
+  z-index:2;
+  left:0;
+  top:0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:6px;
+  padding:8px 10px;
+  box-sizing:border-box;
+  transform-origin:0 0;
+  pointer-events:none;
+  will-change:transform;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+}
+
+.uba-rev-video-liquid-mirror button{
+  pointer-events:none!important;
+  flex:1 1 0!important;
+  min-width:0!important;
+  min-height:62px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:9px!important;
+  padding:11px 14px!important;
+  border:.8px solid transparent!important;
+  border-radius:27px!important;
+  background:transparent!important;
+  color:rgba(255,255,255,.96)!important;
+  box-shadow:none!important;
+  font-family:"Montserrat",Arial,sans-serif!important;
+  font-size:12px!important;
+  font-weight:800!important;
+  line-height:1!important;
+  text-shadow:0 1px 5px rgba(0,0,0,.46)!important;
+}
+
+.uba-rev-video-liquid-mirror button.active{
+  background:
+    linear-gradient(180deg,rgba(7,7,10,.92),rgba(0,0,0,.86)),
+    rgba(0,0,0,.84)!important;
+  border-color:transparent!important;
+}
+
+.uba-rev-video-liquid-mirror .uba-rev-nav-icon{
+  width:22px!important;
+  height:22px!important;
+  flex:0 0 22px!important;
+}
+
+@media(max-width:900px), (hover:none), (pointer:coarse){
+  .admin-shell.show .admin-wrap{padding-bottom:122px!important}
+
+  .uba-rev-bottom-tabs{
+    left:50%;
+    right:auto;
+    bottom:calc(20px + env(safe-area-inset-bottom,0px));
+    width:calc(100vw - 28px);
+    max-width:720px;
+    min-height:70px;
+    transform:translateX(-50%) translateZ(0);
+    gap:4px;
+    padding:7px 8px;
+    border-radius:31px;
+    touch-action:none;
+  }
+
+  .uba-rev-bottom-tabs > button{
+    min-height:54px;
+    min-width:0;
+    flex:1 1 0;
+    padding:7px 4px;
+    gap:4px;
+    border-radius:22px;
+    font-size:8.5px;
+    line-height:1;
+  }
+
+  .uba-rev-bottom-tabs .uba-rev-nav-icon{
+    width:18px;
+    height:18px;
+    flex:0 0 18px;
+  }
+
+  .uba-rev-video-liquid-lens{
+    display:block;
+    z-index:8;
+    border:.9px solid rgba(255,255,255,.20);
+    background:
+      radial-gradient(72% 84% at 72% 82%,rgba(145,94,232,.055),transparent 72%),
+      linear-gradient(180deg,rgba(20,18,28,.20),rgba(6,6,11,.34)),
+      rgba(10,9,15,.26);
+    box-shadow:
+      0 10px 26px rgba(0,0,0,.22),
+      inset 0 0 0 .55px rgba(255,255,255,.10),
+      inset 0 -1px 0 rgba(205,198,228,.08);
+  }
+
+  .uba-rev-video-liquid-mirror{
+    gap:4px;
+    padding:7px 8px;
+  }
+
+  .uba-rev-video-liquid-mirror button{
+    min-height:54px!important;
+    padding:7px 4px!important;
+    gap:4px!important;
+    border-radius:22px!important;
+    font-size:8.5px!important;
+  }
+
+  .uba-rev-video-liquid-mirror .uba-rev-nav-icon{
+    width:18px!important;
+    height:18px!important;
+    flex:0 0 18px!important;
+  }
+}
+
+@media(max-width:520px){
+  .uba-rev-bottom-tabs{
+    width:calc(100vw - 22px);
+    bottom:calc(22px + env(safe-area-inset-bottom,0px));
+    border-radius:28px;
+  }
+  .uba-rev-bottom-tabs > button,
+  .uba-rev-video-liquid-mirror button{
+    font-size:8px!important;
+    padding-inline:2px!important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .uba-rev-video-liquid-lens{transition:none!important}
+  .uba-rev-bottom-tabs > button.uba-liquid-pop{animation:none!important}
+}
