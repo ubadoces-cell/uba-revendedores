@@ -1173,32 +1173,7 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
       </div>
     </section>
 
-    <nav class="uba-rev-bottom-tabs" aria-label="Navegação do painel UBA Revendedores">
-      <button type="button" data-admin-tab="dashboard" class="active" onclick="setAdminView('dashboard')">
-        <svg class="uba-rev-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-8 9 8"></path><path d="M5 10v11h14V10"></path></svg>
-        <span>Início</span>
-      </button>
-      <button type="button" data-admin-tab="products" onclick="setAdminView('products')">
-        <svg class="uba-rev-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
-        <span>Produtos</span>
-      </button>
-      <button type="button" data-admin-tab="stocks" onclick="setAdminView('stocks')">
-        <svg class="uba-rev-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7l8-4 8 4-8 4-8-4z"></path><path d="M4 7v10l8 4 8-4V7"></path></svg>
-        <span>Estoques</span>
-      </button>
-      <button type="button" data-admin-tab="orders" onclick="setAdminView('orders')">
-        <svg class="uba-rev-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3z"></path><path d="M9 8h6M9 12h6"></path></svg>
-        <span>Pedidos</span>
-      </button>
-      <button type="button" data-admin-tab="clients" onclick="openLogins()">
-        <svg class="uba-rev-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"></circle><path d="M3 20a6 6 0 0 1 12 0"></path><circle cx="17" cy="9" r="2"></circle><path d="M16 14a5 5 0 0 1 5 5"></path></svg>
-        <span>Clientes</span>
-      </button>
-      <button type="button" data-admin-tab="store" onclick="closeAdmin()">
-        <svg class="uba-rev-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10l2-5h14l2 5"></path><path d="M5 10v10h14V10"></path><path d="M9 20v-6h6v6"></path></svg>
-        <span>Loja</span>
-      </button>
-    </nav>
+
   </div>
 </section>
 
@@ -1249,6 +1224,33 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
     </section>
   </div>
 </section>
+
+<nav class="uba-rev-bottom-tabs" aria-label="Navegação do painel UBA Revendedores">
+  <button type="button" data-admin-tab="dashboard" class="active" onclick="setAdminView('dashboard')">
+    <svg class="uba-rev-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-8 9 8"></path><path d="M5 10v11h14V10"></path></svg>
+    <span>Início</span>
+  </button>
+  <button type="button" data-admin-tab="products" onclick="setAdminView('products')">
+    <svg class="uba-rev-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+    <span>Produtos</span>
+  </button>
+  <button type="button" data-admin-tab="stocks" onclick="setAdminView('stocks')">
+    <svg class="uba-rev-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7l8-4 8 4-8 4-8-4z"></path><path d="M4 7v10l8 4 8-4V7"></path></svg>
+    <span>Estoques</span>
+  </button>
+  <button type="button" data-admin-tab="orders" onclick="setAdminView('orders')">
+    <svg class="uba-rev-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3z"></path><path d="M9 8h6M9 12h6"></path></svg>
+    <span>Pedidos</span>
+  </button>
+  <button type="button" data-admin-tab="clients" onclick="openLogins()">
+    <svg class="uba-rev-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"></circle><path d="M3 20a6 6 0 0 1 12 0"></path><circle cx="17" cy="9" r="2"></circle><path d="M16 14a5 5 0 0 1 5 5"></path></svg>
+    <span>Clientes</span>
+  </button>
+  <button type="button" data-admin-tab="store" onclick="closeAdmin()">
+    <svg class="uba-rev-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10l2-5h14l2 5"></path><path d="M5 10v10h14V10"></path><path d="M9 20v-6h6v6"></path></svg>
+    <span>Loja</span>
+  </button>
+</nav>
 
 <script>
 const defaultCatalog=[
@@ -1782,11 +1784,13 @@ function openAdmin(){
   if(!ceoSession){openCheckout(1);showAdminLogin();return}
   updateCeoBar();
   document.getElementById('adminShell').classList.add('show');
+  document.body.classList.add('uba-rev-admin-nav-visible');
   setAdminView('dashboard');
   document.body.style.overflow='hidden'
 }
 function closeAdmin(){
   document.getElementById('adminShell').classList.remove('show');
+  if(!document.getElementById('loginShell')?.classList.contains('show'))document.body.classList.remove('uba-rev-admin-nav-visible');
   document.body.style.overflow='';
   renderAll();
   window.scrollTo({top:0,behavior:'smooth'})
@@ -2088,6 +2092,7 @@ function resetCatalog(){
 function openLogins(){
   if(!ceoSession){openCheckout(1);showAdminLogin();return}
   document.getElementById('loginShell').classList.add('show');
+  document.body.classList.add('uba-rev-admin-nav-visible');
   document.body.style.overflow='hidden';
   window.syncRevAdminBottomNav?.('clients');
   setLoginTab('pending');renderAccounts()
@@ -2099,6 +2104,7 @@ function closeLogins(){
     window.syncRevAdminBottomNav?.(adminView);
     renderAdmin()
   }else{
+    document.body.classList.remove('uba-rev-admin-nav-visible');
     document.body.style.overflow='';
     renderAll()
   }
@@ -2223,6 +2229,7 @@ function toggleCeoF1(){
   if(painelAberto){
     logins?.classList.remove('show');
     admin?.classList.remove('show');
+    document.body.classList.remove('uba-rev-admin-nav-visible');
     document.body.style.overflow='';
     renderAll();
     window.scrollTo({top:0,behavior:'smooth'});
