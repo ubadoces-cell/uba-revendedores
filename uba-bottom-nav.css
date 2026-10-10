@@ -6,7 +6,7 @@
 }
 
 .uba-rev-bottom-tabs{
-  display:flex;
+  display:none;
   position:fixed;
   z-index:90;
   left:50%;
@@ -41,6 +41,8 @@
   user-select:none;
   -webkit-touch-callout:none;
 }
+
+body.uba-rev-admin-nav-visible .uba-rev-bottom-tabs{display:flex}
 
 .uba-rev-bottom-tabs::after{
   content:"";
