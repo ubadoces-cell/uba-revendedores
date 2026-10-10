@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#4A388E" />
-<meta name="uba-app-version" content="2.0.0" />
+<meta name="uba-app-version" content="2.0.1" />
 <title>UBA Revendedores</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1789,8 +1789,9 @@ function openAdmin(){
   document.body.style.overflow='hidden'
 }
 function closeAdmin(){
+  document.getElementById('loginShell')?.classList.remove('show');
   document.getElementById('adminShell').classList.remove('show');
-  if(!document.getElementById('loginShell')?.classList.contains('show'))document.body.classList.remove('uba-rev-admin-nav-visible');
+  document.body.classList.remove('uba-rev-admin-nav-visible');
   document.body.style.overflow='';
   renderAll();
   window.scrollTo({top:0,behavior:'smooth'})
@@ -1798,6 +1799,12 @@ function closeAdmin(){
 
 
 function setAdminView(view){
+  /* Se vier da tela Clientes/Logins, fecha o overlay antes de trocar de aba.
+     Sem isso o loginShell ficava por cima do painel e parecia que a barra travou. */
+  document.getElementById('loginShell')?.classList.remove('show');
+  document.body.classList.add('uba-rev-admin-nav-visible');
+  document.body.style.overflow='hidden';
+
   adminView=['dashboard','products','stocks','orders'].includes(view)?view:'dashboard';
   const dashboard=document.getElementById('adminDashboardView');
   const products=document.getElementById('adminProductsView');
@@ -2100,6 +2107,7 @@ function openLogins(){
 function closeLogins(){
   document.getElementById('loginShell').classList.remove('show');
   if(document.getElementById('adminShell').classList.contains('show')){
+    document.body.classList.add('uba-rev-admin-nav-visible');
     document.body.style.overflow='hidden';
     window.syncRevAdminBottomNav?.(adminView);
     renderAdmin()
