@@ -58,9 +58,16 @@
     const syncMirror=()=>{
       const r=tabs.getBoundingClientRect();
       const mobile=isTouchMode();
-      lensW=mobile?Math.max(112,Math.min(168,r.width*.17)):200;
-      lensH=mobile?Math.max(78,Math.min(104,r.height*1.28)):104;
-      zoom=1.18;
+      const buttons=visibleButtons();
+      const referenceButton=buttons[0]?.getBoundingClientRect();
+
+      /* Mesma proporção atual da lupa do UBA Controles. */
+      lensW=referenceButton
+        ? Math.max(86,Math.min(118,referenceButton.width+4))
+        : Math.max(86,Math.min(118,r.width/Math.max(1,buttons.length)));
+      lensH=Math.max(36,Math.min(46,r.height-8));
+      zoom=mobile?1.07:1.09;
+
       lens.style.width=lensW+'px';
       lens.style.height=lensH+'px';
       mirror.style.width=r.width+'px';
@@ -75,8 +82,8 @@
 
     const clampTarget=(x,y)=>{
       const r=tabs.getBoundingClientRect();
-      targetX=Math.max(-18,Math.min(r.width-lensW+18,x-lensW/2));
-      targetY=(r.height-lensH)/2+Math.max(-4,Math.min(4,(y-r.height/2)*.10));
+      targetX=Math.max(-8,Math.min(r.width-lensW+8,x-lensW/2));
+      targetY=(r.height-lensH)/2+Math.max(-2.5,Math.min(2.5,(y-r.height/2)*.08));
     };
 
     const targetActive=()=>{
