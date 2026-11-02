@@ -3,11 +3,46 @@ import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
 import { database } from "../server/database.js";
 
 const PRODUCT_MAP = {
-  chocolate50: { id: "p1", name: "Chocolate 50% cacau" },
-  branco: { id: "p2", name: "Chocolate branco" },
-  caramelo: { id: "p3", name: "Caramelo" },
-  morango: { id: "p4", name: "Morango" },
-  pistache: { id: "p5", name: "Pistache" },
+  "chocolate50": {
+    "id": "p1",
+    "name": "Chocolate 50% Cacau + Doce de Leite"
+  },
+  "branco": {
+    "id": "p2",
+    "name": "Chocolate Branco + Doce de Leite"
+  },
+  "caramelo": {
+    "id": "p3",
+    "name": "Caramelo + Doce de Leite"
+  },
+  "morango": {
+    "id": "p4",
+    "name": "Morango + Doce de Leite"
+  },
+  "pistache": {
+    "id": "p5",
+    "name": "Pistache + Doce de Leite"
+  },
+  "branco_beijinho": {
+    "id": "p6",
+    "name": "Chocolate Branco + Beijinho"
+  },
+  "branco_chocolate": {
+    "id": "p7",
+    "name": "Chocolate Branco + Chocolate ao Leite"
+  },
+  "chocolate50_chocolate": {
+    "id": "p8",
+    "name": "Chocolate 50% Cacau + Chocolate ao Leite"
+  },
+  "chocolate50_beijinho": {
+    "id": "p9",
+    "name": "Chocolate 50% Cacau + Beijinho"
+  },
+  "chocolate50_branco": {
+    "id": "p10",
+    "name": "Chocolate 50% Cacau + Chocolate Branco"
+  }
 };
 const REVERSE_MAP = Object.fromEntries(Object.entries(PRODUCT_MAP).map(([key, value]) => [value.id, key]));
 const SESSION_COOKIE = "uba_rev_session";
