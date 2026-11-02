@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="reseller-tables.css?v=20261102">
 <style>
 :root{
   --roxo:#4A388E; --lavanda:#CDC6E4; --uva:#5C5CA6; --creme:#FEF2E4; --indigo:#13132A;
@@ -905,13 +906,31 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
     </div>
   </section>
 
-  <div class="toolbar"><form id="catalogSearchForm" class="search" role="search" autocomplete="off" onsubmit="event.preventDefault()"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.4-3.4"></path></svg><input id="search" name="catalog-search" type="search" inputmode="search" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" aria-label="Buscar sabor no catálogo" data-lpignore="true" data-1p-ignore="true" placeholder="Buscar sabor..." oninput="filterProducts()"></form><div class="filters"><button class="filter active" onclick="setFilter(this,'all')">Todos</button><button class="filter" onclick="setFilter(this,'featured')">Destaques</button><button class="filter" onclick="setFilter(this,'popular')">Mais vendidos</button><button class="filter" onclick="setFilter(this,'new')">Novidades</button></div></div>
+  <nav class="reseller-view-switch" role="tablist" aria-label="Áreas para revendedores">
+    <button type="button" id="resellerCatalogTab" role="tab" aria-selected="true" aria-controls="resellerCatalogView" class="active" onclick="selectResellerView('catalog')">🍫 Catálogo</button>
+    <button type="button" id="resellerTablesTab" role="tab" aria-selected="false" aria-controls="resellerTablesView" onclick="selectResellerView('tables')">📋 Tabelas <span class="reseller-lock" id="resellerTablesLock">🔒</span></button>
+  </nav>
+  <section id="resellerCatalogView" role="tabpanel" aria-labelledby="resellerCatalogTab">
+    <div class="toolbar"><form id="catalogSearchForm" class="search" role="search" autocomplete="off" onsubmit="event.preventDefault()"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.4-3.4"></path></svg><input id="search" name="catalog-search" type="search" inputmode="search" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" aria-label="Buscar sabor no catálogo" data-lpignore="true" data-1p-ignore="true" placeholder="Buscar sabor..." oninput="filterProducts()"></form><div class="filters"><button class="filter active" onclick="setFilter(this,'all')">Todos</button><button class="filter" onclick="setFilter(this,'featured')">Destaques</button><button class="filter" onclick="setFilter(this,'popular')">Mais vendidos</button><button class="filter" onclick="setFilter(this,'new')">Novidades</button></div></div>
   <div class="section-head"><div><h3>Alfajores artesanais</h3><p>Sabores prontos para revenda. Qualidade, sabor e alta procura.</p></div><div class="private-note" id="priceVisibilityNote">● Estoque em tempo real, sujeito à alteração.</div></div>
   <div class="test-mode-banner" id="testModeBanner" hidden role="status">MODO TESTE — pedidos sem cobrança e sem movimentação de estoque.</div><section class="products" id="products"></section>
   <section class="reseller-cta">
     <div class="reseller-heart">♥</div>
     <div><strong>Seja um revendedor UBA DOCES</strong><span>Peça seu login e senha ao atendimento pelo WhatsApp. Com acesso aprovado, consulte preços exclusivos e faça pedidos.</span></div>
     <button type="button" onclick="openCustomerEntry()">Quero revender <b>→</b></button>
+  </section>
+  </section>
+  <section id="resellerTablesView" role="tabpanel" aria-labelledby="resellerTablesTab" hidden>
+    <div class="reseller-tables-page">
+      <header class="reseller-table-header">
+        <div class="reseller-table-brand">
+          <img src="logo.jpg" alt="Logotipo oficial UBA DOCES">
+          <div><div class="reseller-table-kicker">Acesso exclusivo para revendedores</div><h2>Tabela de revenda</h2><p>Preços por unidade e por quantidade comprada.</p></div>
+        </div>
+        <button class="reseller-print-button" type="button" onclick="printResellerTables()">Imprimir / salvar em PDF</button>
+      </header>
+      <div id="resellerTablesContent" aria-live="polite"></div>
+    </div>
   </section>
 </div>
 
@@ -2452,8 +2471,9 @@ applyTheme(localStorage.getItem('uba-rev-theme')||'dark');
 renderAll();
 </script>
 <script src="shared-stock-sync.js?v=13"></script>
-<script src="orders-sync.js?v=14"></script>
+<script src="orders-sync.js?v=15"></script>
 <script src="customer-accounts-sync.js?v=12"></script>
 <script src="uba-liquid-glass-nav.js?v=4"></script>
+<script src="reseller-tables.js?v=20261102"></script>
 </body>
 </html>
