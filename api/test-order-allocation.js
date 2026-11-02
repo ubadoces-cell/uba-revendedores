@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { database } from "../server/database.js";
 
 const SESSION_COOKIE = "uba_rev_session";
-const PRODUCT_IDS = new Set(["pistache", "chocolate50", "branco", "caramelo", "morango"]);
+const PRODUCT_IDS = new Set(["chocolate50","branco","caramelo","morango","pistache","branco_beijinho","branco_chocolate","chocolate50_chocolate","chocolate50_beijinho","chocolate50_branco"]);
 
 function db() { return database(); }
 function clean(value, max = 180) { return String(value || "").trim().slice(0, max); }

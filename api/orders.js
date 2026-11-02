@@ -6,19 +6,116 @@ import { database } from "../server/database.js";
 const SESSION_COOKIE = "uba_rev_session";
 const STATUSES = ["novo", "confirmado", "em_producao", "separacao", "pronto", "enviado", "retirada", "concluido", "cancelado"];
 const PRODUCTS = {
-  pistache: { name: "Pistache", group: "pistache" },
-  chocolate50: { name: "Chocolate 50%", group: "chocolate50" },
-  branco: { name: "Chocolate Branco", group: "standard" },
-  caramelo: { name: "Caramelo", group: "standard" },
-  morango: { name: "Morango", group: "standard" },
+  "chocolate50": {
+    "name": "Chocolate 50% Cacau + Doce de Leite",
+    "group": "chocolate50",
+    "active": true
+  },
+  "branco": {
+    "name": "Chocolate Branco + Doce de Leite",
+    "group": "branco",
+    "active": true
+  },
+  "branco_beijinho": {
+    "name": "Chocolate Branco + Beijinho",
+    "group": "branco_beijinho",
+    "active": true
+  },
+  "branco_chocolate": {
+    "name": "Chocolate Branco + Chocolate ao Leite",
+    "group": "branco_chocolate",
+    "active": true
+  },
+  "chocolate50_chocolate": {
+    "name": "Chocolate 50% Cacau + Chocolate ao Leite",
+    "group": "chocolate50_chocolate",
+    "active": true
+  },
+  "chocolate50_beijinho": {
+    "name": "Chocolate 50% Cacau + Beijinho",
+    "group": "chocolate50_beijinho",
+    "active": true
+  },
+  "chocolate50_branco": {
+    "name": "Chocolate 50% Cacau + Chocolate Branco",
+    "group": "chocolate50_branco",
+    "active": true
+  },
+  "pistache": {
+    "name": "Pistache + Doce de Leite",
+    "group": "pistache",
+    "active": false
+  },
+  "caramelo": {
+    "name": "Caramelo + Doce de Leite",
+    "group": "caramelo",
+    "active": false
+  },
+  "morango": {
+    "name": "Morango + Doce de Leite",
+    "group": "morango",
+    "active": false
+  }
 };
 const PRICING = {
-  commerce: [
-    { min: 50, max: 99, chocolate50: 460, standard: 510, pistache: 610 },
-    { min: 100, max: 199, chocolate50: 455, standard: 488, pistache: 553 },
-    { min: 200, max: 399, chocolate50: 420, standard: 450, pistache: 510 },
-    { min: 400, max: null, chocolate50: 385, standard: 413, pistache: 468 },
-  ],
+  "commerce": [
+    {
+      "min": 25,
+      "max": 99,
+      "chocolate50": 460,
+      "branco": 510,
+      "branco_beijinho": 544,
+      "branco_chocolate": 510,
+      "chocolate50_chocolate": 493,
+      "chocolate50_beijinho": 526,
+      "chocolate50_branco": 526,
+      "pistache": 610,
+      "caramelo": 544,
+      "morango": 510
+    },
+    {
+      "min": 100,
+      "max": 199,
+      "chocolate50": 455,
+      "branco": 488,
+      "branco_beijinho": 521,
+      "branco_chocolate": 488,
+      "chocolate50_chocolate": 488,
+      "chocolate50_beijinho": 520,
+      "chocolate50_branco": 520,
+      "pistache": 553,
+      "caramelo": 521,
+      "morango": 488
+    },
+    {
+      "min": 200,
+      "max": 399,
+      "chocolate50": 420,
+      "branco": 450,
+      "branco_beijinho": 480,
+      "branco_chocolate": 450,
+      "chocolate50_chocolate": 450,
+      "chocolate50_beijinho": 480,
+      "chocolate50_branco": 480,
+      "pistache": 510,
+      "caramelo": 480,
+      "morango": 450
+    },
+    {
+      "min": 400,
+      "max": null,
+      "chocolate50": 385,
+      "branco": 413,
+      "branco_beijinho": 441,
+      "branco_chocolate": 413,
+      "chocolate50_chocolate": 413,
+      "chocolate50_beijinho": 440,
+      "chocolate50_branco": 440,
+      "pistache": 468,
+      "caramelo": 441,
+      "morango": 413
+    }
+  ]
 };
 
 const DELIVERY_FEES = [
@@ -220,8 +317,11 @@ export default async function handler(req, res) {
       }
       const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : (req.body || {});
       const purpose = "commerce";
+      if (Array.isArray(body.items) && body.items.some((item) => PRODUCTS[String(item?.productId || "")]?.active === false && int(item?.quantity) > 0)) {
+        return res.status(400).json({ error: "Há sabores indisponíveis no pedido. Remova-os do carrinho." });
+      }
       const calculated = calculate(normalizeItems(body.items), purpose);
-      if (calculated.units < 50) return res.status(400).json({ error: "O pedido mínimo é de 50 unidades." });
+      if (calculated.units < 25) return res.status(400).json({ error: "O pedido mínimo é de 25 unidades." });
 
       const customer = body.customer && typeof body.customer === "object" ? body.customer : {};
       const buyer = body.buyer && typeof body.buyer === "object" ? body.buyer : {};

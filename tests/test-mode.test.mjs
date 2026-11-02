@@ -20,13 +20,36 @@ try{
  assert.equal(login.statusCode,200);assert.equal(login.body.account.isTest,true);
  const cookie=login.headers['Set-Cookie'][0].split(';')[0];
  const current=await call(customers,{query:{scope:'current'},headers:{cookie}});assert.equal(current.body.account.isTest,true);
- const body={isTest:true,customer:{name:'Test',doc:'00000000000'},buyer:{name:'Test',doc:'00000000000'},items:[{productId:'branco',quantity:50}],delivery:{city:'Local test'}};
+ const body={isTest:true,customer:{name:'Test',doc:'00000000000'},buyer:{name:'Test',doc:'00000000000'},items:[{productId:'branco',quantity:25}],delivery:{city:'Local test',neighborhood:'Centro'}};
+ // Reject orders below 25 units even for authenticated test users.
+ const underMinimum=await call(orders,{method:'POST',headers:{cookie},body:{...body,items:[{productId:'branco',quantity:24}]}});
+ assert.equal(underMinimum.statusCode,400);assert.match(underMinimum.body.error,/25 unidades/);
  // Body flags cannot bypass authentication or payment for regular customers.
  assert.equal((await call(orders,{method:'POST',body})).statusCode,401);
  const testOrder=await call(orders,{method:'POST',headers:{cookie},body});
  assert.equal(testOrder.statusCode,201);assert.equal(testOrder.body.order.isTest,true);assert.equal(testOrder.body.order.paymentStatus,'teste_sem_cobranca');assert.equal(calls,0);
+ const prices={chocolate50:460,branco:510,branco_beijinho:544,branco_chocolate:510,chocolate50_chocolate:493,chocolate50_beijinho:526,chocolate50_branco:526};
+ for(const [productId,priceCents] of Object.entries(prices)){
+   const response=await call(orders,{method:'POST',headers:{cookie},body:{...body,items:[{productId,quantity:25}]}});
+   assert.equal(response.statusCode,201,productId+' should be orderable');
+   assert.equal(response.body.order.units,25);
+   assert.equal(response.body.order.totalCents,25*priceCents+274,'wrong price for '+productId);
+ }
+ for(const [quantity,cents] of [[100,455],[200,420],[400,385]]){
+   const response=await call(orders,{method:'POST',headers:{cookie},body:{...body,items:[{productId:'chocolate50',quantity}]}});
+   assert.equal(response.statusCode,201);
+   assert.equal(response.body.order.totalCents,quantity*cents+274,'wrong tier '+quantity);
+ }
+ const mix=await call(orders,{method:'POST',headers:{cookie},body:{...body,items:[{productId:'branco',quantity:15},{productId:'chocolate50',quantity:10}]}});
+ assert.equal(mix.statusCode,201);
+ assert.equal(mix.body.order.totalCents,15*510+10*460+274,'mixed flavors must share total-quantity tier');
+ for(const productId of ['pistache','caramelo','morango']){
+   const unavailable=await call(orders,{method:'POST',headers:{cookie},body:{...body,items:[{productId,quantity:25}]}});
+   assert.equal(unavailable.statusCode,400);
+   assert.match(unavailable.body.error,/indisponíveis/);
+ }
  assert.equal((await db.query('SELECT count(*)::int n FROM reseller_orders')).rows[0].n,0);
- assert.equal((await db.query('SELECT count(*)::int n FROM reseller_test_orders')).rows[0].n,1);
+ assert.equal((await db.query('SELECT count(*)::int n FROM reseller_test_orders')).rows[0].n,12);
  assert.equal((await call(orders,{headers:{cookie}})).statusCode,401);
  assert.equal((await call(orders,{method:'PATCH',headers:{cookie},body:{id:testOrder.body.order.id,status:'concluido'}})).statusCode,401);
  assert.equal((await db.query("SELECT count(*)::int n FROM information_schema.tables WHERE table_name='shared_stock_state'")).rows[0].n,1);

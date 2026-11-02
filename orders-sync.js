@@ -276,7 +276,7 @@
   window.finishDemo=async function(){
     if(pixGenerating)return;
     const customer=getCustomer();if(!customer){showPanel('step1');setAuthMessage('É necessário um login aprovado para gerar o Pix.','warn');return}
-    const totals=getTotals();if(totals.count<50){alert('O pedido mínimo é de 50 unidades.');return}
+    const totals=getTotals();if(totals.count<25){alert('O pedido mínimo é de 25 unidades.');return}
     const buyerName=document.getElementById('buyerName')?.value.trim()||customer.name||'',buyerDoc=document.getElementById('buyerDoc')?.value.trim()||customer.doc||'';
     if(!buyerName){alert('Informe o nome do comprador.');goStep(2);return}if(![11,14].includes(buyerDoc.replace(/\D/g,'').length)){alert('Informe um CPF ou CNPJ válido para gerar o Pix.');goStep(2);return}
     beginPixLoading();
