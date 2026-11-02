@@ -897,7 +897,7 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
 <aside class="drawer" id="drawer">
   <div class="drawer-head"><h3>Seu carrinho</h3><button class="close" onclick="closeAll()">✕</button></div>
   <div class="cart-items" id="cartItems"></div>
-  <div class="drawer-foot"><div class="totals"><div><small>Pedido montado</small><br><span id="itemsSummary">0 itens</span></div><strong id="drawerValueStatus">Valores protegidos 🔒</strong></div><div class="tier-note" id="drawerTierNote">Pedido mínimo: <strong>50 unidades no total</strong>.</div><button class="checkout-btn" onclick="openCheckout(1)">Continuar para identificação</button></div>
+  <div class="drawer-foot"><div class="totals"><div><small>Pedido montado</small><br><span id="itemsSummary">0 itens</span></div><strong id="drawerValueStatus">Valores protegidos 🔒</strong></div><div class="tier-note" id="drawerTierNote">Pedido mínimo: <strong>25 unidades no total</strong>.</div><button class="checkout-btn" onclick="openCheckout(1)">Continuar para identificação</button></div>
 </aside>
 
 <div class="modal" id="modal">
@@ -1263,7 +1263,7 @@ const defaultCatalog=[
 
 const defaultPricing={
   commerce:[
-    {min:50,max:99,label:'50 a 99',chocolate50:4.60,standard:5.10,pistache:6.10},
+    {min:25,max:99,label:'25 a 99',chocolate50:4.60,standard:5.10,pistache:6.10},
     {min:100,max:199,label:'100 a 199',chocolate50:4.55,standard:4.88,pistache:5.53},
     {min:200,max:399,label:'200 a 399',chocolate50:4.20,standard:4.50,pistache:5.10},
     {min:400,max:null,label:'400 ou mais',chocolate50:3.85,standard:4.13,pistache:4.68}
@@ -1272,6 +1272,13 @@ const defaultPricing={
 
 let catalog=readJson('uba-rev-catalog')||structuredClone(defaultCatalog);
 let pricing=readJson('uba-rev-pricing-v1')||structuredClone(defaultPricing);
+// Existing browsers may have saved the old 50-unit tier locally.
+// Keep any custom unit prices while updating only the minimum and label.
+if(pricing.commerce?.[0]?.min===50 && pricing.commerce[0].max===99){
+  pricing.commerce[0].min=25;
+  pricing.commerce[0].label='25 a 99';
+  localStorage.setItem('uba-rev-pricing-v1',JSON.stringify(pricing));
+}
 const PRODUCT_IMAGE_VERSION='20260927';
 const defaultImageMap={
   // Fotos oficiais/canônicas dos sabores. Não substituir em ajustes de layout sem pedido explícito.
@@ -1459,7 +1466,7 @@ function renderProducts(){
     const priceBlock=showPrice
       ? (tier
         ? `<div class="price-public"><b>${money(unitPrice)}</b><small>/ unidade</small><span class="tier-mini">Faixa ${tier.label} • ${purposeLabel(getOrderPurpose())}</span></div>`
-        : `<div class="min-order">📦 Pedido mínimo: 50 unidades</div>`)
+        : `<div class="min-order">📦 Pedido mínimo: 25 unidades</div>`)
       : `<div class="private-price"><span class="lock-dot">🔒</span><span>Preço liberado após aprovação</span></div>`;
     const currentQty=Number(qty[p.id]||0);
     return `<article class="product">
@@ -1553,19 +1560,19 @@ function renderCart(){
       <img src="${p.img}" alt="">
       <div>
         <b>${escapeHtml(p.name)}</b>
-        <small>${showPrice?(tier?`${money(unitPrice)} × ${qty[p.id]} = ${money(unitPrice*qty[p.id])}`:'Pedido mínimo de 50 unidades'):'Preço protegido até aprovação'}</small>
+        <small>${showPrice?(tier?`${money(unitPrice)} × ${qty[p.id]} = ${money(unitPrice*qty[p.id])}`:'Pedido mínimo de 25 unidades'):'Preço protegido até aprovação'}</small>
       </div>
       <div class="qty-chip">${qty[p.id]} un.</div>
     </div>`
   }).join(''):'<div class="empty">Seu carrinho ainda está vazio.</div>';
   document.getElementById('itemsSummary').textContent=`${count} ${count===1?'item':'itens'}`;
   document.getElementById('pixTotal').textContent=showPrice&&tier?money(total):'—';
-  document.getElementById('drawerValueStatus').textContent=showPrice?(tier?money(total):'Mínimo 50 un.'):'Valores protegidos 🔒';
-  document.getElementById('mobilePriceHint').textContent=showPrice?(tier?`Total ${money(total)}`:'Pedido mínimo 50 un.'):'Preços protegidos até aprovação';
+  document.getElementById('drawerValueStatus').textContent=showPrice?(tier?money(total):'Mínimo 25 un.'):'Valores protegidos 🔒';
+  document.getElementById('mobilePriceHint').textContent=showPrice?(tier?`Total ${money(total)}`:'Pedido mínimo 25 un.'):'Preços protegidos até aprovação';
   const note=document.getElementById('drawerTierNote');
   if(note){
     if(!showPrice)note.innerHTML='🔒 Faça login com uma conta aprovada para liberar os preços.';
-    else if(!tier)note.innerHTML=`Faltam <strong>${Math.max(0,50-count)} unidades</strong> para atingir o pedido mínimo de 50.`;
+    else if(!tier)note.innerHTML=`Faltam <strong>${Math.max(0,25-count)} unidades</strong> para atingir o pedido mínimo de 25.`;
     else note.innerHTML=`Faixa aplicada: <strong>${tier.label} unidades</strong> • ${purposeIcon(purpose)} ${purposeLabel(purpose)}. A faixa considera a quantidade total, mesmo misturando sabores.`
   }
 }
@@ -1584,7 +1591,7 @@ function updatePriceVisibilityNote(){
     const tier=getTier();
     note.textContent=tier
       ? `✓ ${purposeLabel(customer.purpose)} • faixa ${tier.label} pelo total do pedido`
-      : `✓ ${purposeLabel(customer.purpose)} • adicione pelo menos 50 unidades para aplicar a tabela`;
+      : `✓ ${purposeLabel(customer.purpose)} • adicione pelo menos 25 unidades para aplicar a tabela`;
   }
   else note.textContent='● Estoque em tempo real, sujeito à alteração.'
 }
@@ -1612,8 +1619,8 @@ function showPanel(id){
   const target=document.getElementById(id);if(target)target.classList.add('active')
 }
 function goStep(n){
-  if(n===4&&getOrderCount()<50){
-    alert(`O pedido mínimo é de 50 unidades no total. Adicione mais ${50-getOrderCount()} unidades ao carrinho.`);
+  if(n===4&&getOrderCount()<25){
+    alert(`O pedido mínimo é de 25 unidades no total. Adicione mais ${25-getOrderCount()} unidades ao carrinho.`);
     return
   }
   if(n>1&&!getCustomer()){
