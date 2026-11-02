@@ -4,6 +4,7 @@ import {createHash,scryptSync,verify} from 'node:crypto';
 import {db} from './neon-mock.mjs';
 import customers from '../api/customer-accounts.js';
 import orders from '../api/orders.js';
+import resellerTables from '../api/reseller-tables.js';
 import access from '../server/test-access.js';
 import {database} from '../server/database.js';
 import {publicStockReadIdentity} from '../server/stock-read-identity.js';
@@ -15,11 +16,23 @@ try{
  // Change only in-memory test configuration. Never commit a plaintext password.
  const password='synthetic-test-password';access.passwordHash=scryptSync(password,access.salt,64).toString('hex');access.expiresAt=new Date(Date.now()+86400000).toISOString();
  let calls=0;globalThis.fetch=async()=>{calls++;throw Error('External access forbidden in test')};
+ assert.equal((await call(resellerTables,{method:'GET'})).statusCode,401);
  assert.equal((await call(customers,{method:'POST',body:{action:'login',login:access.login,password:'wrong'}})).statusCode,401);
  const login=await call(customers,{method:'POST',body:{action:'login',login:access.login,password}});
  assert.equal(login.statusCode,200);assert.equal(login.body.account.isTest,true);
  const cookie=login.headers['Set-Cookie'][0].split(';')[0];
  const current=await call(customers,{query:{scope:'current'},headers:{cookie}});assert.equal(current.body.account.isTest,true);
+ const tables=await call(resellerTables,{method:'GET',headers:{cookie}});
+ assert.equal(tables.statusCode,200);assert.equal(tables.headers["Cache-Control"],"private, no-store, max-age=0");
+ assert.equal(tables.body.minimumUnits,25);
+ assert.equal(tables.body.deliveryFeeCents,500);
+ assert.equal(tables.body.products.length,10);
+ assert.deepEqual(tables.body.tiers.map(t=>t.min),[25,100,200,400]);
+ assert.equal(tables.body.products.filter(p=>p.available).length,7);
+ assert.equal(tables.body.products.find(p=>p.id==='chocolate50').resellerCents[0],460);
+ assert.equal(tables.body.products.find(p=>p.id==='branco_beijinho').resellerCents[0],544);
+ assert.equal(tables.body.products.find(p=>p.id==='pistache').available,false);
+ assert.equal((await call(resellerTables,{method:'POST',headers:{cookie}})).statusCode,405);
  const body={isTest:true,customer:{name:'Test',doc:'00000000000'},buyer:{name:'Test',doc:'00000000000'},items:[{productId:'branco',quantity:25}],delivery:{city:'Local test',neighborhood:'Centro'}};
  // Reject orders below 25 units even for authenticated test users.
  const underMinimum=await call(orders,{method:'POST',headers:{cookie},body:{...body,items:[{productId:'branco',quantity:24}]}});
@@ -56,6 +69,7 @@ try{
  assert.equal((await db.query('SELECT count(*)::int n FROM shared_stock_state')).rows[0].n,0);
  await call(customers,{method:'POST',headers:{cookie},body:{action:'logout'}});
  assert.equal((await call(customers,{query:{scope:'current'},headers:{cookie}})).body.account,null);
+ assert.equal((await call(resellerTables,{method:'GET',headers:{cookie}})).statusCode,401);
  assert.equal((await call(orders,{method:'POST',headers:{cookie},body})).statusCode,401);
  process.env.VERCEL_ENV='preview';
  assert.deepEqual(await controlesStockSummary(database()),{available:false,reason:'preview_isolated'});
