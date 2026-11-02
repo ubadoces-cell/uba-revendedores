@@ -27,22 +27,22 @@ try{
  // Body flags cannot bypass authentication or payment for regular customers.
  assert.equal((await call(orders,{method:'POST',body})).statusCode,401);
  const testOrder=await call(orders,{method:'POST',headers:{cookie},body});
- assert.equal(testOrder.statusCode,201);assert.equal(testOrder.body.order.isTest,true);assert.equal(testOrder.body.order.paymentStatus,'teste_sem_cobranca');assert.equal(calls,0);
+ assert.equal(testOrder.statusCode,201);assert.equal(testOrder.body.order.isTest,true);assert.equal(testOrder.body.order.delivery.deliveryFeeCents,500);assert.equal(testOrder.body.order.paymentStatus,'teste_sem_cobranca');assert.equal(calls,0);
  const prices={chocolate50:460,branco:510,branco_beijinho:544,branco_chocolate:510,chocolate50_chocolate:493,chocolate50_beijinho:526,chocolate50_branco:526};
  for(const [productId,priceCents] of Object.entries(prices)){
    const response=await call(orders,{method:'POST',headers:{cookie},body:{...body,items:[{productId,quantity:25}]}});
    assert.equal(response.statusCode,201,productId+' should be orderable');
    assert.equal(response.body.order.units,25);
-   assert.equal(response.body.order.totalCents,25*priceCents+274,'wrong price for '+productId);
+   assert.equal(response.body.order.totalCents,25*priceCents+500,'wrong price for '+productId);
  }
  for(const [quantity,cents] of [[100,455],[200,420],[400,385]]){
    const response=await call(orders,{method:'POST',headers:{cookie},body:{...body,items:[{productId:'chocolate50',quantity}]}});
    assert.equal(response.statusCode,201);
-   assert.equal(response.body.order.totalCents,quantity*cents+274,'wrong tier '+quantity);
+   assert.equal(response.body.order.totalCents,quantity*cents+500,'wrong tier '+quantity);
  }
  const mix=await call(orders,{method:'POST',headers:{cookie},body:{...body,items:[{productId:'branco',quantity:15},{productId:'chocolate50',quantity:10}]}});
  assert.equal(mix.statusCode,201);
- assert.equal(mix.body.order.totalCents,15*510+10*460+274,'mixed flavors must share total-quantity tier');
+ assert.equal(mix.body.order.totalCents,15*510+10*460+500,'mixed flavors must share total-quantity tier');
  for(const productId of ['pistache','caramelo','morango']){
    const unavailable=await call(orders,{method:'POST',headers:{cookie},body:{...body,items:[{productId,quantity:25}]}});
    assert.equal(unavailable.statusCode,400);
