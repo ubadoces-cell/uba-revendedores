@@ -5,7 +5,7 @@ import { database } from "../server/database.js";
 
 const SESSION_COOKIE = "uba_rev_session";
 const STATUSES = ["novo", "confirmado", "em_producao", "separacao", "pronto", "enviado", "retirada", "concluido", "cancelado"];
-const PRODUCTS = {
+export const PRODUCTS = {
   "chocolate50": {
     "name": "Chocolate 50% Cacau + Doce de Leite",
     "group": "chocolate50",
@@ -57,7 +57,7 @@ const PRODUCTS = {
     "active": false
   }
 };
-const PRICING = {
+export const PRICING = {
   "commerce": [
     {
       "min": 25,
@@ -119,22 +119,22 @@ const PRICING = {
 };
 
 const DELIVERY_FEES = [
-  { neighborhood: "Socorro", cents: 199 },
-  { neighborhood: "Pitombeira", cents: 224 },
-  { neighborhood: "Brotolândia", cents: 249 },
-  { neighborhood: "Centro", cents: 274 },
-  { neighborhood: "Dr José Simões", cents: 299 },
-  { neighborhood: "João XXIII", cents: 324 },
-  { neighborhood: "Monsenhor Otávio", cents: 349 },
-  { neighborhood: "Santa Luzia", cents: 374 },
-  { neighborhood: "Antônio Holanda", cents: 399 },
-  { neighborhood: "Bom Jesus", cents: 424 },
-  { neighborhood: "Limoeirinho", cents: 449 },
-  { neighborhood: "Bom Nome", cents: 474 },
-  { neighborhood: "Boa Fé", cents: 499 },
-  { neighborhood: "Luis Alves de Freitas", cents: 524 },
-  { neighborhood: "Ilha", cents: 549 },
-  { neighborhood: "Bom Jesus do Cruzeiro", cents: 574 },
+  { neighborhood: "Socorro", cents: 500 },
+  { neighborhood: "Pitombeira", cents: 500 },
+  { neighborhood: "Brotolândia", cents: 500 },
+  { neighborhood: "Centro", cents: 500 },
+  { neighborhood: "Dr José Simões", cents: 500 },
+  { neighborhood: "João XXIII", cents: 500 },
+  { neighborhood: "Monsenhor Otávio", cents: 500 },
+  { neighborhood: "Santa Luzia", cents: 500 },
+  { neighborhood: "Antônio Holanda", cents: 500 },
+  { neighborhood: "Bom Jesus", cents: 500 },
+  { neighborhood: "Limoeirinho", cents: 500 },
+  { neighborhood: "Bom Nome", cents: 500 },
+  { neighborhood: "Boa Fé", cents: 500 },
+  { neighborhood: "Luis Alves de Freitas", cents: 500 },
+  { neighborhood: "Ilha", cents: 500 },
+  { neighborhood: "Bom Jesus do Cruzeiro", cents: 500 },
 ];
 
 function db() { return database(); }
