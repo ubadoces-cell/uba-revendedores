@@ -837,6 +837,18 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
 @media(max-width:640px){.app{padding-left:8px;padding-right:8px}.header{padding:11px 12px;border-radius:21px;min-height:70px}.logo{width:48px;height:48px}.brand h1{font-size:16px}.brand p{display:block!important;font-size:8px}.app-version{font-size:8px;padding:3px 5px}.header-actions{gap:5px}.header-actions .icon-btn,.header-actions .login-btn{min-height:39px;padding:8px 9px}.header-actions .btn-label{display:none}.v2-hero{min-height:0;margin-top:3px;padding:26px 20px;border-radius:24px}.v2-hero h2{font-size:43px;letter-spacing:-2.5px}.v2-hero .hero-copy>p{font-size:11px}.hero-benefits{gap:9px}.hero-benefit{min-width:calc(50% - 6px)}.hero-benefit:nth-child(3){min-width:100%}.hero-benefit-icon{width:36px;height:36px;border-radius:11px;font-size:16px}.hero-cta{width:100%;min-width:0}.hero-visual{min-height:250px}.hero-art{height:250px}.hero-art>img{height:210px;width:92%;border-radius:22px}.hero-speech{width:105px;min-height:100px;font-size:13px;right:0;top:-2px}.hero-speech b{font-size:14px}.hero-result-badge{right:0;bottom:-3px;padding:8px 10px}.hero-result-badge>b{font-size:18px}.hero-result-badge span{font-size:7px}.toolbar{grid-template-columns:1fr;padding:9px;gap:8px}.filters{overflow-x:auto;padding-bottom:2px}.filter{flex:0 0 auto;min-height:38px;padding:8px 12px;font-size:9px}.section-head{align-items:flex-start;flex-direction:column;gap:5px}.section-head h3{font-size:21px}.private-note{text-align:left}.products{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}.product{border-radius:16px}.product-img{height:130px}.product-body{padding:10px;gap:6px}.product h4{font-size:14px}.desc{font-size:9px;min-height:26px}.private-price{font-size:8px}.lock-dot{width:21px;height:21px;font-size:9px}.quantity-entry{grid-template-columns:1fr!important;gap:4px!important}.quantity-entry label{font-size:8px}.quantity-input{min-height:38px!important;font-size:15px!important}.reseller-cta{grid-template-columns:auto 1fr;padding:15px;border-radius:20px}.reseller-heart{font-size:30px}.reseller-cta strong{font-size:14px}.reseller-cta span{font-size:9px}.reseller-cta button{grid-column:1/-1;width:100%;min-width:0}}
 
 
+/* Aviso de acesso exclusivo para revendedores */
+.access-guide{display:flex;align-items:flex-start;gap:13px;padding:15px 16px;margin:0 0 20px;border:1px solid rgba(105,57,205,.25);border-radius:18px;background:rgba(255,255,255,.76);box-shadow:0 8px 22px rgba(57,29,110,.08)}
+.access-guide-icon{display:grid;place-items:center;flex:0 0 39px;width:39px;height:39px;border-radius:12px;background:#e5d5ff;color:#5122bc;font-size:19px}
+.access-guide-copy{flex:1;min-width:0}.access-guide-copy strong{display:block;margin:1px 0 5px;color:#281450;font-size:14px;font-weight:1000}
+.access-guide-copy p{margin:0;color:#46385a;font-size:11px;line-height:1.5;font-weight:650}
+.access-guide-copy b{color:#5122bc}
+.access-guide-button{flex:0 0 auto;align-self:center;min-height:39px;border:0;border-radius:12px;padding:10px 13px;background:#5422bd;color:#fff;font-weight:900;font-size:11px;cursor:pointer}
+.access-guide-button:hover{background:#6b36d5}
+.access-help-auth{margin:0 0 13px;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:var(--surface2);color:var(--text);font-size:11px;line-height:1.5}
+.access-help-auth strong{color:var(--text)}
+@media(max-width:640px){.access-guide{flex-wrap:wrap;gap:10px;margin-bottom:16px;padding:12px;border-radius:15px}.access-guide-icon{width:34px;height:34px;flex-basis:34px}.access-guide-copy strong{font-size:12px}.access-guide-copy p{font-size:10px}.access-guide-button{width:100%;font-size:12px;min-height:43px}}
+
 /* v2.0 — card de próximos sabores */
 .coming-soon-card{min-height:100%;border:1px dashed #c3a7f2;border-radius:21px;background:linear-gradient(135deg,#fff5e9,#efe3ff);color:#482092;display:grid;grid-template-columns:1.1fr .9fr;gap:12px;padding:20px;position:relative;overflow:hidden}
 .coming-badge{grid-column:1/-1;justify-self:start;padding:7px 10px;border-radius:999px;background:#d8c1ff;color:#4b20a4;font-size:10px;font-weight:900}
@@ -868,6 +880,14 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
       <small>CATÁLOGO PARA REVENDEDORES</small>
       <h2><span>Escolha<br>seus sabores.</span><strong>A UBA cuida do resto.</strong></h2>
       <p>Alfajores artesanais de alta qualidade, prontos para revenda. Monte seu carrinho, envie o pedido e receba com praticidade.</p>
+      <div class="access-guide" role="note" aria-label="Informações de acesso para revendedores">
+        <div class="access-guide-icon" aria-hidden="true">🔒</div>
+        <div class="access-guide-copy">
+          <strong>Como ver os preços de revenda e comprar?</strong>
+          <p>É necessário ter <b>login e senha</b>, fornecidos pelo <b>atendimento da UBA DOCES no WhatsApp</b>. Com seu acesso aprovado, você poderá consultar os valores exclusivos para revendedores e fazer seus pedidos pelo site.</p>
+        </div>
+        <button class="access-guide-button" type="button" onclick="openCustomerEntry()">Já tenho login</button>
+      </div>
       <div class="hero-benefits" aria-label="Vantagens para revendedores">
         <div class="hero-benefit"><span class="hero-benefit-icon">▣</span><span><b>Produtos</b><small>prontos para revenda</small></span></div>
         <div class="hero-benefit"><span class="hero-benefit-icon">▱</span><span><b>Entrega segura</b><small>e no prazo</small></span></div>
@@ -890,7 +910,7 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
   <div class="test-mode-banner" id="testModeBanner" hidden role="status">MODO TESTE — pedidos sem cobrança e sem movimentação de estoque.</div><section class="products" id="products"></section>
   <section class="reseller-cta">
     <div class="reseller-heart">♥</div>
-    <div><strong>Seja um revendedor UBA DOCES</strong><span>Produtos de alta qualidade, sabores que vendem e todo o suporte que você precisa.</span></div>
+    <div><strong>Seja um revendedor UBA DOCES</strong><span>Peça seu login e senha ao atendimento pelo WhatsApp. Com acesso aprovado, consulte preços exclusivos e faça pedidos.</span></div>
     <button type="button" onclick="openCustomerEntry()">Quero revender <b>→</b></button>
   </section>
 </div>
@@ -909,7 +929,7 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
     <div class="checkout-body">
       <section class="panel" id="step1">
         <h4>Identificação</h4>
-        <p class="hint">Você pode montar o carrinho sem login. Para ver preços e finalizar, a conta precisa estar aprovada pela UBA.</p>
+        <p class="hint">Para visualizar os preços exclusivos de revenda e finalizar pedidos, entre com um login e senha aprovados pela UBA DOCES. Solicite seu acesso pelo WhatsApp de atendimento.</p>
 
         <div id="customerLoggedBox" class="account-box">
           <strong id="customerLoggedName">Conta aprovada</strong>
@@ -922,6 +942,7 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
         </div>
 
         <div id="customerAuthBox">
+          <div class="access-help-auth">💬 <strong>Não tem login e senha?</strong> Entre em contato com o atendimento da UBA DOCES pelo WhatsApp para receber as orientações de acesso. Após a aprovação, você poderá ver os valores de revenda e comprar pelo site.</div>
           <div class="tabs">
             <button class="tab active" id="tabLogin" onclick="switchAuth('login')">Já tenho conta</button>
             <button class="tab" id="tabCreate" onclick="switchAuth('create')">Criar conta</button>
@@ -1748,7 +1769,7 @@ function renderCart(){
   document.getElementById('mobilePriceHint').textContent=showPrice?(tier?`Total ${money(total)}`:'Pedido mínimo 25 un.'):'Preços protegidos até aprovação';
   const note=document.getElementById('drawerTierNote');
   if(note){
-    if(!showPrice)note.innerHTML='🔒 Faça login com uma conta aprovada para liberar os preços.';
+    if(!showPrice)note.innerHTML='🔒 Para consultar preços de revenda e comprar, solicite login e senha ao atendimento da UBA DOCES pelo WhatsApp e entre com seu acesso aprovado.';
     else if(!tier)note.innerHTML=`Faltam <strong>${Math.max(0,25-count)} unidades</strong> para atingir o pedido mínimo de 25.`;
     else note.innerHTML=`Faixa aplicada: <strong>${tier.label} unidades</strong> • ${purposeIcon(purpose)} ${purposeLabel(purpose)}. A faixa considera a quantidade total, mesmo misturando sabores.`
   }
