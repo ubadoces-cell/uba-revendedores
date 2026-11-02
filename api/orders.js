@@ -14,7 +14,7 @@ const PRODUCTS = {
 };
 const PRICING = {
   commerce: [
-    { min: 50, max: 99, chocolate50: 460, standard: 510, pistache: 610 },
+    { min: 25, max: 99, chocolate50: 460, standard: 510, pistache: 610 },
     { min: 100, max: 199, chocolate50: 455, standard: 488, pistache: 553 },
     { min: 200, max: 399, chocolate50: 420, standard: 450, pistache: 510 },
     { min: 400, max: null, chocolate50: 385, standard: 413, pistache: 468 },
@@ -221,7 +221,7 @@ export default async function handler(req, res) {
       const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : (req.body || {});
       const purpose = "commerce";
       const calculated = calculate(normalizeItems(body.items), purpose);
-      if (calculated.units < 50) return res.status(400).json({ error: "O pedido mínimo é de 50 unidades." });
+      if (calculated.units < 25) return res.status(400).json({ error: "O pedido mínimo é de 25 unidades." });
 
       const customer = body.customer && typeof body.customer === "object" ? body.customer : {};
       const buyer = body.buyer && typeof body.buyer === "object" ? body.buyer : {};
