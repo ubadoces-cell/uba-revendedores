@@ -133,14 +133,24 @@
   window.registerConfirmedOrderInStock=function(){return 0};
 
   function testProductId(name){
-    const normalized=String(name||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
-    if(normalized.includes('pistache'))return 'pistache';
-    if(normalized.includes('50%'))return 'chocolate50';
-    if(normalized.includes('branco'))return 'branco';
-    if(normalized.includes('caramelo'))return 'caramelo';
-    if(normalized.includes('morango'))return 'morango';
-    return ''
-  }
+ const value=String(name||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+ if(value.includes("pistache"))return "pistache";
+ if(value.includes("caramelo"))return "caramelo";
+ if(value.includes("morango"))return "morango";
+ const dark=value.includes("50%")||value.includes("50 cacau");
+ if(dark){
+  if(value.includes("beijinho"))return "chocolate50_beijinho";
+  if(value.includes("chocolate ao leite"))return "chocolate50_chocolate";
+  if(value.includes("branco"))return "chocolate50_branco";
+  return "chocolate50";
+ }
+ if(value.includes("branco")){
+  if(value.includes("beijinho"))return "branco_beijinho";
+  if(value.includes("chocolate ao leite"))return "branco_chocolate";
+  return "branco";
+ }
+ return "";
+}
   function testOrderId(card){
     const button=[...card.querySelectorAll('button[onclick]')].find(btn=>String(btn.getAttribute('onclick')||'').includes('saveOrderNote('));
     const match=String(button?.getAttribute('onclick')||'').match(/saveOrderNote\('([^']+)'\)/);
