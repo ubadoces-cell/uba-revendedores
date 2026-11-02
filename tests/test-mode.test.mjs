@@ -20,7 +20,10 @@ try{
  assert.equal(login.statusCode,200);assert.equal(login.body.account.isTest,true);
  const cookie=login.headers['Set-Cookie'][0].split(';')[0];
  const current=await call(customers,{query:{scope:'current'},headers:{cookie}});assert.equal(current.body.account.isTest,true);
- const body={isTest:true,customer:{name:'Test',doc:'00000000000'},buyer:{name:'Test',doc:'00000000000'},items:[{productId:'branco',quantity:50}],delivery:{city:'Local test'}};
+ const body={isTest:true,customer:{name:'Test',doc:'00000000000'},buyer:{name:'Test',doc:'00000000000'},items:[{productId:'branco',quantity:25}],delivery:{city:'Local test',neighborhood:'Centro'}};
+ // Reject orders below 25 units even for authenticated test users.
+ const underMinimum=await call(orders,{method:'POST',headers:{cookie},body:{...body,items:[{productId:'branco',quantity:24}]}});
+ assert.equal(underMinimum.statusCode,400);assert.match(underMinimum.body.error,/25 unidades/);
  // Body flags cannot bypass authentication or payment for regular customers.
  assert.equal((await call(orders,{method:'POST',body})).statusCode,401);
  const testOrder=await call(orders,{method:'POST',headers:{cookie},body});
