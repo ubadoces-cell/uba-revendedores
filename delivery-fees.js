@@ -1,22 +1,22 @@
-/* Taxas de entrega por bairro — base Socorro R$ 1,99 e +R$ 0,25 por faixa sequencial. */
+/* Frete fixo R$ 5,00 nos bairros atendidos de Limoeiro do Norte. */
 (function () {
   const DELIVERY_FEES = [
-    ["Socorro", 199],
-    ["Pitombeira", 224],
-    ["Brotolândia", 249],
-    ["Centro", 274],
-    ["Dr José Simões", 299],
-    ["João XXIII", 324],
-    ["Monsenhor Otávio", 349],
-    ["Santa Luzia", 374],
-    ["Antônio Holanda", 399],
-    ["Bom Jesus", 424],
-    ["Limoeirinho", 449],
-    ["Bom Nome", 474],
-    ["Boa Fé", 499],
-    ["Luis Alves de Freitas", 524],
-    ["Ilha", 549],
-    ["Bom Jesus do Cruzeiro", 574],
+    ["Socorro", 500],
+    ["Pitombeira", 500],
+    ["Brotolândia", 500],
+    ["Centro", 500],
+    ["Dr José Simões", 500],
+    ["João XXIII", 500],
+    ["Monsenhor Otávio", 500],
+    ["Santa Luzia", 500],
+    ["Antônio Holanda", 500],
+    ["Bom Jesus", 500],
+    ["Limoeirinho", 500],
+    ["Bom Nome", 500],
+    ["Boa Fé", 500],
+    ["Luis Alves de Freitas", 500],
+    ["Ilha", 500],
+    ["Bom Jesus do Cruzeiro", 500],
   ];
 
   const moneyFromCents = (cents) => (Number(cents || 0) / 100).toLocaleString("pt-BR", {
