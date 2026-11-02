@@ -1254,55 +1254,234 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
 
 <script>
 const defaultCatalog=[
- {id:'pistache',name:'Pistache',price:8.50,stock:120,img:'pistache.jpg',desc:'Cremoso e marcante, com sabor característico de pistache.',tag:'Destaque',active:true},
- {id:'chocolate50',name:'Chocolate 50%',price:7.00,stock:180,img:'chocolate50.jpg',desc:'Chocolate intenso e equilibrado com recheio cremoso.',tag:'Mais vendido',active:true},
- {id:'branco',name:'Chocolate Branco',price:7.50,stock:95,img:'branco.jpg',desc:'Delicado, cremoso e doce na medida certa.',tag:'',active:true},
- {id:'caramelo',name:'Caramelo',price:7.50,stock:72,img:'caramelo.jpg',desc:'Recheio cremoso de caramelo com sabor envolvente.',tag:'',active:true},
- {id:'morango',name:'Morango',price:7.50,stock:0,img:'morango.jpg',desc:'Cremoso e frutado, com sabor marcante de morango.',tag:'',active:true}
+  {
+    "id": "chocolate50",
+    "name": "Chocolate 50% Cacau + Doce de Leite",
+    "price": 7,
+    "stock": 180,
+    "img": "assets/alfajores-v2/chocolate50.jpg",
+    "desc": "Cobertura 50% cacau com recheio de doce de leite.",
+    "tag": "Mais vendido",
+    "active": true,
+    "temporarilyUnavailable": false
+  },
+  {
+    "id": "branco",
+    "name": "Chocolate Branco + Doce de Leite",
+    "price": 7.5,
+    "stock": 95,
+    "img": "assets/alfajores-v2/branco.jpg",
+    "desc": "Cobertura de chocolate branco com recheio de doce de leite.",
+    "tag": "",
+    "active": true,
+    "temporarilyUnavailable": false
+  },
+  {
+    "id": "branco_beijinho",
+    "name": "Chocolate Branco + Beijinho",
+    "price": 8,
+    "stock": 0,
+    "img": "assets/alfajores-v2/branco_beijinho.jpg",
+    "desc": "Cobertura branca com recheio cremoso de beijinho.",
+    "tag": "Novo",
+    "active": true,
+    "temporarilyUnavailable": false
+  },
+  {
+    "id": "branco_chocolate",
+    "name": "Chocolate Branco + Chocolate ao Leite",
+    "price": 7.5,
+    "stock": 0,
+    "img": "assets/alfajores-v2/branco_chocolate.jpg",
+    "desc": "Cobertura branca com recheio de chocolate ao leite.",
+    "tag": "Novo",
+    "active": true,
+    "temporarilyUnavailable": false
+  },
+  {
+    "id": "chocolate50_chocolate",
+    "name": "Chocolate 50% Cacau + Chocolate ao Leite",
+    "price": 7.5,
+    "stock": 0,
+    "img": "assets/alfajores-v2/chocolate50_chocolate.jpg",
+    "desc": "Cobertura 50% cacau com recheio de chocolate ao leite.",
+    "tag": "Novo",
+    "active": true,
+    "temporarilyUnavailable": false
+  },
+  {
+    "id": "chocolate50_beijinho",
+    "name": "Chocolate 50% Cacau + Beijinho",
+    "price": 8,
+    "stock": 0,
+    "img": "assets/alfajores-v2/chocolate50_beijinho.jpg",
+    "desc": "Cobertura 50% cacau com recheio de beijinho.",
+    "tag": "Novo",
+    "active": true,
+    "temporarilyUnavailable": false
+  },
+  {
+    "id": "chocolate50_branco",
+    "name": "Chocolate 50% Cacau + Chocolate Branco",
+    "price": 8,
+    "stock": 0,
+    "img": "assets/alfajores-v2/chocolate50_branco.jpg",
+    "desc": "Cobertura 50% cacau com recheio de chocolate branco.",
+    "tag": "Novo",
+    "active": true,
+    "temporarilyUnavailable": false
+  },
+  {
+    "id": "pistache",
+    "name": "Pistache + Doce de Leite",
+    "price": 8.5,
+    "stock": 120,
+    "img": "assets/alfajores-v2/pistache.jpg",
+    "desc": "Cobertura de pistache com recheio de doce de leite.",
+    "tag": "",
+    "active": false,
+    "temporarilyUnavailable": true
+  },
+  {
+    "id": "caramelo",
+    "name": "Caramelo + Doce de Leite",
+    "price": 8,
+    "stock": 72,
+    "img": "assets/alfajores-v2/caramelo.jpg",
+    "desc": "Cobertura de caramelo com recheio de doce de leite.",
+    "tag": "",
+    "active": false,
+    "temporarilyUnavailable": true
+  },
+  {
+    "id": "morango",
+    "name": "Morango + Doce de Leite",
+    "price": 7.5,
+    "stock": 0,
+    "img": "assets/alfajores-v2/morango.jpg",
+    "desc": "Cobertura de morango com recheio de doce de leite.",
+    "tag": "",
+    "active": false,
+    "temporarilyUnavailable": true
+  }
 ];
-
 const defaultPricing={
-  commerce:[
-    {min:25,max:99,label:'25 a 99',chocolate50:4.60,standard:5.10,pistache:6.10},
-    {min:100,max:199,label:'100 a 199',chocolate50:4.55,standard:4.88,pistache:5.53},
-    {min:200,max:399,label:'200 a 399',chocolate50:4.20,standard:4.50,pistache:5.10},
-    {min:400,max:null,label:'400 ou mais',chocolate50:3.85,standard:4.13,pistache:4.68}
+  "commerce": [
+    {
+      "min": 25,
+      "max": 99,
+      "label": "25 a 99",
+      "chocolate50": 4.6,
+      "branco": 5.1,
+      "branco_beijinho": 5.44,
+      "branco_chocolate": 5.1,
+      "chocolate50_chocolate": 4.93,
+      "chocolate50_beijinho": 5.26,
+      "chocolate50_branco": 5.26,
+      "pistache": 6.1,
+      "caramelo": 5.44,
+      "morango": 5.1
+    },
+    {
+      "min": 100,
+      "max": 199,
+      "label": "100 a 199",
+      "chocolate50": 4.55,
+      "branco": 4.88,
+      "branco_beijinho": 5.21,
+      "branco_chocolate": 4.88,
+      "chocolate50_chocolate": 4.88,
+      "chocolate50_beijinho": 5.2,
+      "chocolate50_branco": 5.2,
+      "pistache": 5.53,
+      "caramelo": 5.21,
+      "morango": 4.88
+    },
+    {
+      "min": 200,
+      "max": 399,
+      "label": "200 a 399",
+      "chocolate50": 4.2,
+      "branco": 4.5,
+      "branco_beijinho": 4.8,
+      "branco_chocolate": 4.5,
+      "chocolate50_chocolate": 4.5,
+      "chocolate50_beijinho": 4.8,
+      "chocolate50_branco": 4.8,
+      "pistache": 5.1,
+      "caramelo": 4.8,
+      "morango": 4.5
+    },
+    {
+      "min": 400,
+      "max": null,
+      "label": "400 ou mais",
+      "chocolate50": 3.85,
+      "branco": 4.13,
+      "branco_beijinho": 4.41,
+      "branco_chocolate": 4.13,
+      "chocolate50_chocolate": 4.13,
+      "chocolate50_beijinho": 4.4,
+      "chocolate50_branco": 4.4,
+      "pistache": 4.68,
+      "caramelo": 4.41,
+      "morango": 4.13
+    }
   ]
 };
-
-let catalog=readJson('uba-rev-catalog')||structuredClone(defaultCatalog);
-let pricing=readJson('uba-rev-pricing-v1')||structuredClone(defaultPricing);
-// Existing browsers may have saved the old 50-unit tier locally.
-// Keep any custom unit prices while updating only the minimum and label.
-if(pricing.commerce?.[0]?.min===50 && pricing.commerce[0].max===99){
-  pricing.commerce[0].min=25;
-  pricing.commerce[0].label='25 a 99';
-  localStorage.setItem('uba-rev-pricing-v1',JSON.stringify(pricing));
+function canonicalProductId(product){
+ const id=String(product?.id||"");
+ if(defaultCatalog.some(p=>p.id===id))return id;
+ const name=String(product?.name||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+ if(name.includes("pistache"))return "pistache";
+ if(name.includes("caramelo"))return "caramelo";
+ if(name.includes("morango"))return "morango";
+ const dark=name.includes("50%")||name.includes("50 %")||name.includes("50 cacau")||name.includes("cacau 50");
+ const beijinho=name.includes("beijinho"), milk=name.includes("chocolate ao leite"),white=name.includes("branco");
+ if(dark){
+  if(beijinho)return "chocolate50_beijinho";
+  if(milk)return "chocolate50_chocolate";
+  if(white)return "chocolate50_branco";
+  return "chocolate50";
+ }
+ if(white){
+  if(beijinho)return "branco_beijinho";
+  if(milk)return "branco_chocolate";
+  return "branco";
+ }
+ return "";
 }
-const PRODUCT_IMAGE_VERSION='20260927';
-const defaultImageMap={
-  // Fotos oficiais/canônicas dos sabores. Não substituir em ajustes de layout sem pedido explícito.
-  pistache:`pistache.jpg?v=${PRODUCT_IMAGE_VERSION}`,
-  chocolate50:`chocolate50.jpg?v=${PRODUCT_IMAGE_VERSION}`,
-  branco:`branco.jpg?v=${PRODUCT_IMAGE_VERSION}`,
-  caramelo:`caramelo.jpg?v=${PRODUCT_IMAGE_VERSION}`,
-  morango:`morango.jpg?v=${PRODUCT_IMAGE_VERSION}`
-};
-const PRODUCT_IMAGE_MIGRATION=`uba-rev-product-images-${PRODUCT_IMAGE_VERSION}`;
+function migrateCatalogProducts(saved){
+ if(!Array.isArray(saved))return structuredClone(defaultCatalog);
+ const result=defaultCatalog.map(template=>{
+  const existing=saved.find(p=>canonicalProductId(p)===template.id);
+  return existing?{...template,stock:Number.isFinite(Number(existing.stock))?Math.max(0,Number(existing.stock)):template.stock}:structuredClone(template);
+ });
+ for(const item of saved)if(!canonicalProductId(item))result.push({...item,active:false});
+ return result;
+}
+const CATALOG_MIGRATION_KEY='uba-rev-catalog-10-sabores-20261102';
+const savedCatalog=readJson('uba-rev-catalog');
+let catalog=Array.isArray(savedCatalog)?savedCatalog:structuredClone(defaultCatalog);
+if(localStorage.getItem(CATALOG_MIGRATION_KEY)!=='1'){
+ if(Array.isArray(savedCatalog))try{localStorage.setItem('uba-rev-catalog-backup-20261102',JSON.stringify(savedCatalog))}catch{}
+ catalog=migrateCatalogProducts(savedCatalog);
+ try{localStorage.setItem('uba-rev-catalog',JSON.stringify(catalog));localStorage.setItem(CATALOG_MIGRATION_KEY,'1')}catch{}
+}
+const PRICING_STORAGE_KEY='uba-rev-pricing-v2';
+let pricing=readJson(PRICING_STORAGE_KEY)||structuredClone(defaultPricing);
+const PRODUCT_IMAGE_VERSION='20261102';
+const defaultImageMap=Object.fromEntries(defaultCatalog.map(p=>[p.id,p.img+'?v='+PRODUCT_IMAGE_VERSION]));
+const PRODUCT_IMAGE_MIGRATION='uba-rev-product-images-'+PRODUCT_IMAGE_VERSION;
 const refreshCanonicalImages=localStorage.getItem(PRODUCT_IMAGE_MIGRATION)!=='1';
+const oldImageNames=['pistache.jpg','chocolate50.jpg','branco.jpg','caramelo.jpg','morango.jpg'];
 catalog=catalog.map(p=>{
-  const wanted=defaultImageMap[p.id];
-  const baseName=String(p.img||'').split('?')[0];
-  const oldNames=['pistache.jpg','chocolate50.jpg','branco.jpg','caramelo.jpg','morango.jpg'];
-  if(wanted&&(refreshCanonicalImages||!p.img||oldNames.includes(baseName))) p.img=wanted;
-  if(!p.priceGroup){
-    p.priceGroup=p.id==='pistache'?'pistache':p.id==='chocolate50'?'chocolate50':'standard';
-  }
-  return p
+ const wanted=defaultImageMap[p.id];
+ const baseName=String(p.img||'').split('?')[0];
+ if(wanted&&(refreshCanonicalImages||!p.img||oldImageNames.includes(baseName)))p.img=wanted;
+ return p;
 });
 if(refreshCanonicalImages)localStorage.setItem(PRODUCT_IMAGE_MIGRATION,'1');
-
-
 const STOCK_KEY='uba-shared-stock-v1';
 const STOCK_HISTORY_KEY='uba-shared-stock-history-v1';
 const initialSharedStock={};
@@ -1421,18 +1600,11 @@ function getTier(count=getOrderCount(),purpose=getOrderPurpose()){
   const list=pricing[purpose]||pricing.commerce;
   return list.find(t=>count>=t.min&&(t.max==null||count<=t.max))||null
 }
-function productPriceGroup(p){
-  if(p.priceGroup)return p.priceGroup;
-  if(p.id==='pistache')return 'pistache';
-  if(p.id==='chocolate50')return 'chocolate50';
-  return 'standard'
-}
+function productPriceGroup(p){return p.id;}
 function getUnitPrice(p,count=getOrderCount(),purpose=getOrderPurpose()){
-  const tier=getTier(count,purpose);
-  if(!tier)return null;
-  return Number(tier[productPriceGroup(p)]||0)
+ const tier=getTier(count,purpose);
+ return tier?Number(tier[p.id]||0):null;
 }
-
 function syncPurposeFields(){
   visitorPurpose='commerce';localStorage.setItem('uba-rev-purpose','commerce');
   const reg=document.getElementById('regPurpose');if(reg)reg.value='commerce';
@@ -1965,21 +2137,15 @@ function registerConfirmedOrderInStock(){
 }
 
 function renderPricingEditor(){
-  const root=document.getElementById('pricingEditor');
-  if(!root)return;
-  const section=(purpose,title)=>`<div class="pricing-group">
-    <h4>${title}</h4>
-    <div class="pricing-table-wrap"><table class="pricing-table">
-      <thead><tr><th>Quantidade total</th><th>Chocolate 50%</th><th>Branco / Caramelo / Morango</th><th>Pistache</th></tr></thead>
-      <tbody>${pricing[purpose].map((t,i)=>`<tr>
-        <td class="tier-cell">${t.label}</td>
-        <td><input class="sensitive" type="number" min="0" step="0.01" value="${t.chocolate50}" onchange="editPricing('${purpose}',${i},'chocolate50',this.value)"></td>
-        <td><input class="sensitive" type="number" min="0" step="0.01" value="${t.standard}" onchange="editPricing('${purpose}',${i},'standard',this.value)"></td>
-        <td><input class="sensitive" type="number" min="0" step="0.01" value="${t.pistache}" onchange="editPricing('${purpose}',${i},'pistache',this.value)"></td>
-      </tr>`).join('')}</tbody>
-    </table></div>
-  </div>`;
-  root.innerHTML=section('commerce','🏪 Revendedores / comércio')
+ const root=document.getElementById('pricingEditor');
+ if(!root)return;
+ const tiers=pricing.commerce;
+ const header=tiers.map(t=>`<th>${escapeHtml(t.label)} un.</th>`).join('');
+ const rows=defaultCatalog.map(product=>{
+  const inputs=tiers.map((tier,index)=>`<td><input class="sensitive" type="number" min="0" step="0.01" value="${Number(tier[product.id]||0).toFixed(2)}" aria-label="${escapeHtml(product.name)}: ${escapeHtml(tier.label)} unidades" onchange="editPricing('commerce',${index},'${product.id}',this.value)"></td>`).join('');
+  return `<tr><td class="tier-cell">${escapeHtml(product.name)}${!product.active?' <small>· indisponível</small>':''}</td>${inputs}</tr>`;
+ }).join('');
+ root.innerHTML=`<div class="pricing-group"><h4>🏪 Revendedores / comércio — preços por sabor</h4><div class="pricing-table-wrap"><table class="pricing-table"><thead><tr><th>Sabor e recheio</th>${header}</tr></thead><tbody>${rows}</tbody></table></div></div>`;
 }
 function editPricing(purpose,index,key,value){
   pricing[purpose][index][key]=Math.max(0,Number(value||0));
@@ -2082,7 +2248,7 @@ function toggleAdminValues(){
 function saveCatalog(){
   try{
     localStorage.setItem('uba-rev-catalog',JSON.stringify(catalog));
-    localStorage.setItem('uba-rev-pricing-v1',JSON.stringify(pricing));
+    localStorage.setItem(PRICING_STORAGE_KEY,JSON.stringify(pricing));
     saveSharedStock();
   }catch{
     alert('Não foi possível salvar porque alguma foto ficou grande demais para esta prévia. Use imagens menores.');
@@ -2099,7 +2265,7 @@ function resetCatalog(){
   Object.keys(qty).forEach(k=>delete qty[k]);
   catalog.forEach(p=>qty[p.id]=0);
   localStorage.removeItem('uba-rev-catalog');
-  localStorage.removeItem('uba-rev-pricing-v1');
+  localStorage.removeItem(PRICING_STORAGE_KEY);
   renderAdmin();renderProducts();updateCart()
 }
 
