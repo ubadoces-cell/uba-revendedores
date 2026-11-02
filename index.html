@@ -258,6 +258,9 @@ body.ceo-mode.ceo-editing .inline-editor{display:block}
 @media(max-width:640px){.purpose-card{padding:22px 16px;border-radius:23px}.purpose-options{grid-template-columns:1fr}.purpose-option{min-height:0;padding:17px}}
 
 
+.product.out-of-stock{opacity:.78}
+.product.out-of-stock .quantity-entry{display:none}
+.product.out-of-stock .product-img .tag{background:#493b5d;color:#fff}
 /* ===== V7: preços por faixa do pedido total ===== */
 .tier-note{
   margin-top:9px;padding:10px 12px;border:1px solid var(--line);border-radius:13px;
@@ -875,7 +878,7 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
     <div class="hero-visual" aria-label="Alfajor UBA em destaque">
       <div class="hero-art">
         <div class="hero-purple-blob"></div>
-        <img src="pistache.jpg?v=20260927" alt="Alfajor de pistache UBA DOCES" loading="eager" decoding="async">
+        <img src="assets/alfajores-v2/chocolate50.jpg?v=20261102" alt="Alfajor chocolate 50% cacau com doce de leite UBA DOCES" loading="eager" decoding="async">
         <div class="hero-speech">Venda<br>mais com<br><b>UBA DOCES.</b><span>♥</span></div>
         <div class="hero-result-badge"><b>↗</b><span>Doces que dão <strong>resultado</strong><br>no seu negócio.</span></div>
       </div>
@@ -1086,7 +1089,7 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
         </div>
       </div>
 
-      <div class="admin-note">Os preços são definidos por <b>faixa de quantidade total</b>. O estoque é administrado separadamente na área Estoques.</div>
+      <div class="admin-note">Os preços são definidos por <b>sabor e quantidade total</b>. O varejo é apenas referência; alterações nele não recalculam os preços de revenda. O estoque é administrado em Estoques.</div>
       <div class="admin-grid" id="adminGrid"></div>
 
       <section class="admin-section-card">
@@ -1619,7 +1622,7 @@ function applyTheme(theme){
 function toggleTheme(){applyTheme(document.documentElement.dataset.theme==='dark'?'light':'dark')}
 
 function getVisibleCatalog(){
-  let list=catalog.filter(p=>p.active);
+  let list=catalog.filter(p=>p.active||p.temporarilyUnavailable);
   const q=(document.getElementById('search')?.value||'').toLowerCase().trim();
   if(q)list=list.filter(p=>p.name.toLowerCase().includes(q)||p.desc.toLowerCase().includes(q));
   if(currentFilter==='featured')list=list.filter(p=>p.tag==='Destaque');
@@ -1635,15 +1638,16 @@ function renderProducts(){
   const products=document.getElementById('products');
   products.innerHTML=list.map(p=>{
     const unitPrice=getUnitPrice(p,orderCount);
-    const priceBlock=showPrice
+    const priceBlock=!p.active?'<div class="min-order">🚫 Indisponível no momento</div>':showPrice
       ? (tier
         ? `<div class="price-public"><b>${money(unitPrice)}</b><small>/ unidade</small><span class="tier-mini">Faixa ${tier.label} • ${purposeLabel(getOrderPurpose())}</span></div>`
         : `<div class="min-order">📦 Pedido mínimo: 25 unidades</div>`)
       : `<div class="private-price"><span class="lock-dot">🔒</span><span>Preço liberado após aprovação</span></div>`;
     const currentQty=Number(qty[p.id]||0);
-    return `<article class="product">
+    return `<article class="product ${p.active?"":"out-of-stock"}">
       <div class="product-img">
-        <img src="${p.img}" alt="${escapeHtml(p.name)}">
+        <img src="${p.img}" alt="${escapeHtml(p.name)}" loading="lazy">
+        ${!p.active?'<span class="tag">Indisponível</span>':''}
         ${p.tag?`<span class="tag ${p.tag==='Mais vendido'?'pop':p.tag==='Novo'?'new':''}">${escapeHtml(p.tag)}</span>`:''}
       </div>
       <div class="product-body">
@@ -1657,6 +1661,7 @@ function renderProducts(){
               id="qty-${p.id}"
               class="quantity-input"
               type="number"
+              ${p.active?"":"disabled"}
               min="0"
               max="99999"
               step="1"
@@ -2163,14 +2168,7 @@ function renderAdmin(){
     <div class="admin-product-content">
       <div class="admin-product-main">
         <div class="field"><label>Produto</label><input data-i="${i}" data-k="name" value="${escapeHtml(p.name)}" oninput="editField(this)"></div>
-        <div class="field">
-          <label>Grupo de preço</label>
-          <select data-i="${i}" data-k="priceGroup" onchange="editField(this)">
-            <option value="chocolate50" ${productPriceGroup(p)==='chocolate50'?'selected':''}>Chocolate 50%</option>
-            <option value="standard" ${productPriceGroup(p)==='standard'?'selected':''}>Branco / Caramelo / Morango</option>
-            <option value="pistache" ${productPriceGroup(p)==='pistache'?'selected':''}>Pistache</option>
-          </select>
-        </div>
+        <div class="field"><label>Varejo (referência)</label><input type="number" data-i="${i}" data-k="price" min="0" step="0.01" value="${Number(p.price||0).toFixed(2)}" oninput="editField(this)"></div>
         <div class="field"><label>Destaque</label><select data-i="${i}" data-k="tag" onchange="editField(this)">
           <option value="" ${!p.tag?'selected':''}>Nenhum</option>
           <option ${p.tag==='Destaque'?'selected':''}>Destaque</option>
@@ -2221,7 +2219,7 @@ function addProduct(){
 }
 function editField(el){
   const i=Number(el.dataset.i),k=el.dataset.k;let v=el.value;
-  catalog[i][k]=v;updateAdminMetrics()
+  catalog[i][k]=k==='price'?Math.max(0,Number(v)||0):v;updateAdminMetrics()
 }
 function toggleProduct(i,btn){
   catalog[i].active=!catalog[i].active;
