@@ -12,7 +12,6 @@
 .reseller-table-kicker{color:var(--muted);font-weight:900;font-size:10px;letter-spacing:.1em;text-transform:uppercase}
 .reseller-table-header h2{font-family:Montserrat,Arial,sans-serif;margin:3px 0 5px;font-size:clamp(22px,3vw,32px);letter-spacing:-.5px}
 .reseller-table-header p{margin:0;font-size:12px;color:var(--muted)}
-.reseller-print-button{border:1px solid #6D5AAD;border-radius:13px;padding:12px 14px;background:#4A388E;color:#fff;font-weight:900;white-space:nowrap}
 .reseller-table-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin:0 0 22px}
 .reseller-table-fact{border:1px solid var(--line);border-radius:16px;background:var(--surface2);padding:15px}
 .reseller-table-fact span{display:block;margin-bottom:6px;font-size:10px;color:var(--muted);font-weight:800}
@@ -32,22 +31,10 @@
 .reseller-table-note{padding:13px 15px;margin:17px 0 0;border-radius:14px;background:var(--surface2);border:1px solid var(--line);color:var(--muted);font-size:11px;line-height:1.55}
 .reseller-table-error{padding:18px;border-radius:14px;border:1px solid var(--line);background:var(--surface2);color:var(--muted);font-size:13px}
 .reseller-table-error button{display:block;margin-top:10px;border:0;border-radius:10px;padding:9px 13px;background:#4A388E;color:#fff;font-weight:800}
-@media(max-width:640px){.reseller-tables-page{padding:13px;border-radius:17px}.reseller-table-header{align-items:flex-start;flex-direction:column}.reseller-table-brand img{width:50px;height:50px}.reseller-print-button{width:100%}.reseller-table-facts{grid-template-columns:1fr;gap:8px}.reseller-table-fact{padding:11px 12px}.reseller-table-fact strong{font-size:14px}.reseller-price-matrix th,.reseller-price-matrix td{font-size:10px}}
+@media(max-width:640px){.reseller-tables-page{padding:13px;border-radius:17px}.reseller-table-header{align-items:flex-start;flex-direction:column}.reseller-table-brand img{width:50px;height:50px}/* Tabela de preços é material confidencial do CEO.
+   O botão de impressão foi removido e a tabela é omitida de impressões do navegador. */
 @media print{
- @page{size:A4 landscape;margin:11mm}
- html,body{background:#fff!important;color:#201a36!important}
- .app{width:100%!important;max-width:none!important;margin:0!important;padding:0!important}
- .app > :not(#resellerTablesView){display:none!important}
- body > :not(.app){display:none!important}
- #resellerTablesView{display:block!important}
- .reseller-tables-page{border:0!important;box-shadow:none!important;padding:0!important;margin:0!important;background:#fff!important;color:#201a36!important}
- .reseller-print-button{display:none!important}
- .reseller-table-facts{grid-template-columns:repeat(3,1fr)}
- .reseller-table-fact{background:#f1eef9!important;color:#201a36!important}
- .reseller-table-fact strong,.reseller-table-header h2,.reseller-table-title{color:#201a36!important}
- .reseller-table-scroll{overflow:visible!important}
- .reseller-price-matrix{min-width:0!important;width:100%!important}
- .reseller-price-matrix th{background:#4A388E!important;color:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
- .reseller-price-matrix td{color:#201a36!important;white-space:normal!important}
- .reseller-table-header,.reseller-table-facts,.reseller-table-title{break-inside:avoid}
+  #resellerTablesView,
+  #resellerTablesContent,
+  .reseller-price-matrix{display:none!important}
 }
