@@ -1,5 +1,6 @@
 import { createHash, randomBytes } from "node:crypto";
 import { database } from "../server/database.js";
+import { requireAdmin } from "./customer-accounts.js";
 
 const COOKIE = "uba_rev_session";
 const MAX_AGE = 60 * 60 * 24 * 30;
@@ -22,6 +23,11 @@ function client() {
 export default async function handler(req, res) {
   try {
     const sql = client();
+    if (req.method === "GET") {
+      res.setHeader("Cache-Control", "private, no-store");
+      const admin = await requireAdmin(req, sql);
+      return res.status(admin ? 200 : 401).json({ authorized: Boolean(admin) });
+    }
     if (req.method === "POST") {
       const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : (req.body || {});
       const username = String(body.username || "").trim();
