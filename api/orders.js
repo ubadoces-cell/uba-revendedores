@@ -119,22 +119,22 @@ export const PRICING = {
 };
 
 const DELIVERY_FEES = [
-  { neighborhood: "Socorro", cents: 500 },
-  { neighborhood: "Pitombeira", cents: 500 },
-  { neighborhood: "Brotolândia", cents: 500 },
-  { neighborhood: "Centro", cents: 500 },
-  { neighborhood: "Dr José Simões", cents: 500 },
-  { neighborhood: "João XXIII", cents: 500 },
-  { neighborhood: "Monsenhor Otávio", cents: 500 },
-  { neighborhood: "Santa Luzia", cents: 500 },
-  { neighborhood: "Antônio Holanda", cents: 500 },
-  { neighborhood: "Bom Jesus", cents: 500 },
-  { neighborhood: "Limoeirinho", cents: 500 },
-  { neighborhood: "Bom Nome", cents: 500 },
-  { neighborhood: "Boa Fé", cents: 500 },
-  { neighborhood: "Luis Alves de Freitas", cents: 500 },
-  { neighborhood: "Ilha", cents: 500 },
-  { neighborhood: "Bom Jesus do Cruzeiro", cents: 500 },
+  { neighborhood: "Socorro", cents: 499 },
+  { neighborhood: "Pitombeira", cents: 499 },
+  { neighborhood: "Brotolândia", cents: 499 },
+  { neighborhood: "Centro", cents: 499 },
+  { neighborhood: "Dr José Simões", cents: 499 },
+  { neighborhood: "João XXIII", cents: 499 },
+  { neighborhood: "Monsenhor Otávio", cents: 499 },
+  { neighborhood: "Santa Luzia", cents: 499 },
+  { neighborhood: "Antônio Holanda", cents: 499 },
+  { neighborhood: "Bom Jesus", cents: 499 },
+  { neighborhood: "Limoeirinho", cents: 499 },
+  { neighborhood: "Bom Nome", cents: 499 },
+  { neighborhood: "Boa Fé", cents: 499 },
+  { neighborhood: "Luis Alves de Freitas", cents: 499 },
+  { neighborhood: "Ilha", cents: 499 },
+  { neighborhood: "Bom Jesus do Cruzeiro", cents: 499 },
 ];
 
 function db() { return database(); }
