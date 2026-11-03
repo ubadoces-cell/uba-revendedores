@@ -23,6 +23,14 @@
     const tablesVisible=approved&&view==='tables';
     catalogView.hidden=tablesVisible;
     tablesView.hidden=!tablesVisible;
+    // Um único banner principal: original no Catálogo, comercial na aba Tabelas.
+    const hero=document.getElementById('mainResellerHero');
+    if(hero){
+      hero.classList.toggle('tables-hero-active',tablesVisible);
+      for(const part of hero.querySelectorAll('[data-hero-mode]')){
+        part.hidden=part.getAttribute('data-hero-mode')!==(tablesVisible?'tables':'catalog');
+      }
+    }
     for(const [id,selected] of [['resellerCatalogTab',!tablesVisible],['resellerTablesTab',tablesVisible]]){
       const button=document.getElementById(id);
       if(!button)continue;
@@ -106,7 +114,7 @@
     if(view!=='tables'){requestId++;ready=false;content.replaceChildren();}
     syncAccess();
     if(view==='tables')loadTable();
-    document.querySelector('.reseller-view-switch')?.scrollIntoView({behavior:'smooth',block:'start'});
+    document.getElementById('mainResellerHero')?.scrollIntoView({behavior:'smooth',block:'start'});
   };
   window.printResellerTables=function(){
     if(!isApproved()||view!=='tables'||!ready){
