@@ -18,9 +18,9 @@ try{
  const deliverySource=await readFile(new URL('../delivery-fees.js',import.meta.url),'utf8');
  const pixSource=await readFile(new URL('../orders-sync.js',import.meta.url),'utf8');
  const webSource=await readFile(new URL('../index.html',import.meta.url),'utf8');
- assert.equal((deliverySource.match(/, 499\\]/g)||[]).length,16,'all served neighborhoods should cost R$ 4,99');
- assert.equal((pixSource.match(/:499\\b/g)||[]).length,16,'Pix delivery fees must be consistent');
- assert.equal((webSource.match(/R\\$ 4,99/g)||[]).length,2,'banner and advantages must show R$ 4,99');
+ assert.equal((deliverySource.match(/, 499\]/g)||[]).length,16,'all served neighborhoods should cost R$ 4,99');
+ assert.equal((pixSource.match(/:499\b/g)||[]).length,16,'Pix delivery fees must be consistent');
+ assert.equal((webSource.match(/R\$ 4,99/g)||[]).length,2,'banner and advantages must show R$ 4,99');
  // Change only in-memory test configuration. Never commit a plaintext password.
  const password='synthetic-test-password';access.passwordHash=scryptSync(password,access.salt,64).toString('hex');access.expiresAt=new Date(Date.now()+86400000).toISOString();
  let calls=0;globalThis.fetch=async()=>{calls++;throw Error('External access forbidden in test')};
