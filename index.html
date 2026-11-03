@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="reseller-tables.css?v=20261102">
-<link rel="stylesheet" href="reseller-tables-banner.css?v=20261103">
+<link rel="stylesheet" href="reseller-tables-banner.css?v=20261103b">
 <style>
 :root{
   --roxo:#4A388E; --lavanda:#CDC6E4; --uva:#5C5CA6; --creme:#FEF2E4; --indigo:#13132A;
@@ -878,8 +878,8 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
   </div>
 
 
-  <section class="hero v2-hero">
-    <div class="hero-copy">
+  <section class="hero v2-hero" id="mainResellerHero" aria-label="Destaque UBA DOCES">
+    <div class="hero-copy" data-hero-mode="catalog">
       <small>CATÁLOGO PARA REVENDEDORES</small>
       <h2><span>Escolha<br>seus sabores.</span><strong>A UBA cuida do resto.</strong></h2>
       <p>Alfajores artesanais de alta qualidade, prontos para revenda. Monte seu carrinho, envie o pedido e receba com praticidade.</p>
@@ -898,12 +898,37 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
       </div>
       <button class="hero-cta" type="button" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth',block:'start'})">Ver catálogo <span>→</span></button>
     </div>
-    <div class="hero-visual" aria-label="Alfajor UBA em destaque">
+    <div class="hero-visual" data-hero-mode="catalog" aria-label="Alfajor UBA em destaque">
       <div class="hero-art">
         <div class="hero-purple-blob"></div>
         <img src="assets/alfajores-v2/chocolate50.jpg?v=20261102" alt="Alfajor chocolate 50% cacau com doce de leite UBA DOCES" loading="eager" decoding="async">
         <div class="hero-speech">Venda<br>mais com<br><b>UBA DOCES.</b><span>♥</span></div>
         <div class="hero-result-badge"><b>↗</b><span>Doces que dão <strong>resultado</strong><br>no seu negócio.</span></div>
+      </div>
+    </div>
+    <div class="hero-copy hero-tables-copy" data-hero-mode="tables" hidden>
+      <small>CATÁLOGO EXCLUSIVO PARA REVENDEDORES</small>
+      <h2>Revenda UBA DOCES <strong>com condições especiais.</strong></h2>
+      <p>Ofereça alfajores artesanais no seu comércio. Compare os preços por quantidade, escolha os sabores e planeje seus pedidos com mais praticidade.</p>
+      <div class="hero-tables-social" role="note">
+        <span class="hero-tables-social-number">+60</span>
+        <span><b>comerciantes já estão lucrando</b> com a UBA DOCES.</span>
+      </div>
+      <div class="hero-tables-features" aria-label="Vantagens da revenda">
+        <div class="hero-tables-feature"><span class="hero-tables-feature-icon" aria-hidden="true">▣</span><span>Pedido mínimo<b>25 unidades</b></span></div>
+        <div class="hero-tables-feature"><span class="hero-tables-feature-icon" aria-hidden="true">◈</span><span>Seu pedido<b>Misture sabores</b></span></div>
+        <div class="hero-tables-feature"><span class="hero-tables-feature-icon" aria-hidden="true">%</span><span>Desconto progressivo<b>Até 45%</b></span></div>
+        <div class="hero-tables-feature"><span class="hero-tables-feature-icon" aria-hidden="true">↗</span><span>Limoeiro do Norte<b>Frete fixo R$ 5,00</b></span></div>
+      </div>
+      <div class="hero-tables-actions">
+        <button class="hero-cta hero-tables-button" type="button" onclick="document.getElementById('resellerPriceSection').scrollIntoView({behavior:'smooth',block:'start'})">Ver tabela de preços <span>↓</span></button>
+        <button class="hero-tables-secondary" type="button" onclick="selectResellerView('catalog')">Escolher alfajores →</button>
+      </div>
+    </div>
+    <div class="hero-visual hero-tables-visual" data-hero-mode="tables" aria-label="Alfajor artesanal da UBA DOCES" hidden>
+      <div class="hero-tables-photo">
+        <img src="assets/alfajores-v2/chocolate50.jpg?v=20261102" alt="Foto oficial do alfajor de chocolate 50% cacau com recheio de doce de leite" loading="lazy" decoding="async">
+        <span class="hero-tables-photo-tag">Alfajores artesanais UBA DOCES</span>
       </div>
     </div>
   </section>
@@ -924,48 +949,6 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
   </section>
   <section id="resellerTablesView" role="tabpanel" aria-labelledby="resellerTablesTab" hidden>
     <div class="reseller-tables-page">
-      <section class="reseller-benefits-hero" aria-labelledby="resellerBenefitsTitle">
-        <div class="reseller-benefits-upper">
-          <div class="reseller-benefits-copy">
-            <p class="reseller-benefits-eyebrow">Vantagens exclusivas para revendedores</p>
-            <h2 id="resellerBenefitsTitle">Mais oportunidades de lucro <span>para o seu comércio.</span></h2>
-            <p class="reseller-benefits-intro">Alfajores artesanais para complementar seu mix de produtos. Consulte os preços por quantidade e escolha a melhor faixa para o seu negócio.</p>
-            <div class="reseller-social-proof">
-              <span class="reseller-social-proof-number">+60</span>
-              <span class="reseller-social-proof-text"><strong>comerciantes já estão lucrando</strong> com a UBA DOCES.</span>
-            </div>
-          </div>
-          <div class="reseller-benefits-visual">
-            <img src="assets/alfajores-v2/chocolate50.jpg?v=20261102" alt="Alfajor artesanal UBA DOCES com cobertura de chocolate 50% cacau e recheio de doce de leite" loading="lazy" decoding="async">
-            <span class="reseller-benefits-photo-label">Alfajores artesanais UBA DOCES</span>
-          </div>
-        </div>
-        <div class="reseller-benefits-points" aria-label="Benefícios da revenda">
-          <div class="reseller-benefit-point">
-            <span class="reseller-benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 8h18v13H3zM3 8l3-5h12l3 5M12 8v13M3 13h18"/></svg></span>
-            <div><span>Comece com apenas</span><strong>25 unidades</strong></div>
-          </div>
-          <div class="reseller-benefit-point">
-            <span class="reseller-benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 2 9 5-9 5-9-5 9-5ZM3 12l9 5 9-5M3 17l9 5 9-5"/></svg></span>
-            <div><span>Monte seu mix</span><strong>Sabores misturados</strong></div>
-          </div>
-          <div class="reseller-benefit-point">
-            <span class="reseller-benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 12 12 20 3 11V4h7z"/><circle cx="7.5" cy="8" r="1.1"/><path d="m11 14 5-5M11 9h.01M16 14h.01"/></svg></span>
-            <div><span>Quanto mais comprar</span><strong>Até 45% de desconto</strong></div>
-          </div>
-          <div class="reseller-benefit-point">
-            <span class="reseller-benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 6h12v11H2zM14 10h4l4 4v3h-8M2 17h2M10 17h6M20 17h2"/><circle cx="7" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg></span>
-            <div><span>Limoeiro do Norte</span><strong>Frete fixo R$ 5,00</strong></div>
-          </div>
-        </div>
-        <div class="reseller-benefits-bottom">
-          <div class="reseller-benefits-actions">
-            <button class="reseller-benefits-primary" type="button" onclick="document.getElementById('resellerPriceSection').scrollIntoView({behavior:'smooth',block:'start'})">Consultar tabela de preços ↓</button>
-            <button class="reseller-benefits-secondary" type="button" onclick="selectResellerView('catalog')">Escolher meus alfajores →</button>
-          </div>
-          <p class="reseller-benefits-ideal"><strong>Feito para quem quer revender:</strong> mercadinhos, padarias, cafeterias, lanchonetes e outros comércios.</p>
-        </div>
-      </section>
       <header class="reseller-table-header" id="resellerPriceSection">
         <div class="reseller-table-brand">
           <img src="logo.jpg" alt="Logotipo oficial UBA DOCES">
@@ -2518,6 +2501,6 @@ renderAll();
 <script src="orders-sync.js?v=15"></script>
 <script src="customer-accounts-sync.js?v=13"></script>
 <script src="uba-liquid-glass-nav.js?v=4"></script>
-<script src="reseller-tables.js?v=20261102"></script>
+<script src="reseller-tables.js?v=20261103c"></script>
 </body>
 </html>
