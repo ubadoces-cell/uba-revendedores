@@ -46,7 +46,7 @@ export default async function handler(req, res) {
       minimumUnits: 25,
       mixFlavors: true,
       deliveryLocation: "Limoeiro do Norte — bairros atendidos",
-      deliveryFeeCents: 500,
+      deliveryFeeCents: 499,
       tiers: tiers.map((tier) => ({ min: tier.min, max: tier.max })),
       products,
     });
