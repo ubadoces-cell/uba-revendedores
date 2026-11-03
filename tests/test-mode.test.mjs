@@ -30,6 +30,33 @@ try{
  assert.equal(login.statusCode,200);assert.equal(login.body.account.isTest,true);
  const cookie=login.headers['Set-Cookie'][0].split(';')[0];
  const current=await call(customers,{query:{scope:'current'},headers:{cookie}});assert.equal(current.body.account.isTest,true);
+
+ // Prévia Pix oficial, sem criar pedido/cobrança: mesmo cálculo da API real.
+ const quoteBody=(items,neighborhood='Centro')=>({method:'POST',query:{scope:'quote'},headers:{cookie},body:{items,delivery:{neighborhood}}});
+ const quote25=await call(orders,quoteBody([{productId:'chocolate50',quantity:25}]));
+ assert.equal(quote25.statusCode,200);
+ assert.equal(quote25.body.quote.units,25);
+ assert.equal(quote25.body.quote.tier.min,25);
+ assert.equal(quote25.body.quote.productTotalCents,25*460);
+ assert.equal(quote25.body.quote.deliveryFeeCents,499);
+ assert.equal(quote25.body.quote.totalCents,25*460+499);
+ for(const [quantity,unitCents] of [[100,455],[200,420],[400,385]]){
+   const quote=await call(orders,quoteBody([{productId:'chocolate50',quantity}]));
+   assert.equal(quote.statusCode,200);
+   assert.equal(quote.body.quote.tier.min,quantity);
+   assert.equal(quote.body.quote.productTotalCents,quantity*unitCents);
+   assert.equal(quote.body.quote.totalCents,quantity*unitCents+499);
+ }
+ const quoteMix=await call(orders,quoteBody([{productId:'branco',quantity:15},{productId:'chocolate50',quantity:10}]));
+ assert.equal(quoteMix.statusCode,200);
+ assert.equal(quoteMix.body.quote.productTotalCents,15*510+10*460);
+ assert.equal(quoteMix.body.quote.totalCents,15*510+10*460+499);
+ assert.equal((await call(orders,quoteBody([{productId:'chocolate50',quantity:25}],'Bairro inexistente'))).statusCode,400);
+ assert.equal((await call(orders,{method:'POST',query:{scope:'quote'},body:{items:[{productId:'chocolate50',quantity:25}],delivery:{neighborhood:'Centro'}}})).statusCode,401);
+ assert.equal((await db.query('SELECT count(*)::int n FROM reseller_orders')).rows[0].n,0);
+ assert.equal((await db.query('SELECT count(*)::int n FROM reseller_test_orders')).rows[0].n,0);
+ assert.equal(calls,0);
+
  assert.equal((await call(resellerTables,{method:'GET',headers:{cookie}})).statusCode,403);
  const adminToken='synthetic-ceo-session-for-test';
  const adminCookie='uba_rev_session='+adminToken;

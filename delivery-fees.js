@@ -58,6 +58,9 @@
         const city = document.getElementById("deliveryCity");
         if (select.value && city && !city.value.trim()) city.value = "Limoeiro do Norte";
         updateDeliveryTotal();
+        if(document.getElementById("step4")?.classList.contains("active")&&typeof window.refreshPixQuote==="function"){
+          window.refreshPixQuote();
+        }
       });
       select.dataset.ubaDeliveryBound = "1";
     }
@@ -70,19 +73,18 @@
 
   function updateDeliveryTotal() {
     ensureDeliveryUi();
-    const delivery = selectedDelivery();
-    let productTotal = null;
-    let showPrice = true;
-    try {
-      const totals = typeof getTotals === "function" ? getTotals() : null;
-      if (totals && Number.isFinite(Number(totals.total))) productTotal = Number(totals.total);
-      if (typeof canSeePrices === "function") showPrice = Boolean(canSeePrices());
-    } catch {}
-
-    const pixTotal = document.getElementById("pixTotal");
-    if (pixTotal && productTotal !== null && showPrice) {
-      const totalCents = Math.round(productTotal * 100) + (delivery?.cents || 0);
-      pixTotal.textContent = moneyFromCents(totalCents);
+    // Um só responsável atualiza produtos, entrega e total, para não sobrescrever
+    // a cotação da API com um valor parcial do carrinho.
+    if (typeof window.updatePixCheckoutSummary === "function") {
+      window.updatePixCheckoutSummary();
+      return;
+    }
+    // Compatibilidade antes de carregar o módulo de pagamento.
+    const delivery=selectedDelivery();
+    const totals=typeof getTotals==="function"?getTotals():null;
+    if(totals&&typeof canSeePrices==="function"&&canSeePrices()){
+      const total=document.getElementById("pixTotal");
+      if(total)total.textContent=moneyFromCents(Math.round(Number(totals.total||0)*100)+(delivery?.cents??499));
     }
   }
 

@@ -308,12 +308,13 @@ export default async function handler(req, res) {
 
     if (req.method === "POST") {
       const testAccount = await testCustomer(req, sql);
+      const quoteOnly = String(req.query?.scope || "") === "quote";
       let account = null;
       if (!testAccount) {
         await ensureCustomers(sql);
         account = await currentCustomer(req, sql);
         if (!account || account.status !== "approved") return res.status(401).json({ error: "Entre com uma conta aprovada para enviar pedidos." });
-        asaasConfig();
+        if (!quoteOnly) asaasConfig();
       }
       const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : (req.body || {});
       const purpose = "commerce";
@@ -330,6 +331,21 @@ export default async function handler(req, res) {
       if (!selectedDelivery) return res.status(400).json({ error: "Selecione um bairro atendido para calcular a taxa de entrega." });
       const productTotalCents = calculated.totalCents;
       const totalCents = productTotalCents + selectedDelivery.cents;
+      if (quoteOnly) {
+        // Prévia oficial: usa exatamente os preços/quantidades/taxa da cobrança real.
+        // Não cria pedido, cobrança Pix, cliente Asaas ou movimentação de estoque.
+        const tier = PRICING[purpose].find((item) => calculated.units >= item.min && (item.max === null || calculated.units <= item.max));
+        return res.status(200).json({
+          quote: {
+            productTotalCents,
+            deliveryFeeCents: selectedDelivery.cents,
+            totalCents,
+            units: calculated.units,
+            tier: { min: tier.min, max: tier.max },
+            items: calculated.items,
+          },
+        });
+      }
       const calculatedWithDelivery = { ...calculated, totalCents };
       const customerName = clean(buyer.name || customer.name, 140);
       const customerDoc = digits(buyer.doc || customer.doc);

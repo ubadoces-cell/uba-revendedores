@@ -207,6 +207,8 @@
     const check=async()=>{try{const data=await statusRequest(code,token);failures=0;const label=document.getElementById('pixWaitingStatus');if(label)label.textContent=paymentStatus(data.paymentStatus)+(data.customerNote?' · '+data.customerNote:'');if(data.paymentStatus==='pago')showSuccess(code);else if(['vencido','cancelado','estornado'].includes(data.paymentStatus)){if(paymentPoll){clearInterval(paymentPoll);paymentPoll=null}if(label)label.textContent=paymentStatus(data.paymentStatus)+' — gere um novo pedido para tentar novamente.'}}catch{failures+=1;if(failures>5){const label=document.getElementById('pixWaitingStatus');if(label)label.textContent='Não foi possível atualizar agora. O pedido continua salvo no painel da UBA.'}}};check();paymentPoll=setInterval(check,5000)
   }
   function showPix(order,publicToken){
+    // Após o Asaas gerar a cobrança, sempre mostrar o total realmente confirmado pelo servidor.
+    updatePixCheckoutSummary(order);
     const payment=order.payment||{},qr=document.getElementById('pixQrImage');if(qr)qr.src='data:image/png;base64,'+(payment.encodedImage||'');
     const copy=document.getElementById('pixCopyCode');if(copy)copy.textContent=payment.payload||'';const orderCode=document.getElementById('pixOrderCode');if(orderCode)orderCode.textContent=order.code;const status=document.getElementById('pixWaitingStatus');if(status)status.textContent='Aguardando pagamento Pix...';
     document.getElementById('pixLoadingArea')?.classList.remove('show');
@@ -219,22 +221,99 @@
   let pixProgressTimers=[];
   const PIX_DELIVERY_FEES={Socorro:499,Pitombeira:499,'Brotolândia':499,Centro:499,'Dr José Simões':499,'João XXIII':499,'Monsenhor Otávio':499,'Santa Luzia':499,'Antônio Holanda':499,'Bom Jesus':499,Limoeirinho:499,'Bom Nome':499,'Boa Fé':499,'Luis Alves de Freitas':499,Ilha:499,'Bom Jesus do Cruzeiro':499};
   function clearPixProgressTimers(){pixProgressTimers.forEach(clearTimeout);pixProgressTimers=[]}
+  const DEFAULT_PIX_DELIVERY_CENTS=499;
+  let confirmedPixQuote=null;
+  let confirmedPixQuoteKey='';
+  let pixQuoteRequestId=0;
   function pixDeliveryInfo(){
     const neighborhood=document.getElementById('deliveryNeighborhood')?.value||'';
-    return {neighborhood,cents:Number(PIX_DELIVERY_FEES[neighborhood]||0)}
+    const supported=Object.prototype.hasOwnProperty.call(PIX_DELIVERY_FEES,neighborhood);
+    return {neighborhood,supported,cents:supported?PIX_DELIVERY_FEES[neighborhood]:DEFAULT_PIX_DELIVERY_CENTS};
   }
-  function updatePixCheckoutSummary(){
-    const totals=typeof getTotals==='function'?getTotals():{total:0};
-    const productCents=Math.round(Number(totals.total||0)*100);
+  function pixOrderItems(){
+    return catalog.filter(product=>Number(qty[product.id]||0)>0)
+      .map(product=>({productId:product.id,quantity:Number(qty[product.id])}));
+  }
+  function pixQuoteFingerprint(){
+    return JSON.stringify({items:pixOrderItems(),neighborhood:pixDeliveryInfo().neighborhood});
+  }
+  function updatePixCheckoutSummary(serverOrder=null){
+    const totals=typeof getTotals==='function'?getTotals():{total:0,count:0,tier:null};
     const delivery=pixDeliveryInfo();
-    const customer=typeof getCustomer==='function'?getCustomer():null;
-    const product=document.getElementById('pixProductsSummary'),deliveryValue=document.getElementById('pixDeliverySummary'),deliveryLabel=document.getElementById('pixDeliveryLabel'),total=document.getElementById('pixTotal');
+    const activeQuote=confirmedPixQuoteKey===pixQuoteFingerprint()?confirmedPixQuote:null;
+    const values=serverOrder||activeQuote;
+    const localProducts=Math.round(Number(totals.total||0)*100);
+    const productCents=Number.isSafeInteger(values?.productTotalCents)?values.productTotalCents:localProducts;
+    const deliveryCents=Number.isSafeInteger(values?.deliveryFeeCents)?values.deliveryFeeCents:delivery.cents;
+    const totalCents=Number.isSafeInteger(values?.totalCents)?values.totalCents:productCents+deliveryCents;
+    const product=document.getElementById('pixProductsSummary');
+    const detail=document.getElementById('pixProductsDetail');
+    const deliveryValue=document.getElementById('pixDeliverySummary');
+    const deliveryLabel=document.getElementById('pixDeliveryLabel');
+    const total=document.getElementById('pixTotal');
     if(product)product.textContent=orderMoney(productCents);
-    if(deliveryValue)deliveryValue.textContent=orderMoney(delivery.cents);
-    if(deliveryLabel)deliveryLabel.textContent='Entrega'+(customer?.name?' - '+customer.name:'');
-    if(total)total.textContent=orderMoney(productCents+delivery.cents)
+    if(detail){
+      const count=Number(values?.units??totals.count??0);
+      const tier=values?.tier||totals.tier;
+      const range=tier?(tier.max==null?tier.min+'+':tier.min+'–'+tier.max):'';
+      detail.textContent=count+' alfajores'+(range?' · Faixa '+range+' un.':'');
+    }
+    if(deliveryValue)deliveryValue.textContent=orderMoney(deliveryCents);
+    if(deliveryLabel)deliveryLabel.textContent='Entrega fixa';
+    if(total)total.textContent=orderMoney(totalCents);
   }
   window.updatePixCheckoutSummary=updatePixCheckoutSummary;
+
+  function pixQuoteStatus(text,failed=false){
+    const status=document.getElementById('pixQuoteStatus');
+    const retry=document.getElementById('pixQuoteRetryBtn');
+    if(status){status.textContent=text;status.dataset.state=failed?'error':'normal';}
+    if(retry)retry.hidden=!failed;
+  }
+  window.refreshPixQuote=async function(){
+    const active=document.getElementById('step4')?.classList.contains('active');
+    if(!active||pixGenerating)return false;
+    const ticket=++pixQuoteRequestId;
+    confirmedPixQuote=null;
+    confirmedPixQuoteKey='';
+    updatePixCheckoutSummary();
+    const button=document.getElementById('generatePixBtn');
+    if(button){button.disabled=true;button.textContent='Conferindo valores...'}
+    pixQuoteStatus('Conferindo o valor do pedido e o frete com o servidor...');
+    const delivery=pixDeliveryInfo();
+    const count=getTotals().count;
+    if(count<25||!delivery.supported){
+      pixQuoteStatus(count<25?'O pedido mínimo é 25 unidades.':'Escolha um bairro atendido antes de gerar o Pix.',true);
+      return false;
+    }
+    const fingerprint=pixQuoteFingerprint();
+    try{
+      const response=await fetch('/api/orders?scope=quote',{
+        method:'POST',credentials:'same-origin',cache:'no-store',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({items:pixOrderItems(),delivery:{neighborhood:delivery.neighborhood}})
+      });
+      const data=await response.json().catch(()=>({}));
+      if(!response.ok)throw new Error(data.error||'Não foi possível conferir o valor.');
+      const quote=data.quote;
+      if(!quote||![quote.productTotalCents,quote.deliveryFeeCents,quote.totalCents].every(Number.isSafeInteger)||
+         quote.productTotalCents<0||quote.deliveryFeeCents!==499||
+         quote.totalCents!==quote.productTotalCents+quote.deliveryFeeCents) {
+        throw new Error('O servidor retornou valores inconsistentes. Não foi gerado nenhum Pix.');
+      }
+      if(ticket!==pixQuoteRequestId||fingerprint!==pixQuoteFingerprint())return false;
+      confirmedPixQuote=quote;
+      confirmedPixQuoteKey=fingerprint;
+      updatePixCheckoutSummary();
+      pixQuoteStatus('Valores conferidos. Confira o total antes de gerar o Pix.');
+      if(button){button.disabled=false;button.textContent='Gerar Pix'}
+      return true;
+    }catch(error){
+      if(ticket!==pixQuoteRequestId)return false;
+      pixQuoteStatus(error.message||'Não foi possível conferir o valor.',true);
+      return false;
+    }
+  };
   function setPixProgress(percent,status,detail){
     const safe=Math.max(0,Math.min(100,Math.round(Number(percent||0))));
     const fill=document.getElementById('pixProgressFill'),pct=document.getElementById('pixProgressPercent'),head=document.getElementById('pixProgressStatus'),line=document.getElementById('pixLoadingStatus');
@@ -277,13 +356,18 @@
     if(pixGenerating)return;
     const customer=getCustomer();if(!customer){showPanel('step1');setAuthMessage('É necessário um login aprovado para gerar o Pix.','warn');return}
     const totals=getTotals();if(totals.count<25){alert('O pedido mínimo é de 25 unidades.');return}
+    if(!confirmedPixQuote || confirmedPixQuoteKey!==pixQuoteFingerprint()){
+      await window.refreshPixQuote();
+      if(!confirmedPixQuote || confirmedPixQuoteKey!==pixQuoteFingerprint())return;
+    }
     const buyerName=document.getElementById('buyerName')?.value.trim()||customer.name||'',buyerDoc=document.getElementById('buyerDoc')?.value.trim()||customer.doc||'';
     if(!buyerName){alert('Informe o nome do comprador.');goStep(2);return}if(![11,14].includes(buyerDoc.replace(/\D/g,'').length)){alert('Informe um CPF ou CNPJ válido para gerar o Pix.');goStep(2);return}
     beginPixLoading();
     try{
-      const payload={purpose:totals.purpose,customer:{name:customer.name,email:customer.email,phone:customer.phone,store:customer.store,doc:customer.doc},buyer:{name:buyerName,doc:buyerDoc,store:document.getElementById('buyerStore')?.value||''},delivery:{cep:document.getElementById('deliveryCep')?.value||'',city:document.getElementById('deliveryCity')?.value||'',street:document.getElementById('deliveryStreet')?.value||'',number:document.getElementById('deliveryNumber')?.value||'',complement:document.getElementById('deliveryComplement')?.value||''},items:catalog.filter(product=>Number(qty[product.id]||0)>0).map(product=>({productId:product.id,quantity:Number(qty[product.id])}))};
+      const payload={purpose:totals.purpose,customer:{name:customer.name,email:customer.email,phone:customer.phone,store:customer.store,doc:customer.doc},buyer:{name:buyerName,doc:buyerDoc,store:document.getElementById('buyerStore')?.value||''},delivery:{cep:document.getElementById('deliveryCep')?.value||'',city:document.getElementById('deliveryCity')?.value||'',neighborhood:pixDeliveryInfo().neighborhood,street:document.getElementById('deliveryStreet')?.value||'',number:document.getElementById('deliveryNumber')?.value||'',complement:document.getElementById('deliveryComplement')?.value||''},items:catalog.filter(product=>Number(qty[product.id]||0)>0).map(product=>({productId:product.id,quantity:Number(qty[product.id])}))};
       const data=await ordersRequest({method:'POST',body:JSON.stringify(payload)});
       completePixLoading();
+      if(data.order?.productTotalCents!=null)updatePixCheckoutSummary(data.order);
       if(data.order.isTest)showSuccess(data.order.code,true);else showPix(data.order,data.publicToken)
     }catch(error){failPixLoading(error.message)}
   };

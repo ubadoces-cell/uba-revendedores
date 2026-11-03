@@ -47,6 +47,11 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}.app{max-width:1
 .pix-summary-item small{display:block;color:var(--muted);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.03em}
 .pix-summary-item strong{display:block;margin-top:6px;font-size:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pix-summary-item.total strong{color:#c9a9ff;font-size:22px}
+.pix-summary-detail{display:block;margin-top:5px;color:var(--muted);font-size:10px;line-height:1.35;font-weight:700}
+.pix-quote-feedback{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin:-3px 0 12px;color:var(--muted);font-size:11px;font-weight:700}
+.pix-quote-feedback [data-state="error"]{color:#e7a3b0}
+.pix-quote-feedback button{padding:7px 10px;border:1px solid #6f4da1;border-radius:9px;background:#3c286b;color:white;font-weight:800}
+.pix-quote-feedback button[hidden]{display:none!important}
 .pix-generate-ready{border:1px solid var(--line);border-radius:22px;padding:18px 20px;background:linear-gradient(145deg,var(--surface2),var(--surface));display:flex;align-items:center;gap:14px}
 .pix-ready-icon{flex:0 0 48px;width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(145deg,#2d145b,#4a2487);color:#d6b8ff;font-size:22px;box-shadow:inset 0 0 0 1px rgba(205,198,228,.12)}
 .pix-generate-ready b{display:block;font-size:15px}
@@ -1083,9 +1088,13 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
         <p class="hint">Confira o total e gere a cobrança segura. O pedido só será confirmado depois que o Asaas avisar que o Pix foi recebido.</p>
 
         <div class="pix-checkout-summary">
-          <div class="pix-summary-item"><small>Produtos</small><strong id="pixProductsSummary">R$ 0,00</strong></div>
-          <div class="pix-summary-item"><small id="pixDeliveryLabel">Entrega</small><strong id="pixDeliverySummary">R$ 0,00</strong></div>
-          <div class="pix-summary-item total"><small>Total no Pix</small><strong id="pixTotal">R$ 0,00</strong></div>
+          <div class="pix-summary-item"><small>Produtos</small><strong id="pixProductsSummary">—</strong><span class="pix-summary-detail" id="pixProductsDetail">Quantidades e faixa de revenda</span></div>
+          <div class="pix-summary-item"><small id="pixDeliveryLabel">Entrega fixa</small><strong id="pixDeliverySummary">R$ 4,99</strong></div>
+          <div class="pix-summary-item total"><small>Total no Pix</small><strong id="pixTotal">—</strong></div>
+        </div>
+        <div class="pix-quote-feedback" aria-live="polite">
+          <span id="pixQuoteStatus">Os valores serão conferidos antes de gerar o Pix.</span>
+          <button type="button" id="pixQuoteRetryBtn" onclick="refreshPixQuote()" hidden>Conferir novamente</button>
         </div>
 
         <div class="generate-pix-area" id="generatePixArea">
@@ -1870,7 +1879,9 @@ function updateCart(){
   document.getElementById('cartCount').textContent=count;
   document.getElementById('mobileItems').textContent=`${count} ${count===1?'item':'itens'} no carrinho`;
   document.getElementById('mobileCart').classList.toggle('active',count>0);
-  renderCart()
+  renderCart();
+  if(typeof window.updatePixCheckoutSummary==='function')window.updatePixCheckoutSummary();
+  if(document.getElementById('step4')?.classList.contains('active')&&typeof window.refreshPixQuote==='function')window.refreshPixQuote();
 }
 function updatePriceVisibilityNote(){
   const note=document.getElementById('priceVisibilityNote');
@@ -1918,7 +1929,10 @@ function goStep(n){
   showPanel('step'+n);
   for(let i=1;i<=4;i++)document.getElementById('dot'+i).classList.toggle('on',i<=n);
   if(n===2)prefillBuyer();
-  if(n===4)renderCart()
+  if(n===4){
+    renderCart();
+    if(typeof window.refreshPixQuote==='function')window.refreshPixQuote();
+  }
 }
 function switchAuth(mode){
   authMode=mode;
@@ -2566,8 +2580,8 @@ applyTheme(localStorage.getItem('uba-rev-theme')||'dark');
 renderAll();
 </script>
 <script src="shared-stock-sync.js?v=13"></script>
-<script src="orders-sync.js?v=16"></script>
-<script src="customer-accounts-sync.js?v=14"></script>
+<script src="orders-sync.js?v=17"></script>
+<script src="customer-accounts-sync.js?v=15"></script>
 <script src="uba-liquid-glass-nav.js?v=5"></script>
 <script src="reseller-tables.js?v=20261103d"></script>
 </body>
