@@ -191,7 +191,8 @@
   #products .min-order {font-size:9px!important;line-height:1.15}
   #products .quantity-entry {display:block!important;padding-top:5px!important}
   #products .quantity-entry label {display:block;margin-bottom:4px;font-size:9px!important}
-  #products .quantity-input {width:100%!important;max-width:none!important;min-height:34px!important;font-size:13px!important;padding:5px!important}
+  /* Safari no iPhone amplia a página ao focar campos com texto abaixo de 16px. */
+  #products .quantity-input {width:100%!important;max-width:none!important;min-height:38px!important;font-size:16px!important;padding:5px!important}
   #products .product-img .tag,
   #products .product-img .out-tag {top:4px!important;left:4px!important;padding:3px 4px!important;font-size:7px!important;max-width:calc(100% - 8px)}
   #products .coming-soon-card {padding:8px!important}
@@ -199,4 +200,9 @@
   #products .coming-copy h4 {font-size:12px!important;line-height:1.1}
   #products .coming-copy p {display:none}
   #products .coming-copy button {font-size:9px!important;padding:7px 4px!important}
+}
+
+/* Mantém os campos de quantidade em pelo menos 16px no celular, sem bloquear o zoom manual. */
+@media(max-width:900px), (hover:none) and (pointer:coarse){
+  #products input.quantity-input{font-size:16px!important;line-height:1.25!important}
 }
