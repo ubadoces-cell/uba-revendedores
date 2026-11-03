@@ -511,3 +511,54 @@ body.uba-rev-admin-nav-visible .uba-rev-bottom-tabs{display:flex}
     opacity:1!important;
   }
 }
+
+
+/* Catálogo e Tabelas: a MESMA barra Liquid Glass do Painel CEO,
+   com apenas duas opções. Reutiliza todos os estados, ícones,
+   seleção preta e lente do componente original. */
+.uba-rev-shop-tabs{
+  width:min(440px,calc(100vw - 32px))!important;
+  max-width:440px!important;
+  min-width:0!important;
+  min-height:50px!important;
+  padding:4px 8px!important;
+  gap:3px!important;
+}
+.uba-rev-shop-tabs > button{
+  flex:1 1 50%!important;
+  min-width:0!important;
+  font-size:12px!important;
+  gap:9px!important;
+}
+.uba-rev-shop-tabs .reseller-lock{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:11px;
+  line-height:1;
+  min-width:16px;
+  margin-left:1px;
+}
+/* A navegação do CEO só aparece no painel; esta barra só aparece na loja. */
+body:not(.uba-rev-admin-nav-visible) .uba-rev-shop-tabs{display:flex!important}
+body.uba-rev-admin-nav-visible .uba-rev-shop-tabs{display:none!important}
+/* Não deixar a barra da loja sobrepor modais de login, pagamento ou carrinho. */
+body:not(.uba-rev-admin-nav-visible):has(.modal.show) .uba-rev-shop-tabs,
+body:not(.uba-rev-admin-nav-visible):has(#overlay.show) .uba-rev-shop-tabs,
+body:not(.uba-rev-admin-nav-visible):has(#drawer.show) .uba-rev-shop-tabs,
+body:not(.uba-rev-admin-nav-visible):has(#loginShell.show) .uba-rev-shop-tabs{display:none!important}
+body:not(.uba-rev-admin-nav-visible) .app{padding-bottom:100px}
+@media(max-width:900px), (hover:none), (pointer:coarse){
+  .uba-rev-shop-tabs{
+    width:min(92vw,430px)!important;
+    max-width:430px!important;
+    min-width:0!important;
+    bottom:max(8px,calc(env(safe-area-inset-bottom) + 4px))!important;
+  }
+  .uba-rev-shop-tabs > button{font-size:11px!important;gap:7px!important}
+  .uba-rev-shop-tabs .reseller-lock{font-size:10px}
+  body:not(.uba-rev-admin-nav-visible) .app{padding-bottom:92px}
+}
+@media print{
+  body:not(.uba-rev-admin-nav-visible) .uba-rev-shop-tabs{display:none!important}
+}

@@ -857,7 +857,7 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
 .coming-copy{align-self:center}.coming-copy h4{margin:0 0 8px;font-size:30px;line-height:.94;letter-spacing:-1.4px}.coming-copy p{margin:0 0 14px;color:#5f5571;font-size:11px;line-height:1.45}.coming-copy button{border:0;border-radius:12px;background:#d7c2ff;color:#4d22a8;padding:11px 13px;font-size:10px;font-weight:900}.coming-visual{display:grid;place-items:center}.coming-visual span{width:150px;height:150px;display:grid;place-items:center;border-radius:43% 57% 50% 50%;background:#32126b;color:#cba8ff;font-size:78px;font-weight:900;transform:rotate(6deg)}
 @media(max-width:640px){.coming-soon-card{grid-template-columns:1fr;padding:12px}.coming-badge{font-size:8px;padding:5px 7px}.coming-copy h4{font-size:20px}.coming-copy p{font-size:8px}.coming-copy button{width:100%;font-size:8px;padding:8px}.coming-visual{display:none}}
 </style>
-<link rel="stylesheet" href="uba-bottom-nav.css?v=4">
+<link rel="stylesheet" href="uba-bottom-nav.css?v=5">
 <link rel="stylesheet" href="uba-marketplace-grid.css?v=20261103">
 
 </head>
@@ -972,10 +972,6 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
     </div>
   </section>
 
-  <nav class="reseller-view-switch" role="tablist" aria-label="Áreas para revendedores">
-    <button type="button" id="resellerCatalogTab" role="tab" aria-selected="true" aria-controls="resellerCatalogView" class="active" onclick="selectResellerView('catalog')">🍫 Catálogo</button>
-    <button type="button" id="resellerTablesTab" role="tab" aria-selected="false" aria-controls="resellerTablesView" onclick="selectResellerView('tables')">📋 Tabelas <span class="reseller-lock" id="resellerTablesLock">🔒</span></button>
-  </nav>
   <section id="resellerCatalogView" role="tabpanel" aria-labelledby="resellerCatalogTab">
     <div class="toolbar"><form id="catalogSearchForm" class="search" role="search" autocomplete="off" onsubmit="event.preventDefault()"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.4-3.4"></path></svg><input id="search" name="catalog-search" type="search" inputmode="search" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" aria-label="Buscar sabor no catálogo" data-lpignore="true" data-1p-ignore="true" placeholder="Buscar sabor..." oninput="filterProducts()"></form><div class="filters"><button class="filter active" onclick="setFilter(this,'all')">Todos</button><button class="filter" onclick="setFilter(this,'featured')">Destaques</button><button class="filter" onclick="setFilter(this,'popular')">Mais vendidos</button><button class="filter" onclick="setFilter(this,'new')">Novidades</button></div></div>
   <div class="section-head"><div><h3>Alfajores artesanais</h3><p>Sabores prontos para revenda. Qualidade, sabor e alta procura.</p></div><div class="private-note" id="priceVisibilityNote">● Estoque em tempo real, sujeito à alteração.</div></div>
@@ -1358,6 +1354,17 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
   <button type="button" data-admin-tab="store" onclick="closeAdmin()">
     <svg class="uba-rev-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10l2-5h14l2 5"></path><path d="M5 10v10h14V10"></path><path d="M9 20v-6h6v6"></path></svg>
     <span>Loja</span>
+  </button>
+</nav>
+
+<nav class="uba-rev-bottom-tabs uba-rev-shop-tabs" aria-label="Navegação da loja UBA Revendedores" role="tablist">
+  <button type="button" id="resellerCatalogTab" role="tab" aria-selected="true" aria-controls="resellerCatalogView" class="active" onclick="selectResellerView('catalog')">
+    <svg class="uba-rev-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7l8-4 8 4-8 4-8-4z"></path><path d="M4 7v10l8 4 8-4V7"></path><path d="M12 11v10"></path></svg>
+    <span>Catálogo</span>
+  </button>
+  <button type="button" id="resellerTablesTab" role="tab" aria-selected="false" aria-controls="resellerTablesView" onclick="selectResellerView('tables')">
+    <svg class="uba-rev-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3z"></path><path d="M9 8h6M9 12h6"></path></svg>
+    <span>Tabelas</span><span class="reseller-lock" id="resellerTablesLock">🔒</span>
   </button>
 </nav>
 
@@ -2539,7 +2546,7 @@ renderAll();
 <script src="shared-stock-sync.js?v=13"></script>
 <script src="orders-sync.js?v=15"></script>
 <script src="customer-accounts-sync.js?v=13"></script>
-<script src="uba-liquid-glass-nav.js?v=4"></script>
+<script src="uba-liquid-glass-nav.js?v=5"></script>
 <script src="reseller-tables.js?v=20261103c"></script>
 </body>
 </html>
