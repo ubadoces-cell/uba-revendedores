@@ -544,7 +544,8 @@ body:not(.uba-rev-admin-nav-visible) .uba-rev-shop-tabs{display:flex!important}
 body.uba-rev-admin-nav-visible .uba-rev-shop-tabs{display:none!important}
 /* Não deixar a barra da loja sobrepor modais de login, pagamento ou carrinho. */
 body:not(.uba-rev-admin-nav-visible):has(.modal.show) .uba-rev-shop-tabs,
-body:not(.uba-rev-admin-nav-visible):has(.drawer.open) .uba-rev-shop-tabs,
+body:not(.uba-rev-admin-nav-visible):has(#overlay.show) .uba-rev-shop-tabs,
+body:not(.uba-rev-admin-nav-visible):has(#drawer.show) .uba-rev-shop-tabs,
 body:not(.uba-rev-admin-nav-visible):has(#loginShell.show) .uba-rev-shop-tabs{display:none!important}
 body:not(.uba-rev-admin-nav-visible) .app{padding-bottom:100px}
 @media(max-width:900px), (hover:none), (pointer:coarse){
