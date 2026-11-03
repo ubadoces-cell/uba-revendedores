@@ -16,8 +16,7 @@
     document.body.appendChild(wrap);
   }
 
-  function initNav(){
-    const tabs=document.querySelector('.uba-rev-bottom-tabs');
+  function initSingleNav(tabs){
     if(!tabs||tabs.dataset.liquidGlassReady==='1') return;
     tabs.dataset.liquidGlassReady='1';
     injectFilter();
@@ -493,6 +492,10 @@
     });
   }
 
+
+  function initNav(){
+    document.querySelectorAll('.uba-rev-bottom-tabs').forEach(initSingleNav);
+  }
 
   function init(){
     initNav();
