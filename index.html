@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="reseller-tables.css?v=20261102">
-<link rel="stylesheet" href="reseller-tables-banner.css?v=20261103b">
+<link rel="stylesheet" href="reseller-tables-banner.css?v=20261103c">
 <style>
 :root{
   --roxo:#4A388E; --lavanda:#CDC6E4; --uva:#5C5CA6; --creme:#FEF2E4; --indigo:#13132A;
@@ -920,15 +920,54 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
         <div class="hero-tables-feature"><span class="hero-tables-feature-icon" aria-hidden="true">%</span><span>Desconto progressivo<b>Até 45%</b></span></div>
         <div class="hero-tables-feature"><span class="hero-tables-feature-icon" aria-hidden="true">↗</span><span>Limoeiro do Norte<b>Frete fixo R$ 5,00</b></span></div>
       </div>
-      <div class="hero-tables-actions">
-        <button class="hero-cta hero-tables-button" type="button" onclick="document.getElementById('resellerPriceSection').scrollIntoView({behavior:'smooth',block:'start'})">Ver tabela de preços <span>↓</span></button>
-        <button class="hero-tables-secondary" type="button" onclick="selectResellerView('catalog')">Escolher alfajores →</button>
-      </div>
     </div>
     <div class="hero-visual hero-tables-visual" data-hero-mode="tables" aria-label="Alfajor artesanal da UBA DOCES" hidden>
       <div class="hero-tables-photo">
         <img src="assets/alfajores-v2/chocolate50.jpg?v=20261102" alt="Foto oficial do alfajor de chocolate 50% cacau com recheio de doce de leite" loading="lazy" decoding="async">
         <span class="hero-tables-photo-tag">Alfajores artesanais UBA DOCES</span>
+      </div>
+    </div>
+
+    <div class="hero-tables-detail-grid" data-hero-mode="tables" hidden>
+      <section class="hero-tables-profit-card" aria-labelledby="heroProfitTitle">
+        <div class="hero-tables-profit-heading">
+          <span class="hero-tables-profit-icon" aria-hidden="true">↗</span>
+          <div>
+            <h3 id="heroProfitTitle">Exemplo de ganho bruto por alfajor</h3>
+            <p>Chocolate 50% Cacau + Doce de Leite · faixa de 400 unidades ou mais</p>
+          </div>
+        </div>
+        <div class="hero-tables-profit-metrics">
+          <div class="hero-tables-profit-metric"><span>Compra na UBA</span><strong>R$ 3,85</strong></div>
+          <div class="hero-tables-profit-metric"><span>Venda no comércio</span><strong>R$ 7,00</strong></div>
+          <div class="hero-tables-profit-metric hero-tables-profit-highlight"><span>Lucro bruto/un.</span><strong>R$ 3,15</strong></div>
+          <div class="hero-tables-profit-metric hero-tables-profit-return"><span>Retorno bruto sobre a compra</span><strong>+81,8%</strong></div>
+        </div>
+        <p class="hero-tables-profit-disclaimer">Exemplo baseado nos valores da tabela. O ganho bruto não desconta frete, impostos, perdas ou outras despesas. Não é garantia de vendas ou lucro líquido.</p>
+      </section>
+      <aside class="hero-tables-advantages-card" aria-labelledby="heroAdvantagesTitle">
+        <h3 id="heroAdvantagesTitle">Vantagens de revender <span>UBA DOCES</span></h3>
+        <ul>
+          <li><span aria-hidden="true">✓</span> Pedido mínimo de <strong>25 unidades</strong></li>
+          <li><span aria-hidden="true">✓</span> Misture sabores no mesmo pedido</li>
+          <li><span aria-hidden="true">✓</span> Descontos progressivos de até <strong>45%</strong></li>
+          <li><span aria-hidden="true">✓</span> Frete fixo de <strong>R$ 5,00</strong> nos bairros atendidos de Limoeiro do Norte</li>
+          <li><span aria-hidden="true">✓</span> Alfajores artesanais para ampliar seu mix de produtos</li>
+        </ul>
+      </aside>
+    </div>
+    <div class="hero-tables-footer" data-hero-mode="tables" hidden>
+      <div class="hero-tables-actions">
+        <button class="hero-cta hero-tables-button" type="button" onclick="document.getElementById('resellerPriceSection').scrollIntoView({behavior:'smooth',block:'start'})">Ver tabela de preços <span>↓</span></button>
+        <button class="hero-tables-secondary" type="button" onclick="selectResellerView('catalog')">Escolher alfajores →</button>
+      </div>
+      <div class="hero-tables-ideal">
+        <strong>Ideal para o seu comércio:</strong>
+        <span>Mercadinhos</span>
+        <span>Padarias</span>
+        <span>Cafeterias</span>
+        <span>Lanchonetes</span>
+        <span>Conveniências</span>
       </div>
     </div>
   </section>
