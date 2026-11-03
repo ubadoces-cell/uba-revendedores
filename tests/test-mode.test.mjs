@@ -24,13 +24,19 @@ try{
  // Change only in-memory test configuration. Never commit a plaintext password.
  const password='synthetic-test-password';access.passwordHash=scryptSync(password,access.salt,64).toString('hex');access.expiresAt=new Date(Date.now()+86400000).toISOString();
  let calls=0;globalThis.fetch=async()=>{calls++;throw Error('External access forbidden in test')};
- assert.equal((await call(resellerTables,{method:'GET'})).statusCode,401);
+ assert.equal((await call(resellerTables,{method:'GET'})).statusCode,403);
  assert.equal((await call(customers,{method:'POST',body:{action:'login',login:access.login,password:'wrong'}})).statusCode,401);
  const login=await call(customers,{method:'POST',body:{action:'login',login:access.login,password}});
  assert.equal(login.statusCode,200);assert.equal(login.body.account.isTest,true);
  const cookie=login.headers['Set-Cookie'][0].split(';')[0];
  const current=await call(customers,{query:{scope:'current'},headers:{cookie}});assert.equal(current.body.account.isTest,true);
- const tables=await call(resellerTables,{method:'GET',headers:{cookie}});
+ assert.equal((await call(resellerTables,{method:'GET',headers:{cookie}})).statusCode,403);
+ const adminToken='synthetic-ceo-session-for-test';
+ const adminCookie='uba_rev_session='+adminToken;
+ const adminHash=createHash('sha256').update(adminToken).digest('hex');
+ await db.query("INSERT INTO accounts(id,username,password_hash,password_salt,role,active) VALUES($1,$2,$3,$4,'admin',1)",['synthetic-ceo','synthetic-owner','unused','unused']);
+ await db.query("INSERT INTO sessions(id,account_id,token_hash,expires_at) VALUES($1,$2,$3,$4)",['synthetic-session','synthetic-ceo',adminHash,new Date(Date.now()+86400000).toISOString()]);
+ const tables=await call(resellerTables,{method:'GET',headers:{cookie:adminCookie}});
  assert.equal(tables.statusCode,200);assert.equal(tables.headers["Cache-Control"],"private, no-store, max-age=0");
  assert.equal(tables.body.minimumUnits,25);
  assert.equal(tables.body.deliveryFeeCents,499);
@@ -77,7 +83,7 @@ try{
  assert.equal((await db.query('SELECT count(*)::int n FROM shared_stock_state')).rows[0].n,0);
  await call(customers,{method:'POST',headers:{cookie},body:{action:'logout'}});
  assert.equal((await call(customers,{query:{scope:'current'},headers:{cookie}})).body.account,null);
- assert.equal((await call(resellerTables,{method:'GET',headers:{cookie}})).statusCode,401);
+ assert.equal((await call(resellerTables,{method:'GET',headers:{cookie}})).statusCode,403);
  assert.equal((await call(orders,{method:'POST',headers:{cookie},body})).statusCode,401);
  process.env.VERCEL_ENV='preview';
  assert.deepEqual(await controlesStockSummary(database()),{available:false,reason:'preview_isolated'});
