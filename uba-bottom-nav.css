@@ -618,3 +618,6 @@ body:not(.uba-rev-admin-nav-visible) .uba-rev-shop-tabs > button:focus-visible{
   outline:2px solid #CDC6E4!important;
   outline-offset:1px!important;
 }
+
+/* Ocultar por completo a barra privativa para quem não está autenticado como CEO. */
+body:not(.uba-rev-admin-nav-visible) .uba-rev-shop-tabs[hidden]{display:none!important}

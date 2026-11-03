@@ -23,6 +23,7 @@ Este arquivo documenta as cópias de segurança do site antes de alterações, p
 | 2026-11-03 | Frete fixo alterado de R$ 5,00 para R$ 4,99 nos bairros atendidos de Limoeiro do Norte, incluindo banner, API, checkout e Pix | `a193acec61206eafb08191a31000945818484a16` | `backup/2026-11-03-antes-frete-499` |
 | 2026-11-03 | Unificar frete R$ 4,99 e navegação inferior Catálogo/Tabelas Liquid Glass (2 opções), com login protegido | `34f0b14cde3cecf98cf03ceba712627511a95b88` | `backup/2026-11-03-apos-frete-499-antes-liquid-glass` |
 | 2026-11-03 | Melhorar legibilidade do vidro roxo na navegação Catálogo/Tabelas e evitar zoom automático ao focar quantidade no iPhone | `8b7caa7e63cb3cee310f9a3d81e0a1b0db900063` | `backup/2026-11-03-antes-vidro-roxo-sem-zoom` |
+| 2026-11-03 | Remover impressão/PDF da tabela e reservar consulta integral para sessão segura do CEO (cliente comum, mesmo aprovado, recebe acesso negado) | `f29eeef79192935f30ca99a2c0891ad29cc5f12f` | `backup/2026-11-03-antes-tabela-exclusiva-ceo` |
 
 ### Acesso rápido
 
@@ -35,6 +36,7 @@ Este arquivo documenta as cópias de segurança do site antes de alterações, p
 - [Backup antes da redução do frete para R$ 4,99](https://github.com/ubadoces-cell/uba-revendedores/tree/backup/2026-11-03-antes-frete-499)
 - [Backup antes da barra Liquid Glass (após frete R$ 4,99)](https://github.com/ubadoces-cell/uba-revendedores/tree/backup/2026-11-03-apos-frete-499-antes-liquid-glass)
 - [Backup antes do vidro roxo e correção de zoom](https://github.com/ubadoces-cell/uba-revendedores/tree/backup/2026-11-03-antes-vidro-roxo-sem-zoom)
+- [Backup antes de tornar a tabela exclusiva do CEO](https://github.com/ubadoces-cell/uba-revendedores/tree/backup/2026-11-03-antes-tabela-exclusiva-ceo)
 - [Histórico de commits do site](https://github.com/ubadoces-cell/uba-revendedores/commits/main/)
 
 > Este é um backup **do código e dos arquivos do repositório**, não um backup automático dos pedidos, clientes ou dados da produção.

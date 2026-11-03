@@ -92,7 +92,7 @@ export async function ensureSchema(sql) {
   await sql.query(`UPDATE reseller_customer_accounts SET purpose = 'commerce'
     WHERE purpose <> 'commerce'`, []);
 }
-async function requireAdmin(req, sql) {
+export async function requireAdmin(req, sql) {
   const token = cookie(req, ADMIN_COOKIE);
   if (!token) return null;
   const rows = await sql.query(`SELECT a.id, a.username FROM sessions s JOIN accounts a ON a.id = s.account_id
