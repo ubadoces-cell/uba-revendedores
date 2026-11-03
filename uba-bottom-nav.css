@@ -562,3 +562,59 @@ body:not(.uba-rev-admin-nav-visible) .app{padding-bottom:100px}
 @media print{
   body:not(.uba-rev-admin-nav-visible) .uba-rev-shop-tabs{display:none!important}
 }
+
+
+/* UBA DOCES — contraste do vidro nas duas abas da LOJA.
+   Mesma navegação Liquid Glass, mas com transparência roxa legível
+   sobre fotografias e fundos claros. Não altera o Painel CEO. */
+body:not(.uba-rev-admin-nav-visible) .uba-rev-shop-tabs{
+  border:1px solid rgba(205,198,228,.88)!important;
+  background:
+    linear-gradient(145deg,rgba(72,48,124,.93) 0%,rgba(50,27,91,.95) 56%,rgba(40,23,75,.94) 100%)!important;
+  -webkit-backdrop-filter:blur(18px) saturate(145%)!important;
+  backdrop-filter:blur(18px) saturate(145%)!important;
+  box-shadow:
+    0 13px 34px rgba(20,10,45,.39),
+    0 0 0 1px rgba(205,198,228,.10),
+    inset 0 1px 0 rgba(237,226,255,.35),
+    inset 0 -1px 0 rgba(25,13,52,.45)!important;
+}
+body:not(.uba-rev-admin-nav-visible) .uba-rev-shop-tabs::after{
+  background:radial-gradient(ellipse at 50% 35%,rgba(127,90,210,.30),transparent 68%)!important;
+  opacity:.45!important;
+}
+body:not(.uba-rev-admin-nav-visible) .uba-rev-shop-tabs > button:not(.active){
+  color:#F4EDFF!important;
+  text-shadow:0 1px 4px rgba(15,8,34,.85)!important;
+  opacity:1!important;
+}
+body:not(.uba-rev-admin-nav-visible) .uba-rev-shop-tabs > button.active{
+  color:#fff!important;
+  border-color:rgba(205,198,228,.36)!important;
+  background:linear-gradient(180deg,rgba(25,15,49,.97),rgba(15,9,32,.97))!important;
+  box-shadow:0 5px 14px rgba(8,4,24,.43),inset 0 1px 0 rgba(231,224,251,.18)!important;
+}
+body:not(.uba-rev-admin-nav-visible) .uba-rev-shop-tabs .reseller-lock{
+  color:#E7DBFF!important;
+  text-shadow:0 1px 4px rgba(10,5,27,.68);
+}
+body:not(.uba-rev-admin-nav-visible) .uba-rev-shop-tabs .uba-rev-video-liquid-lens{
+  border-color:rgba(205,198,228,.60)!important;
+  background:linear-gradient(150deg,rgba(88,59,154,.84),rgba(35,20,75,.89))!important;
+  -webkit-backdrop-filter:blur(16px) saturate(150%)!important;
+  backdrop-filter:blur(16px) saturate(150%)!important;
+}
+body:not(.uba-rev-admin-nav-visible) .uba-rev-shop-tabs .uba-rev-video-liquid-lens::before{
+  background:
+    radial-gradient(ellipse at 15% 55%,rgba(205,198,228,.31),transparent 54%),
+    radial-gradient(ellipse at 85% 45%,rgba(134,104,205,.32),transparent 56%)!important;
+  filter:blur(1px)!important;
+}
+body:not(.uba-rev-admin-nav-visible) .uba-rev-shop-tabs .uba-rev-video-liquid-mirror button{
+  color:#fff!important;
+  text-shadow:0 1px 5px rgba(9,4,28,.85)!important;
+}
+body:not(.uba-rev-admin-nav-visible) .uba-rev-shop-tabs > button:focus-visible{
+  outline:2px solid #CDC6E4!important;
+  outline-offset:1px!important;
+}
