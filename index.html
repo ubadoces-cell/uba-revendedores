@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="reseller-tables.css?v=20261102">
+<link rel="stylesheet" href="reseller-tables-banner.css?v=20261103">
 <style>
 :root{
   --roxo:#4A388E; --lavanda:#CDC6E4; --uva:#5C5CA6; --creme:#FEF2E4; --indigo:#13132A;
@@ -923,7 +924,49 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
   </section>
   <section id="resellerTablesView" role="tabpanel" aria-labelledby="resellerTablesTab" hidden>
     <div class="reseller-tables-page">
-      <header class="reseller-table-header">
+      <section class="reseller-benefits-hero" aria-labelledby="resellerBenefitsTitle">
+        <div class="reseller-benefits-upper">
+          <div class="reseller-benefits-copy">
+            <p class="reseller-benefits-eyebrow">Vantagens exclusivas para revendedores</p>
+            <h2 id="resellerBenefitsTitle">Mais oportunidades de lucro <span>para o seu comércio.</span></h2>
+            <p class="reseller-benefits-intro">Alfajores artesanais para complementar seu mix de produtos. Consulte os preços por quantidade e escolha a melhor faixa para o seu negócio.</p>
+            <div class="reseller-social-proof">
+              <span class="reseller-social-proof-number">+60</span>
+              <span class="reseller-social-proof-text"><strong>comerciantes já estão lucrando</strong> com a UBA DOCES.</span>
+            </div>
+          </div>
+          <div class="reseller-benefits-visual">
+            <img src="assets/alfajores-v2/chocolate50.jpg?v=20261102" alt="Alfajor artesanal UBA DOCES com cobertura de chocolate 50% cacau e recheio de doce de leite" loading="lazy" decoding="async">
+            <span class="reseller-benefits-photo-label">Alfajores artesanais UBA DOCES</span>
+          </div>
+        </div>
+        <div class="reseller-benefits-points" aria-label="Benefícios da revenda">
+          <div class="reseller-benefit-point">
+            <span class="reseller-benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 8h18v13H3zM3 8l3-5h12l3 5M12 8v13M3 13h18"/></svg></span>
+            <div><span>Comece com apenas</span><strong>25 unidades</strong></div>
+          </div>
+          <div class="reseller-benefit-point">
+            <span class="reseller-benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 2 9 5-9 5-9-5 9-5ZM3 12l9 5 9-5M3 17l9 5 9-5"/></svg></span>
+            <div><span>Monte seu mix</span><strong>Sabores misturados</strong></div>
+          </div>
+          <div class="reseller-benefit-point">
+            <span class="reseller-benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 12 12 20 3 11V4h7z"/><circle cx="7.5" cy="8" r="1.1"/><path d="m11 14 5-5M11 9h.01M16 14h.01"/></svg></span>
+            <div><span>Quanto mais comprar</span><strong>Até 45% de desconto</strong></div>
+          </div>
+          <div class="reseller-benefit-point">
+            <span class="reseller-benefit-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 6h12v11H2zM14 10h4l4 4v3h-8M2 17h2M10 17h6M20 17h2"/><circle cx="7" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg></span>
+            <div><span>Limoeiro do Norte</span><strong>Frete fixo R$ 5,00</strong></div>
+          </div>
+        </div>
+        <div class="reseller-benefits-bottom">
+          <div class="reseller-benefits-actions">
+            <button class="reseller-benefits-primary" type="button" onclick="document.getElementById('resellerPriceSection').scrollIntoView({behavior:'smooth',block:'start'})">Consultar tabela de preços ↓</button>
+            <button class="reseller-benefits-secondary" type="button" onclick="selectResellerView('catalog')">Escolher meus alfajores →</button>
+          </div>
+          <p class="reseller-benefits-ideal"><strong>Feito para quem quer revender:</strong> mercadinhos, padarias, cafeterias, lanchonetes e outros comércios.</p>
+        </div>
+      </section>
+      <header class="reseller-table-header" id="resellerPriceSection">
         <div class="reseller-table-brand">
           <img src="logo.jpg" alt="Logotipo oficial UBA DOCES">
           <div><div class="reseller-table-kicker">Acesso exclusivo para revendedores</div><h2>Tabela de revenda</h2><p>Preços por unidade e por quantidade comprada.</p></div>
