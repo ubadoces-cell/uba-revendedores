@@ -16,11 +16,13 @@ Este arquivo documenta as cópias de segurança do site antes de alterações, p
 |---|---|---|---|
 | 2026-11-02 | Aviso de acesso por login e senha fornecidos pelo atendimento WhatsApp | `89d99c7801eb40a12060a2bd37708c9c6db51d27` | `backup/2026-11-02-antes-aviso-login-whatsapp` |
 | 2026-11-02 | Nova aba Tabelas protegida por login; frete fixo de R$ 5,00 nos bairros atendidos de Limoeiro do Norte | `206cb9ebad0e28625052111f66ff1e16a56e05a6` | `backup/2026-11-02-antes-aba-tabelas` |
+| 2026-11-03 | Produtos em cards de marketplace: 4 colunas no desktop e 3 nas demais telas, respeitando cores e funcionalidades anteriores | `ca7bebf87506bdb70bdc5597ed30df35e91c23a3` | `backup/2026-11-03-antes-grade-mercado-livre` |
 
 ### Acesso rápido
 
 - [Versão preservada antes do aviso](https://github.com/ubadoces-cell/uba-revendedores/tree/backup/2026-11-02-antes-aviso-login-whatsapp)
 - [Versão preservada antes da aba Tabelas](https://github.com/ubadoces-cell/uba-revendedores/tree/backup/2026-11-02-antes-aba-tabelas)
+- [Backup antes da grade de cards estilo marketplace](https://github.com/ubadoces-cell/uba-revendedores/tree/backup/2026-11-03-antes-grade-mercado-livre)
 - [Histórico de commits do site](https://github.com/ubadoces-cell/uba-revendedores/commits/main/)
 
 > Este é um backup **do código e dos arquivos do repositório**, não um backup automático dos pedidos, clientes ou dados da produção.

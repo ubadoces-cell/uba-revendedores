@@ -1,0 +1,202 @@
+/* UBA DOCES | Grade de alfajores estilo vitrine de marketplace.
+   Preserve prices, inventory, availability, quantity inputs and login protection.
+   Always at least three product tiles per row, including narrow screens.
+   Official purple #4A388E, lavender #CDC6E4 and neutral #191919.
+*/
+#products.products {
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  align-items:stretch!important;
+  gap:12px!important;
+  margin:0;
+  padding:12px!important;
+  border-radius:19px;
+  background:#f1f1f4;
+  overflow:visible!important;
+}
+#products.products > .product {
+  display:flex!important;
+  flex-direction:column;
+  min-width:0!important;
+  width:100%!important;
+  height:100%;
+  background:#fff!important;
+  border:1px solid #e1e1e8!important;
+  border-radius:11px!important;
+  box-shadow:0 3px 13px rgba(25,25,25,.07)!important;
+  overflow:hidden!important;
+  transition:box-shadow .17s ease,transform .17s ease;
+}
+#products.products > .product:hover {
+  box-shadow:0 7px 20px rgba(25,25,25,.12)!important;
+  transform:translateY(-2px);
+}
+#products .product-img {
+  width:100%;
+  height:auto!important;
+  aspect-ratio:1 / 1;
+  background:#f3f3f7!important;
+  border-bottom:1px solid #ededf2;
+  overflow:hidden;
+}
+#products .product-img img {
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+}
+#products .product-body {
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:8px!important;
+  min-width:0;
+  padding:13px!important;
+}
+#products .product h4 {
+  color:#191919!important;
+  font-size:14px!important;
+  font-weight:800;
+  line-height:1.35!important;
+  margin:0;
+  min-height:3.8em;
+  overflow-wrap:anywhere;
+  display:-webkit-box;
+  -webkit-line-clamp:3;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+#products .product .desc {
+  color:#666571!important;
+  font-size:11px!important;
+  line-height:1.4!important;
+  min-height:2.8em;
+  overflow-wrap:anywhere;
+}
+#products .product-meta {
+  display:flex!important;
+  flex-direction:column;
+  align-items:stretch!important;
+  justify-content:flex-end;
+  gap:10px!important;
+  margin-top:auto;
+  min-width:0;
+}
+#products .private-price {
+  color:#5e566c!important;
+  font-size:10px!important;
+  font-weight:700;
+  line-height:1.3;
+  overflow-wrap:anywhere;
+}
+#products .lock-dot {
+  background:#ece8f6!important;
+  color:#4A388E!important;
+  border-color:#CDC6E4!important;
+}
+#products .price-public b {
+  color:#4A388E!important;
+  font-size:21px;
+  font-weight:900;
+}
+#products .price-public small,
+#products .price-public .tier-mini,
+#products .min-order {
+  color:#655b73!important;
+}
+#products .quantity-entry {
+  display:flex!important;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between!important;
+  gap:7px!important;
+  padding-top:8px!important;
+  border-top:1px solid #e8e7ed!important;
+}
+#products .quantity-entry label {
+  color:#4d4659!important;
+  font-size:10px!important;
+  font-weight:800;
+}
+#products .quantity-input {
+  background:#fff!important;
+  border:1px solid #bfb7d6!important;
+  border-radius:9px!important;
+  color:#191919!important;
+  min-height:38px!important;
+  max-width:106px;
+  padding:7px 4px!important;
+  font-size:15px!important;
+  font-weight:850;
+}
+#products .quantity-input:focus {
+  outline:2px solid #4A388E;
+  outline-offset:1px;
+}
+#products .product-img .tag,
+#products .product-img .out-tag {
+  top:7px!important;
+  left:7px!important;
+  right:auto!important;
+  padding:5px 7px!important;
+  border-radius:7px!important;
+  font-size:9px!important;
+  line-height:1.2!important;
+  max-width:calc(100% - 14px);
+  white-space:normal;
+  overflow-wrap:anywhere;
+  background:#4A388E!important;
+  color:#fff!important;
+}
+#products .product-img .tag.new {background:#5C5CA6!important}
+#products .product.out-of-stock {opacity:.75}
+#products .product.out-of-stock .tag {background:#5f5e6b!important}
+#products .coming-soon-card {
+  background:#fff!important;
+  border:1px dashed #CDC6E4!important;
+  color:#4A388E!important;
+  border-radius:11px!important;
+  padding:14px!important;
+  grid-template-columns:1fr!important;
+}
+#products .coming-soon-card .coming-visual {display:none!important}
+#products .coming-soon-card .coming-copy h4 {color:#4A388E}
+#products .coming-soon-card .coming-copy p {color:#5f596f}
+@media(max-width:1199px) {
+  #products.products {grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media(max-width:640px) {
+  #products.products {
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:6px!important;
+    padding:7px!important;
+    border-radius:12px;
+  }
+  #products.products > .product {border-radius:8px!important}
+  #products .product-body {padding:8px 6px 9px!important;gap:5px!important}
+  #products .product h4 {
+    font-size:10px!important;
+    line-height:1.23!important;
+    min-height:3.7em;
+    -webkit-line-clamp:3;
+  }
+  #products .product .desc {display:none!important}
+  #products .product-meta {gap:6px!important}
+  #products .private-price {font-size:9px!important;gap:4px!important}
+  #products .lock-dot {width:18px!important;height:18px!important;flex:none}
+  #products .price-public b {font-size:13px!important}
+  #products .price-public small,
+  #products .price-public .tier-mini {display:none!important}
+  #products .min-order {font-size:9px!important;line-height:1.15}
+  #products .quantity-entry {display:block!important;padding-top:5px!important}
+  #products .quantity-entry label {display:block;margin-bottom:4px;font-size:9px!important}
+  #products .quantity-input {width:100%!important;max-width:none!important;min-height:34px!important;font-size:13px!important;padding:5px!important}
+  #products .product-img .tag,
+  #products .product-img .out-tag {top:4px!important;left:4px!important;padding:3px 4px!important;font-size:7px!important;max-width:calc(100% - 8px)}
+  #products .coming-soon-card {padding:8px!important}
+  #products .coming-badge {font-size:8px!important}
+  #products .coming-copy h4 {font-size:12px!important;line-height:1.1}
+  #products .coming-copy p {display:none}
+  #products .coming-copy button {font-size:9px!important;padding:7px 4px!important}
+}
