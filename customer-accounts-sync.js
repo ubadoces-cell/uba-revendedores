@@ -274,7 +274,7 @@
 (function loadDeliveryFees(){
   if(document.querySelector('script[data-uba-delivery-fees]'))return;
   const script=document.createElement('script');
-  script.src='delivery-fees.js?v=20261102';
+  script.src='delivery-fees.js?v=20261103';
   script.dataset.ubaDeliveryFees='1';
   document.body.appendChild(script);
 })();
