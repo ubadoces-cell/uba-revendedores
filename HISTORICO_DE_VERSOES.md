@@ -22,6 +22,7 @@ Este arquivo documenta as cópias de segurança do site antes de alterações, p
 | 2026-11-03 | Detalhar as vantagens no banner principal quando abrir Tabelas: exemplo de lucro bruto, comparativo de preços, vantagens e segmentos de revenda | `18db61f32a48f191c04495c64850cfa6eee1ef88` | `backup/2026-11-03-antes-vantagens-hero-tabelas` |
 | 2026-11-03 | Frete fixo alterado de R$ 5,00 para R$ 4,99 nos bairros atendidos de Limoeiro do Norte, incluindo banner, API, checkout e Pix | `a193acec61206eafb08191a31000945818484a16` | `backup/2026-11-03-antes-frete-499` |
 | 2026-11-03 | Unificar frete R$ 4,99 e navegação inferior Catálogo/Tabelas Liquid Glass (2 opções), com login protegido | `34f0b14cde3cecf98cf03ceba712627511a95b88` | `backup/2026-11-03-apos-frete-499-antes-liquid-glass` |
+| 2026-11-03 | Melhorar legibilidade do vidro roxo na navegação Catálogo/Tabelas e evitar zoom automático ao focar quantidade no iPhone | `8b7caa7e63cb3cee310f9a3d81e0a1b0db900063` | `backup/2026-11-03-antes-vidro-roxo-sem-zoom` |
 
 ### Acesso rápido
 
@@ -33,6 +34,7 @@ Este arquivo documenta as cópias de segurança do site antes de alterações, p
 - [Backup antes de detalhar vantagens no banner Tabelas](https://github.com/ubadoces-cell/uba-revendedores/tree/backup/2026-11-03-antes-vantagens-hero-tabelas)
 - [Backup antes da redução do frete para R$ 4,99](https://github.com/ubadoces-cell/uba-revendedores/tree/backup/2026-11-03-antes-frete-499)
 - [Backup antes da barra Liquid Glass (após frete R$ 4,99)](https://github.com/ubadoces-cell/uba-revendedores/tree/backup/2026-11-03-apos-frete-499-antes-liquid-glass)
+- [Backup antes do vidro roxo e correção de zoom](https://github.com/ubadoces-cell/uba-revendedores/tree/backup/2026-11-03-antes-vidro-roxo-sem-zoom)
 - [Histórico de commits do site](https://github.com/ubadoces-cell/uba-revendedores/commits/main/)
 
 > Este é um backup **do código e dos arquivos do repositório**, não um backup automático dos pedidos, clientes ou dados da produção.
