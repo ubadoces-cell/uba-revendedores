@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="reseller-tables.css?v=20261102">
+<link rel="stylesheet" href="reseller-tables.css?v=20261103">
 <link rel="stylesheet" href="reseller-tables-banner.css?v=20261103c">
 <style>
 :root{
@@ -989,7 +989,6 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
           <img src="logo.jpg" alt="Logotipo oficial UBA DOCES">
           <div><div class="reseller-table-kicker">Acesso exclusivo para revendedores</div><h2>Tabela de revenda</h2><p>Preços por unidade e por quantidade comprada.</p></div>
         </div>
-        <button class="reseller-print-button" type="button" onclick="printResellerTables()">Imprimir / salvar em PDF</button>
       </header>
       <div id="resellerTablesContent" aria-live="polite"></div>
     </div>
@@ -2038,20 +2037,43 @@ async function adminSignIn(){
   ceoSession=true;
   closeAll();
   updateCeoBar();
-  openAdmin()
+  openAdmin();
+  // A sessão administrativa do servidor é independente da sessão visual do CEO.
+  // Somente ela libera a tabela confidencial.
+  try {
+    const response=await fetch('/api/admin-session',{
+      method:'POST',credentials:'same-origin',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({username:u,password:p})
+    });
+    if(!response.ok){
+      console.warn('Não foi possível liberar a tabela privada com este login administrativo.');
+    }
+  }catch(error){
+    console.warn('Não foi possível validar a sessão privada do CEO.');
+  }
+  if(typeof window.refreshResellerTableAccess==='function'){
+    window.refreshResellerTableAccess();
+  }
 }
 function updateCeoBar(){
   document.body.classList.toggle('ceo-mode',ceoSession);
   updatePendingCounts()
 }
-function logoutAdmin(){
+async function logoutAdmin(){
   if(!confirm('Sair do painel CEO nesta guia?'))return;
   sessionStorage.removeItem('uba-rev-ceo-session');
   ceoSession=false;
   document.getElementById('adminShell').classList.remove('show');
   document.getElementById('loginShell').classList.remove('show');
   document.body.style.overflow='';
-  renderAll()
+  renderAll();
+  try{await fetch('/api/admin-session',{method:'DELETE',credentials:'same-origin'});}catch(error){
+    console.warn('Não foi possível encerrar a sessão do servidor. Verifique a conexão.');
+  }
+  if(typeof window.refreshResellerTableAccess==='function'){
+    window.refreshResellerTableAccess();
+  }
 }
 
 function docType(btn,type){
@@ -2547,6 +2569,6 @@ renderAll();
 <script src="orders-sync.js?v=16"></script>
 <script src="customer-accounts-sync.js?v=14"></script>
 <script src="uba-liquid-glass-nav.js?v=5"></script>
-<script src="reseller-tables.js?v=20261103c"></script>
+<script src="reseller-tables.js?v=20261103d"></script>
 </body>
 </html>
