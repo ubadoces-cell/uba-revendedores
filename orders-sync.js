@@ -217,7 +217,7 @@
 
   let pixGenerating=false;
   let pixProgressTimers=[];
-  const PIX_DELIVERY_FEES={Socorro:500,Pitombeira:500,'Brotolândia':500,Centro:500,'Dr José Simões':500,'João XXIII':500,'Monsenhor Otávio':500,'Santa Luzia':500,'Antônio Holanda':500,'Bom Jesus':500,Limoeirinho:500,'Bom Nome':500,'Boa Fé':500,'Luis Alves de Freitas':500,Ilha:500,'Bom Jesus do Cruzeiro':500};
+  const PIX_DELIVERY_FEES={Socorro:499,Pitombeira:499,'Brotolândia':499,Centro:499,'Dr José Simões':499,'João XXIII':499,'Monsenhor Otávio':499,'Santa Luzia':499,'Antônio Holanda':499,'Bom Jesus':499,Limoeirinho:499,'Bom Nome':499,'Boa Fé':499,'Luis Alves de Freitas':499,Ilha:499,'Bom Jesus do Cruzeiro':499};
   function clearPixProgressTimers(){pixProgressTimers.forEach(clearTimeout);pixProgressTimers=[]}
   function pixDeliveryInfo(){
     const neighborhood=document.getElementById('deliveryNeighborhood')?.value||'';

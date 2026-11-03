@@ -1,22 +1,22 @@
-/* Frete fixo R$ 5,00 nos bairros atendidos de Limoeiro do Norte. */
+/* Frete fixo R$ 4,99 nos bairros atendidos de Limoeiro do Norte. */
 (function () {
   const DELIVERY_FEES = [
-    ["Socorro", 500],
-    ["Pitombeira", 500],
-    ["Brotolândia", 500],
-    ["Centro", 500],
-    ["Dr José Simões", 500],
-    ["João XXIII", 500],
-    ["Monsenhor Otávio", 500],
-    ["Santa Luzia", 500],
-    ["Antônio Holanda", 500],
-    ["Bom Jesus", 500],
-    ["Limoeirinho", 500],
-    ["Bom Nome", 500],
-    ["Boa Fé", 500],
-    ["Luis Alves de Freitas", 500],
-    ["Ilha", 500],
-    ["Bom Jesus do Cruzeiro", 500],
+    ["Socorro", 499],
+    ["Pitombeira", 499],
+    ["Brotolândia", 499],
+    ["Centro", 499],
+    ["Dr José Simões", 499],
+    ["João XXIII", 499],
+    ["Monsenhor Otávio", 499],
+    ["Santa Luzia", 499],
+    ["Antônio Holanda", 499],
+    ["Bom Jesus", 499],
+    ["Limoeirinho", 499],
+    ["Bom Nome", 499],
+    ["Boa Fé", 499],
+    ["Luis Alves de Freitas", 499],
+    ["Ilha", 499],
+    ["Bom Jesus do Cruzeiro", 499],
   ];
 
   const moneyFromCents = (cents) => (Number(cents || 0) / 100).toLocaleString("pt-BR", {

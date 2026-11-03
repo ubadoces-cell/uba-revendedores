@@ -20,6 +20,7 @@ Este arquivo documenta as cópias de segurança do site antes de alterações, p
 | 2026-11-03 | Banner de benefícios na aba Tabelas, inspirado na referência enviada pelo cliente e com +60 comerciantes, regras da revenda e CTA | `37a997ce76934824ee700cd6c9531f17fea5daa1` | `backup/2026-11-03-antes-banner-tabelas` |
 | 2026-11-03 | Correção solicitada: remover banner duplicado; alternar o banner original do topo ao abrir Tabelas, voltando ao original em Catálogo | `9b378976cad2d4c5293ab36aafc84cc489b398a2` | `backup/2026-11-03-antes-troca-hero-tabelas` |
 | 2026-11-03 | Detalhar as vantagens no banner principal quando abrir Tabelas: exemplo de lucro bruto, comparativo de preços, vantagens e segmentos de revenda | `18db61f32a48f191c04495c64850cfa6eee1ef88` | `backup/2026-11-03-antes-vantagens-hero-tabelas` |
+| 2026-11-03 | Frete fixo alterado de R$ 5,00 para R$ 4,99 nos bairros atendidos de Limoeiro do Norte, incluindo banner, API, checkout e Pix | `a193acec61206eafb08191a31000945818484a16` | `backup/2026-11-03-antes-frete-499` |
 
 ### Acesso rápido
 
@@ -29,6 +30,7 @@ Este arquivo documenta as cópias de segurança do site antes de alterações, p
 - [Backup antes do banner da aba Tabelas](https://github.com/ubadoces-cell/uba-revendedores/tree/backup/2026-11-03-antes-banner-tabelas)
 - [Backup antes da correção do banner principal](https://github.com/ubadoces-cell/uba-revendedores/tree/backup/2026-11-03-antes-troca-hero-tabelas)
 - [Backup antes de detalhar vantagens no banner Tabelas](https://github.com/ubadoces-cell/uba-revendedores/tree/backup/2026-11-03-antes-vantagens-hero-tabelas)
+- [Backup antes da redução do frete para R$ 4,99](https://github.com/ubadoces-cell/uba-revendedores/tree/backup/2026-11-03-antes-frete-499)
 - [Histórico de commits do site](https://github.com/ubadoces-cell/uba-revendedores/commits/main/)
 
 > Este é um backup **do código e dos arquivos do repositório**, não um backup automático dos pedidos, clientes ou dados da produção.

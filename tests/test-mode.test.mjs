@@ -13,6 +13,14 @@ const call=async(fn,req)=>{const res={statusCode:200,headers:{},status(n){this.s
 try{
  process.env.RESELLER_DATABASE_DATABASE_URL='postgres://isolated.test/db';
  await db.exec(await readFile(new URL('../server/schema.sql',import.meta.url),'utf8'));
+
+ // Regression: browser delivery list, checkout summary and promotional copy must agree.
+ const deliverySource=await readFile(new URL('../delivery-fees.js',import.meta.url),'utf8');
+ const pixSource=await readFile(new URL('../orders-sync.js',import.meta.url),'utf8');
+ const webSource=await readFile(new URL('../index.html',import.meta.url),'utf8');
+ assert.equal((deliverySource.match(/, 499\]/g)||[]).length,16,'all served neighborhoods should cost R$ 4,99');
+ assert.equal((pixSource.match(/:499\b/g)||[]).length,16,'Pix delivery fees must be consistent');
+ assert.equal((webSource.match(/R\$ 4,99/g)||[]).length,2,'banner and advantages must show R$ 4,99');
  // Change only in-memory test configuration. Never commit a plaintext password.
  const password='synthetic-test-password';access.passwordHash=scryptSync(password,access.salt,64).toString('hex');access.expiresAt=new Date(Date.now()+86400000).toISOString();
  let calls=0;globalThis.fetch=async()=>{calls++;throw Error('External access forbidden in test')};
@@ -25,7 +33,7 @@ try{
  const tables=await call(resellerTables,{method:'GET',headers:{cookie}});
  assert.equal(tables.statusCode,200);assert.equal(tables.headers["Cache-Control"],"private, no-store, max-age=0");
  assert.equal(tables.body.minimumUnits,25);
- assert.equal(tables.body.deliveryFeeCents,500);
+ assert.equal(tables.body.deliveryFeeCents,499);
  assert.equal(tables.body.products.length,10);
  assert.deepEqual(tables.body.tiers.map(t=>t.min),[25,100,200,400]);
  assert.equal(tables.body.products.filter(p=>p.available).length,7);
@@ -40,22 +48,22 @@ try{
  // Body flags cannot bypass authentication or payment for regular customers.
  assert.equal((await call(orders,{method:'POST',body})).statusCode,401);
  const testOrder=await call(orders,{method:'POST',headers:{cookie},body});
- assert.equal(testOrder.statusCode,201);assert.equal(testOrder.body.order.isTest,true);assert.equal(testOrder.body.order.delivery.deliveryFeeCents,500);assert.equal(testOrder.body.order.paymentStatus,'teste_sem_cobranca');assert.equal(calls,0);
+ assert.equal(testOrder.statusCode,201);assert.equal(testOrder.body.order.isTest,true);assert.equal(testOrder.body.order.delivery.deliveryFeeCents,499);assert.equal(testOrder.body.order.paymentStatus,'teste_sem_cobranca');assert.equal(calls,0);
  const prices={chocolate50:460,branco:510,branco_beijinho:544,branco_chocolate:510,chocolate50_chocolate:493,chocolate50_beijinho:526,chocolate50_branco:526};
  for(const [productId,priceCents] of Object.entries(prices)){
    const response=await call(orders,{method:'POST',headers:{cookie},body:{...body,items:[{productId,quantity:25}]}});
    assert.equal(response.statusCode,201,productId+' should be orderable');
    assert.equal(response.body.order.units,25);
-   assert.equal(response.body.order.totalCents,25*priceCents+500,'wrong price for '+productId);
+   assert.equal(response.body.order.totalCents,25*priceCents+499,'wrong price for '+productId);
  }
  for(const [quantity,cents] of [[100,455],[200,420],[400,385]]){
    const response=await call(orders,{method:'POST',headers:{cookie},body:{...body,items:[{productId:'chocolate50',quantity}]}});
    assert.equal(response.statusCode,201);
-   assert.equal(response.body.order.totalCents,quantity*cents+500,'wrong tier '+quantity);
+   assert.equal(response.body.order.totalCents,quantity*cents+499,'wrong tier '+quantity);
  }
  const mix=await call(orders,{method:'POST',headers:{cookie},body:{...body,items:[{productId:'branco',quantity:15},{productId:'chocolate50',quantity:10}]}});
  assert.equal(mix.statusCode,201);
- assert.equal(mix.body.order.totalCents,15*510+10*460+500,'mixed flavors must share total-quantity tier');
+ assert.equal(mix.body.order.totalCents,15*510+10*460+499,'mixed flavors must share total-quantity tier');
  for(const productId of ['pistache','caramelo','morango']){
    const unavailable=await call(orders,{method:'POST',headers:{cookie},body:{...body,items:[{productId,quantity:25}]}});
    assert.equal(unavailable.statusCode,400);
