@@ -58,6 +58,26 @@ try{
  assert.equal(calls,0);
 
  assert.equal((await call(resellerTables,{method:'GET',headers:{cookie}})).statusCode,403);
+ // Conta comercial REAL aprovada, não apenas sessão CEO ou conta de teste.
+ const register=await call(customers,{method:'POST',body:{
+   action:'register',name:'Revendedor de Teste',store:'Loja Comércio',
+   email:'comerciante_teste@example.invalid',doc:'12345678901',
+   purpose:'commerce',password:'revenda123'
+ }});
+ assert.equal(register.statusCode,201);
+ assert.equal(register.body.account.status,'pending');
+ await db.query("UPDATE reseller_customer_accounts SET status='approved' WHERE id=$1",[register.body.account.id]);
+ const retailerLogin=await call(customers,{method:'POST',body:{
+   action:'login',login:'comerciante_teste@example.invalid',password:'revenda123'
+ }});
+ assert.equal(retailerLogin.statusCode,200);
+ const resellerCookie=retailerLogin.headers['Set-Cookie'][0].split(';')[0];
+ const approvedTable=await call(resellerTables,{method:'GET',headers:{cookie:resellerCookie}});
+ assert.equal(approvedTable.statusCode,200);
+ assert.equal(approvedTable.body.products.length,10);
+ assert.equal(approvedTable.body.deliveryFeeCents,499);
+ await call(customers,{method:'POST',headers:{cookie:resellerCookie},body:{action:'logout'}});
+ assert.equal((await call(resellerTables,{method:'GET',headers:{cookie:resellerCookie}})).statusCode,403);
  const adminToken='synthetic-ceo-session-for-test';
  const adminCookie='uba_rev_session='+adminToken;
  const adminHash=createHash('sha256').update(adminToken).digest('hex');

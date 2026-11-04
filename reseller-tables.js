@@ -1,4 +1,4 @@
-/* Tabela confidencial liberada apenas para o CEO autenticado. */
+/* Tabela de revenda: exclusiva para comércio aprovado ou sessão CEO verificada. */
 (function(){
   const catalogView=document.getElementById('resellerCatalogView');
   const tablesView=document.getElementById('resellerTablesView');
@@ -9,14 +9,20 @@
   let requestId=0;
   let ownerVerified=false;
   let verificationSeq=0;
-  const canOpenTables=()=>Boolean(ceoSession && ownerVerified);
+  const resellerAccount=()=>typeof getCustomer==='function'?getCustomer():null;
+  const resellerApproved=()=>{
+    const customer=resellerAccount();
+    return Boolean(customer && customer.status==='approved' && customer.purpose==='commerce');
+  };
+  const canOpenTables=()=>Boolean(resellerApproved() || (ceoSession && ownerVerified));
   const nav=document.querySelector('.uba-rev-shop-tabs');
   const brlCents=(cents)=>(Number(cents)/100).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
   const safeText=(value)=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 
   function syncAccess(){
     const approved=canOpenTables();
-    if(nav)nav.hidden=!approved;
+    // O Liquid Glass deve permanecer visível, mesmo sem login (aba bloqueada).
+    if(nav)nav.hidden=false;
     if(!approved){
       requestId++;
       content.replaceChildren();
@@ -80,14 +86,14 @@
   async function loadTable(){
     if(!canOpenTables()||view!=='tables')return;
     const ticket=++requestId;
-    ready=false;
     content.innerHTML='<p class="reseller-table-error">Carregando preços de revenda…</p>';
     try{
       const response=await fetch('/api/reseller-tables',{credentials:'same-origin',cache:'no-store'});
       const data=await response.json().catch(()=>({}));
       if(ticket!==requestId||!canOpenTables()||view!=='tables')return;
       if(response.status===401||response.status===403){
-        ownerVerified=false;
+        // Sessão expirada: nunca mostrar preços vindos de memória local.
+        content.replaceChildren();
         view='catalog';
         syncAccess();
         return;
@@ -107,7 +113,7 @@
       view='catalog';
       syncAccess();
       if(ceoSession) window.refreshResellerTableAccess();
-      else showAdminLogin();
+      else openCustomerEntry();
       return;
     }
     view=destination==='tables'?'tables':'catalog';
@@ -116,8 +122,8 @@
     if(view==='tables')loadTable();
     document.getElementById('mainResellerHero')?.scrollIntoView({behavior:'smooth',block:'start'});
   };
-  // Login do CEO é validado no servidor, não somente por sessionStorage.
-  // A tabela é fechada e seus preços removidos da tela após perder acesso.
+  // O CEO é validado no servidor. Revendedores precisam do login comercial aprovado.
+  // A API também faz esta validação, e a tabela é limpa após a saída.
   window.refreshResellerTableAccess=async function(){
     const seq=++verificationSeq;
     if(!ceoSession){
