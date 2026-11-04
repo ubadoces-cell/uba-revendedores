@@ -1,5 +1,5 @@
 import { database } from "../server/database.js";
-import { requireAdmin } from "./customer-accounts.js";
+import { requireAdmin, currentCustomer, ensureSchema } from "./customer-accounts.js";
 import { PRODUCTS, PRICING } from "./orders.js";
 
 // Preços à vista do cardápio UBA DOCES de 08/10/2026, em centavos.
@@ -23,11 +23,15 @@ export default async function handler(req, res) {
 
   try {
     const sql = database();
-    // Apenas a sessão administrativa verificada no servidor pode consultar a tabela.
-    // Login de comprador/revendedor, mesmo aprovado, nunca libera este endpoint.
+    // A tabela completa exige autenticação no servidor. Liberar ao CEO ou
+    // a contas comerciais expressamente aprovadas pela UBA DOCES.
     const admin = await requireAdmin(req, sql);
     if (!admin) {
-      return res.status(403).json({ error: "Tabela reservada ao administrador UBA DOCES." });
+      await ensureSchema(sql);
+      const customer = await currentCustomer(req, sql);
+      if (!customer || customer.status !== "approved" || customer.purpose !== "commerce") {
+        return res.status(403).json({ error: "Tabela exclusiva para revendedores com cadastro comercial aprovado." });
+      }
     }
 
     const tiers = PRICING.commerce;
