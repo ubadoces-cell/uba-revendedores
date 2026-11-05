@@ -335,6 +335,15 @@ html.uba-motion-ready .uba-reveal:not(.uba-reveal-visible){
 .app :is(button,input,select,textarea,a):focus-visible{outline:2px solid #d5c4ff;outline-offset:3px}
 #products .quantity-input:focus-visible{outline:none!important}
 
+/* Troca suave do banner ao selecionar Catálogo/Tabelas, somente conteúdo visível. */
+@keyframes uba-scene-in{
+  from{opacity:.55;filter:blur(4px);transform:translate3d(0,10px,0)}
+  to{opacity:1;filter:blur(0);transform:translate3d(0,0,0)}
+}
+#mainResellerHero.uba-scene-enter [data-hero-mode]:not([hidden]){
+  animation:uba-scene-in .5s var(--uba-ease) both;
+}
+
 /* Tablet: preserve ao menos 3 produtos por fileira. */
 @media(max-width:1199px){
   #products.products{grid-template-columns:repeat(3,minmax(0,1fr))!important}
@@ -409,7 +418,7 @@ html.uba-motion-ready .uba-reveal:not(.uba-reveal-visible){
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .header::before,.hero-purple-blob{animation:none!important}
+  .header::before,.hero-purple-blob,#mainResellerHero.uba-scene-enter [data-hero-mode]:not([hidden]){animation:none!important}
   .uba-reveal,.uba-reveal.uba-reveal-visible{opacity:1!important;transform:none!important;transition:none!important}
   #products.products > .product,#products .product-img img,
   #mainResellerHero .hero-art>img,.header-actions button,.hero-cta,.filter{animation:none!important;transition:none!important;transform:none!important}
