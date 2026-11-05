@@ -2,8 +2,9 @@
 (function(){
   const catalogView=document.getElementById('resellerCatalogView');
   const tablesView=document.getElementById('resellerTablesView');
+  const infoView=document.getElementById('resellerInfoView');
   const content=document.getElementById('resellerTablesContent');
-  if(!catalogView||!tablesView||!content)return;
+  if(!catalogView||!tablesView||!infoView||!content)return;
 
   let view='catalog';
   let requestId=0;
@@ -26,20 +27,27 @@
     if(!approved){
       requestId++;
       content.replaceChildren();
-      view='catalog';
+      if(view==='tables')view='catalog';
     }
     const tablesVisible=approved&&view==='tables';
-    catalogView.hidden=tablesVisible;
+    const infoVisible=view==='info';
+    catalogView.hidden=tablesVisible||infoVisible;
     tablesView.hidden=!tablesVisible;
+    infoView.hidden=!infoVisible;
     // Um único banner principal: original no Catálogo, comercial na aba Tabelas.
     const hero=document.getElementById('mainResellerHero');
     if(hero){
+      hero.hidden=infoVisible;
       hero.classList.toggle('tables-hero-active',tablesVisible);
       for(const part of hero.querySelectorAll('[data-hero-mode]')){
         part.hidden=part.getAttribute('data-hero-mode')!==(tablesVisible?'tables':'catalog');
       }
     }
-    for(const [id,selected] of [['resellerCatalogTab',!tablesVisible],['resellerTablesTab',tablesVisible]]){
+    for(const [id,selected] of [
+      ['resellerCatalogTab',!tablesVisible&&!infoVisible],
+      ['resellerTablesTab',tablesVisible],
+      ['resellerInfoTab',infoVisible]
+    ]){
       const button=document.getElementById(id);
       if(!button)continue;
       button.classList.toggle('active',selected);
@@ -110,17 +118,18 @@
   window.loadResellerTables=loadTable;
   window.selectResellerView=function(destination){
     if(destination==='tables'&&!canOpenTables()){
-      view='catalog';
+      if(view!=='info')view='catalog';
       syncAccess();
       if(ceoSession) window.refreshResellerTableAccess();
       else openCustomerEntry();
       return;
     }
-    view=destination==='tables'?'tables':'catalog';
+    view=destination==='tables'?'tables':destination==='info'?'info':'catalog';
     if(view!=='tables'){requestId++;content.replaceChildren();}
     syncAccess();
     if(view==='tables')loadTable();
-    document.getElementById('mainResellerHero')?.scrollIntoView({behavior:'smooth',block:'start'});
+    const target=view==='info'?infoView:document.getElementById('mainResellerHero');
+    target?.scrollIntoView({behavior:'smooth',block:'start'});
   };
   // O CEO é validado no servidor. Revendedores precisam do login comercial aprovado.
   // A API também faz esta validação, e a tabela é limpa após a saída.
