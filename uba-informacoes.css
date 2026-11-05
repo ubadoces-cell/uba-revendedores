@@ -112,6 +112,7 @@ html[data-theme="light"] #mainResellerHero:not(.tables-hero-active) .uba-hero-in
   max-width:1320px;
   margin:18px auto 120px;
   padding:0 clamp(3px,.7vw,12px);
+  scroll-margin-top:112px;
 }
 #resellerInfoView *{box-sizing:border-box}
 #resellerInfoView button{font-family:inherit}
@@ -407,11 +408,11 @@ html[data-theme="light"] #resellerInfoView .uba-info-finale :is(h3,p){color:#fff
   #resellerInfoView .uba-info-kicker{font-size:10px;margin-bottom:13px}
   #resellerInfoView .uba-info-actions{flex-direction:column;gap:9px}
   #resellerInfoView .uba-info-actions button{width:100%}
-  #resellerInfoView .uba-info-summary{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
-  #resellerInfoView .uba-info-stat,
-  #resellerInfoView .uba-info-stat:nth-child(1){min-height:0;padding:13px 9px;border-radius:13px}
-  #resellerInfoView .uba-info-stat strong{font-size:clamp(17px,5.5vw,27px)}
-  #resellerInfoView .uba-info-stat span{font-size:10px;line-height:1.4;margin-top:5px}
+  #resellerInfoView .uba-info-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  #resellerInfoView .uba-info-stat{min-height:0;padding:17px 14px;border-radius:14px}
+  #resellerInfoView .uba-info-stat:nth-child(1){grid-column:1/-1;min-height:0}
+  #resellerInfoView .uba-info-stat strong{font-size:clamp(20px,6vw,29px)}
+  #resellerInfoView .uba-info-stat span{font-size:12px;line-height:1.46;margin-top:7px}
   #resellerInfoView .uba-info-block{margin-top:29px}
   #resellerInfoView .uba-info-block-header{margin-bottom:15px}
   #resellerInfoView .uba-info-block-header h3{font-size:25px}
