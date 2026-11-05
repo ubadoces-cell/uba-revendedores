@@ -28,6 +28,7 @@ Este arquivo documenta as cópias de segurança do site antes de alterações, p
 | 2026-11-04 | Restaurar Liquid Glass Catálogo/Tabelas e liberar tabela completa a contas comerciais aprovadas; demais sem login permanecem bloqueadas | `96b96440f0beaedf9279eeef619ddeccef4f341f` | `backup/2026-11-04-antes-tabela-revendedor-aprovado` |
 | 2026-11-05 | Redesign visual Atelier UBA v2.1: banner ametista, vitrine escura, profundidade suave, novos estados e transições responsivas, preservando regras de negócio | `68e11f2b38f86525f0c417b116808beb0725d159` | `backup/2026-11-05-antes-redesign-atelier` |
 | 2026-11-05 | Corrigir contraste integral no modo claro (catálogo, banners, tabela, carrinho e Pix), reposicionando resumo móvel acima do Liquid Glass | `21df653662f43dd8a743fa1ee7fbfb01ca2606fb` | `backup/2026-11-05-antes-contraste-claro-carrinho` |
+| 2026-11-05 | Simplificar banner inicial e criar aba Informações no Liquid Glass, com guia de acesso, vantagens, dúvidas, frete e Pix sem expor tabela de revenda | `652ddde81133d5720d4078c736e8e5c61b035e22` | `backup/2026-11-05-antes-informacoes-liquid-glass` |
 
 ### Acesso rápido
 
@@ -45,6 +46,7 @@ Este arquivo documenta as cópias de segurança do site antes de alterações, p
 - [Backup antes de restaurar o acesso comercial à Tabela](https://github.com/ubadoces-cell/uba-revendedores/tree/backup/2026-11-04-antes-tabela-revendedor-aprovado)
 - [Backup completo antes do redesign Atelier UBA v2.1](https://github.com/ubadoces-cell/uba-revendedores/tree/backup/2026-11-05-antes-redesign-atelier)
 - [Backup antes de corrigir contraste do modo claro e carrinho](https://github.com/ubadoces-cell/uba-revendedores/tree/backup/2026-11-05-antes-contraste-claro-carrinho)
+- [Backup antes de incluir Informações no Liquid Glass](https://github.com/ubadoces-cell/uba-revendedores/tree/backup/2026-11-05-antes-informacoes-liquid-glass)
 - [Histórico de commits do site](https://github.com/ubadoces-cell/uba-revendedores/commits/main/)
 
 > Este é um backup **do código e dos arquivos do repositório**, não um backup automático dos pedidos, clientes ou dados da produção.
