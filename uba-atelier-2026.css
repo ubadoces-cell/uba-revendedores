@@ -13,14 +13,14 @@
   --uba-edge:rgba(205,198,228,.20);
   --uba-ease:cubic-bezier(.22,1,.36,1);
 }
-html[data-theme="dark"]{
+html[data-theme="dark"] .app{
   --bg:#0d091a;--bg2:#0b0714;
   --surface:#1c1430;--surface2:#271b42;--surface3:#30224c;
   --field:#201735;--line:#47385d;--text:#f8f5ff;--muted:#c5bad8;
   --header-glass:rgba(14,9,29,.82);
   --product-grad:linear-gradient(155deg,#281b44,#161027);
 }
-html[data-theme="light"]{
+html[data-theme="light"] .app{
   --bg:#e9e4f4;--bg2:#ddd6ee;
   --surface:#e1d8f1;--surface2:#d9ccec;--surface3:#cabde3;
   --field:#eee8f7;--line:#bfb0d5;--text:#261b40;--muted:#645676;
@@ -309,6 +309,49 @@ html[data-theme="light"] .topbar{background:linear-gradient(180deg,rgba(222,212,
 #resellerTablesView .reseller-price-matrix .table-unavailable td{color:#a99bbf}
 #resellerTablesView .reseller-table-note{background:rgba(205,198,228,.07);border-color:rgba(205,198,228,.18);color:#cbbce0}
 
+/* Checkout e carrinho na mesma linguagem de superfície, sem alterar o fluxo. */
+#drawer{
+  background:linear-gradient(165deg,#241939,#181126 62%,#130d20);
+  border-left:1px solid rgba(205,198,228,.35);
+  box-shadow:-20px 0 68px rgba(5,2,15,.43);
+  transition:transform .45s var(--uba-ease);
+}
+#drawer .drawer-head,#drawer .drawer-foot{
+  background:rgba(37,25,61,.70);
+  border-color:rgba(205,198,228,.20);
+}
+#drawer .drawer-head h3,#drawer .cart-item b{color:#f8f3ff}
+#drawer .cart-item{border-color:rgba(205,198,228,.15)}
+#drawer .cart-item small,#drawer .totals small{color:#c5b8d7}
+#drawer .qty-chip{background:rgba(205,198,228,.10);color:#ece4ff;border-color:rgba(205,198,228,.25)}
+#drawer .checkout-btn{background:linear-gradient(120deg,#7e5acc,#4A388E);box-shadow:0 10px 24px rgba(18,8,48,.29)}
+#drawer .checkout-btn:hover{filter:brightness(1.12)}
+.overlay.show{backdrop-filter:blur(9px);background:rgba(8,4,19,.73)}
+.modal .checkout{
+  background:linear-gradient(150deg,#21172f,#18111f);
+  color:#f8f4ff;border:1px solid rgba(205,198,228,.28);
+  box-shadow:0 35px 90px rgba(4,1,13,.55);
+}
+.modal .checkout-top{background:rgba(30,20,47,.96);border-bottom:1px solid rgba(205,198,228,.18)}
+.modal .panel>.hint{color:#c7b9d8}
+.modal .field label{color:#ede6f8}
+.modal .field :is(input,select,textarea){
+  background:#231936;color:#f7f2ff;
+  border:1px solid #564473;
+  transition:border-color .25s,box-shadow .25s;
+}
+.modal .field :is(input,select,textarea):focus{border-color:#b7a2ee;box-shadow:0 0 0 3px rgba(158,127,223,.2)}
+.modal .checkout .back{background:#352747;color:#f1eaff}
+.modal .checkout .next{background:linear-gradient(135deg,#7351bf,#4A388E);color:#fff}
+.modal .checkout .tab{border-color:#594476;background:#2b2040;color:#f3eaff}
+.modal .checkout .tab.active{background:#d3c2ed;color:#2c1d45}
+.modal.show .checkout{animation:uba-modal-in .34s var(--uba-ease) both}
+@keyframes uba-modal-in{from{opacity:.68;transform:translateY(12px) scale(.986)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:640px){
+  .modal .field :is(input,select,textarea){font-size:16px}
+  #drawer{width:100%}
+}
+
 /* Liquidação de profundidade em menus, sem mudar a lógica da barra CEO. */
 body:not(.uba-rev-admin-nav-visible) .uba-rev-shop-tabs{
   border-color:rgba(219,204,255,.66)!important;
@@ -418,7 +461,7 @@ html.uba-motion-ready .uba-reveal:not(.uba-reveal-visible){
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .header::before,.hero-purple-blob,#mainResellerHero.uba-scene-enter [data-hero-mode]:not([hidden]){animation:none!important}
+  .header::before,.hero-purple-blob,.modal.show .checkout,#mainResellerHero.uba-scene-enter [data-hero-mode]:not([hidden]){animation:none!important}
   .uba-reveal,.uba-reveal.uba-reveal-visible{opacity:1!important;transform:none!important;transition:none!important}
   #products.products > .product,#products .product-img img,
   #mainResellerHero .hero-art>img,.header-actions button,.hero-cta,.filter{animation:none!important;transition:none!important;transform:none!important}
