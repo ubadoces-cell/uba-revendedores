@@ -31,8 +31,13 @@
 .reseller-table-note{padding:13px 15px;margin:17px 0 0;border-radius:14px;background:var(--surface2);border:1px solid var(--line);color:var(--muted);font-size:11px;line-height:1.55}
 .reseller-table-error{padding:18px;border-radius:14px;border:1px solid var(--line);background:var(--surface2);color:var(--muted);font-size:13px}
 .reseller-table-error button{display:block;margin-top:10px;border:0;border-radius:10px;padding:9px 13px;background:#4A388E;color:#fff;font-weight:800}
-@media(max-width:640px){.reseller-tables-page{padding:13px;border-radius:17px}.reseller-table-header{align-items:flex-start;flex-direction:column}.reseller-table-brand img{width:50px;height:50px}/* Tabela de preços é material confidencial do CEO.
-   O botão de impressão foi removido e a tabela é omitida de impressões do navegador. */
+@media(max-width:640px){
+  .reseller-tables-page{padding:13px;border-radius:17px}
+  .reseller-table-header{align-items:flex-start;flex-direction:column}
+  .reseller-table-brand img{width:50px;height:50px}
+}
+/* Tabela comercial não possui opção de impressão.
+   Mantém os valores protegidos em impressões feitas pelo navegador. */
 @media print{
   #resellerTablesView,
   #resellerTablesContent,
