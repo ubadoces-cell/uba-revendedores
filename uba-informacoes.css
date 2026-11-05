@@ -1,0 +1,446 @@
+/* UBA DOCES — Informações v2.2 | 05 nov 2026
+   Nova aba pública editorial. Valores comerciais permanecem protegidos por login.
+   Paleta oficial: roxo #4A388E, lavanda #CDC6E4 e fundo noturno.
+   Temas escuro/claro com contraste forte, legíveis no celular. */
+#mainResellerHero[hidden],
+#resellerInfoView[hidden],
+#resellerCatalogView[hidden],
+#resellerTablesView[hidden]{display:none!important}
+
+.uba-rev-shop-tabs{
+  width:min(550px,calc(100vw - 28px))!important;
+  max-width:550px!important;
+  gap:4px!important;
+}
+.uba-rev-shop-tabs > button{
+  flex:1 1 33.333%!important;
+  min-width:0!important;
+  gap:8px!important;
+  padding:9px 8px!important;
+  font-size:12px!important;
+}
+.uba-rev-shop-tabs > button .uba-rev-nav-icon{
+  width:19px;height:19px;flex-basis:19px;
+}
+.uba-rev-shop-tabs .reseller-lock{font-size:10px;margin-left:0}
+@media(max-width:640px){
+  .uba-rev-shop-tabs{
+    width:calc(100vw - 20px)!important;
+    max-width:430px!important;
+    padding:4px 5px!important;
+    gap:1px!important;
+  }
+  .uba-rev-shop-tabs > button{
+    min-height:43px!important;
+    font-size:10.5px!important;
+    letter-spacing:-.035em!important;
+    gap:5px!important;
+    padding:7px 3px!important;
+    border-radius:19px!important;
+  }
+  .uba-rev-shop-tabs > button .uba-rev-nav-icon{
+    width:16px;height:16px;flex-basis:16px;
+  }
+  .uba-rev-shop-tabs .reseller-lock{font-size:9px;min-width:11px}
+}
+@media(max-width:340px){
+  .uba-rev-shop-tabs > button{font-size:10px!important;gap:3px!important}
+}
+
+/* O topo do Catálogo deve vender o produto, não repetir explicações extensas. */
+#mainResellerHero .uba-hero-actions{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+#mainResellerHero .uba-hero-actions .hero-cta{min-width:190px}
+#mainResellerHero .uba-hero-info{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  border:1px solid rgba(205,198,228,.48);
+  background:rgba(205,198,228,.095);
+  color:#f3ebff;
+  border-radius:15px;
+  padding:13px 19px;
+  min-height:50px;
+  font-size:13px;
+  font-weight:800;
+  cursor:pointer;
+  transition:transform .28s ease,background .28s ease,border-color .28s ease;
+}
+#mainResellerHero .uba-hero-info:hover,
+#mainResellerHero .uba-hero-info:focus-visible{
+  transform:translateY(-2px);
+  border-color:rgba(233,218,255,.85);
+  background:rgba(205,198,228,.2);
+}
+#mainResellerHero.v2-hero:not(.tables-hero-active){min-height:440px}
+#mainResellerHero:not(.tables-hero-active) .hero-copy>p{
+  max-width:420px;
+  font-size:clamp(14px,1.3vw,17px);
+  line-height:1.64;
+}
+html[data-theme="light"] #mainResellerHero:not(.tables-hero-active) .uba-hero-info{
+  background:rgba(255,255,255,.64);
+  border-color:#aa92c9;
+  color:#37224f;
+}
+html[data-theme="light"] #mainResellerHero:not(.tables-hero-active) .uba-hero-info:hover{
+  background:#fff;
+  border-color:#583a95;
+}
+@media(max-width:640px){
+  #mainResellerHero.v2-hero:not(.tables-hero-active){min-height:0}
+  #mainResellerHero .uba-hero-actions{gap:8px;margin-top:10px}
+  #mainResellerHero .uba-hero-actions .hero-cta,
+  #mainResellerHero .uba-hero-info{width:100%;min-height:44px}
+  #mainResellerHero .uba-hero-info{font-size:12px;padding:11px}
+}
+
+/* Página Informações — layout editorial em roxo, sem textos minúsculos. */
+#resellerInfoView{
+  --info-text:#f7f2ff;
+  --info-muted:#d4c8e6;
+  --info-soft:#c0b2d6;
+  --info-line:rgba(209,196,230,.24);
+  --info-surface:linear-gradient(150deg,#261938,#1e142e);
+  color:var(--info-text);
+  max-width:1320px;
+  margin:18px auto 120px;
+  padding:0 clamp(3px,.7vw,12px);
+  scroll-margin-top:112px;
+}
+#resellerInfoView *{box-sizing:border-box}
+#resellerInfoView button{font-family:inherit}
+#resellerInfoView :is(h2,h3,h4,p){margin-top:0}
+#resellerInfoView .uba-info-intro{
+  position:relative;
+  display:grid;
+  grid-template-columns:minmax(0,1.15fr) minmax(285px,.75fr);
+  gap:clamp(20px,3vw,50px);
+  align-items:center;
+  overflow:hidden;
+  border:1px solid rgba(205,198,228,.32);
+  border-radius:30px;
+  padding:clamp(24px,4.5vw,62px);
+  background:
+    radial-gradient(ellipse 45% 75% at 93% 4%,rgba(115,79,198,.34),transparent 76%),
+    linear-gradient(132deg,#211332,#2c194c 66%,#181024);
+  box-shadow:0 23px 68px rgba(6,2,16,.25);
+}
+#resellerInfoView .uba-info-intro::before{
+  content:"";position:absolute;pointer-events:none;
+  width:330px;height:330px;right:-135px;top:-155px;
+  border:1px solid rgba(220,207,248,.3);
+  border-radius:50%;
+  box-shadow:0 0 0 62px rgba(160,120,227,.055);
+}
+#resellerInfoView .uba-info-intro>*{position:relative;z-index:1}
+#resellerInfoView .uba-info-kicker{
+  display:inline-flex;align-items:center;gap:9px;
+  color:#d9c8ff;
+  text-transform:uppercase;
+  font-weight:900;font-size:11px;
+  letter-spacing:.14em;margin-bottom:18px;
+}
+#resellerInfoView .uba-info-kicker::before{
+  content:"";width:23px;height:3px;border-radius:10px;background:#bba5f0;
+}
+#resellerInfoView .uba-info-intro h2{
+  max-width:640px;
+  color:#fff;
+  font-size:clamp(36px,4.7vw,66px);
+  line-height:1.06;
+  letter-spacing:-.055em;
+  font-weight:900;
+  margin-bottom:19px;
+}
+#resellerInfoView .uba-info-intro h2 em{
+  font-style:normal;
+  color:#d0beff;
+}
+#resellerInfoView .uba-info-lead{
+  max-width:530px;color:#dfd5ee;
+  font-size:clamp(15px,1.45vw,19px);
+  line-height:1.65;font-weight:550;margin-bottom:23px;
+}
+#resellerInfoView .uba-info-actions{
+  display:flex;flex-wrap:wrap;gap:11px;
+}
+#resellerInfoView .uba-info-primary,
+#resellerInfoView .uba-info-secondary{
+  min-height:48px;
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  border-radius:13px;padding:12px 18px;font-size:13px;font-weight:850;
+  cursor:pointer;
+  transition:transform .32s cubic-bezier(.22,1,.36,1),box-shadow .28s,background .2s;
+}
+#resellerInfoView .uba-info-primary{
+  border:1px solid rgba(240,227,255,.32);
+  background:linear-gradient(135deg,#8462d5,#6345b0);
+  color:#fff;box-shadow:0 9px 26px rgba(9,3,29,.25)
+}
+#resellerInfoView .uba-info-secondary{
+  border:1px solid rgba(205,198,228,.45);
+  background:rgba(205,198,228,.1);
+  color:#f5efff;
+}
+#resellerInfoView .uba-info-actions button:hover{
+  transform:translateY(-3px);
+  box-shadow:0 14px 30px rgba(9,3,29,.27);
+}
+#resellerInfoView .uba-info-summary{
+  display:grid;grid-template-columns:1fr 1fr;gap:11px;
+}
+#resellerInfoView .uba-info-stat{
+  border-radius:19px;
+  padding:21px 16px;
+  min-height:136px;
+  border:1px solid rgba(216,202,244,.28);
+  background:rgba(216,200,242,.08);
+  backdrop-filter:blur(10px);
+}
+#resellerInfoView .uba-info-stat:nth-child(1){grid-column:1/-1;min-height:118px}
+#resellerInfoView .uba-info-stat strong{
+  display:block;font-size:clamp(26px,2.6vw,39px);
+  color:#f1e8ff;line-height:1.13;letter-spacing:-.05em;
+}
+#resellerInfoView .uba-info-stat span{
+  display:block;font-size:13px;color:#d5c9e7;
+  margin-top:8px;font-weight:650;line-height:1.43;
+}
+#resellerInfoView .uba-info-block{margin-top:38px}
+#resellerInfoView .uba-info-block-header{
+  display:flex;align-items:end;justify-content:space-between;gap:18px;flex-wrap:wrap;
+  margin-bottom:18px;
+}
+#resellerInfoView .uba-info-eyebrow{
+  display:block;color:#cbb8ed;font-weight:900;
+  font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:9px;
+}
+#resellerInfoView .uba-info-block-header h3{
+  color:#fff;font-size:clamp(24px,2.6vw,34px);
+  line-height:1.16;letter-spacing:-.035em;margin-bottom:0;
+}
+#resellerInfoView .uba-info-block-header p{
+  max-width:390px;color:#cfc2df;
+  font-size:15px;line-height:1.55;margin-bottom:0;
+}
+#resellerInfoView .uba-info-steps{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;
+}
+#resellerInfoView .uba-info-step{
+  border:1px solid var(--info-line);
+  border-radius:22px;
+  background:var(--info-surface);
+  padding:26px 23px;min-width:0;
+  transition:transform .32s ease,border-color .32s,box-shadow .32s;
+}
+#resellerInfoView .uba-info-step:hover,
+#resellerInfoView .uba-info-feature:hover{
+  transform:translateY(-4px);
+  border-color:rgba(205,198,228,.55);
+  box-shadow:0 17px 35px rgba(6,2,18,.2);
+}
+#resellerInfoView .uba-info-step-number{
+  display:grid;place-items:center;width:48px;height:48px;margin-bottom:22px;
+  border-radius:13px;
+  background:#50358e;
+  color:#eee6ff;font-size:19px;font-weight:900;
+  border:1px solid rgba(205,198,228,.34);
+}
+#resellerInfoView .uba-info-step h4{
+  color:#faf7ff;
+  font-size:20px;
+  letter-spacing:-.02em;
+  line-height:1.25;
+  margin-bottom:12px;
+}
+#resellerInfoView .uba-info-step p,
+#resellerInfoView .uba-info-feature p{
+  font-size:15px;
+  font-weight:550;
+  line-height:1.66;
+  color:var(--info-muted);
+  margin-bottom:0;
+}
+#resellerInfoView .uba-info-feature-grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;
+}
+#resellerInfoView .uba-info-feature{
+  display:flex;align-items:flex-start;gap:17px;
+  border-radius:22px;
+  border:1px solid var(--info-line);
+  background:var(--info-surface);
+  padding:24px;
+  min-width:0;
+  transition:transform .3s,border-color .3s,box-shadow .3s;
+}
+#resellerInfoView .uba-info-feature-icon{
+  flex:0 0 46px;width:46px;height:46px;
+  border-radius:13px;
+  display:grid;place-items:center;
+  background:#583f95;
+  color:#fff;
+  font-size:24px;
+}
+#resellerInfoView .uba-info-feature h4{
+  color:#fff;
+  font-size:18px;
+  line-height:1.28;
+  letter-spacing:-.018em;
+  margin:0 0 8px;
+}
+#resellerInfoView .uba-info-faq-list{
+  display:grid;grid-template-columns:1fr 1fr;gap:11px;
+}
+#resellerInfoView .uba-info-faq-list details{
+  align-self:start;
+  background:var(--info-surface);
+  border:1px solid var(--info-line);
+  border-radius:17px;
+  padding:0 19px;
+}
+#resellerInfoView .uba-info-faq-list details[open]{
+  border-color:rgba(205,198,228,.6);
+}
+#resellerInfoView .uba-info-faq-list summary{
+  position:relative;list-style:none;
+  padding:20px 26px 20px 0;
+  font-size:15px;font-weight:800;
+  color:#f9f5ff;
+  cursor:pointer;
+  line-height:1.5;
+}
+#resellerInfoView .uba-info-faq-list summary::-webkit-details-marker{display:none}
+#resellerInfoView .uba-info-faq-list summary::after{
+  content:"+";
+  position:absolute;right:0;top:16px;
+  font-size:24px;line-height:1;font-weight:450;
+  color:#c5b2f0;
+}
+#resellerInfoView .uba-info-faq-list details[open] summary::after{content:"−"}
+#resellerInfoView .uba-info-faq-list details p{
+  color:var(--info-muted);
+  border-top:1px solid var(--info-line);
+  font-size:14px;line-height:1.7;
+  padding-top:13px;padding-bottom:18px;
+  margin:0;
+}
+#resellerInfoView .uba-info-finale{
+  display:flex;align-items:center;justify-content:space-between;gap:28px;
+  border-radius:25px;
+  border:1px solid rgba(205,198,228,.36);
+  background:linear-gradient(135deg,#402877,#583a99);
+  padding:32px clamp(24px,3vw,42px);
+  margin-top:40px;
+}
+#resellerInfoView .uba-info-finale h3{
+  color:#fff;
+  font-size:clamp(22px,2.2vw,30px);
+  letter-spacing:-.04em;margin-bottom:9px;
+}
+#resellerInfoView .uba-info-finale p{
+  color:#e7def7;
+  font-size:15px;line-height:1.5;margin-bottom:0;
+  max-width:700px;
+}
+#resellerInfoView .uba-info-finale button{
+  flex:0 0 auto;
+  background:#e9dfff;color:#2d1c4a;
+  border:1px solid rgba(255,255,255,.5);
+  border-radius:13px;padding:14px 18px;
+  font:850 13px Montserrat,Arial,sans-serif;
+  cursor:pointer;
+  transition:transform .25s;
+}
+#resellerInfoView .uba-info-finale button:hover{transform:translateY(-2px)}
+#resellerInfoView :is(button,summary):focus-visible{
+  outline:2px solid #cbb7fa;outline-offset:4px;
+}
+
+/* Tema claro: texto de verdade escuro sobre lavanda clara. */
+html[data-theme="light"] #resellerInfoView{
+  --info-text:#241732;
+  --info-muted:#51415e;
+  --info-soft:#655075;
+  --info-line:#c6b6da;
+  --info-surface:linear-gradient(155deg,#fcfaff,#f0eaf7);
+}
+html[data-theme="light"] #resellerInfoView .uba-info-intro{
+  background:radial-gradient(ellipse at 93% 4%,rgba(157,127,214,.28),transparent 56%),linear-gradient(130deg,#faf7fe,#e7def3 70%,#ddd0ec);
+  border-color:#c6b4da;
+  box-shadow:0 20px 55px rgba(42,23,74,.11);
+}
+html[data-theme="light"] #resellerInfoView .uba-info-kicker{color:#54358b}
+html[data-theme="light"] #resellerInfoView .uba-info-intro h2{color:#261636}
+html[data-theme="light"] #resellerInfoView .uba-info-intro h2 em{color:#5a3a98}
+html[data-theme="light"] #resellerInfoView .uba-info-lead{color:#483752}
+html[data-theme="light"] #resellerInfoView .uba-info-secondary{color:#3a2559;background:rgba(255,255,255,.8);border-color:#b7a3d2}
+html[data-theme="light"] #resellerInfoView .uba-info-stat{background:rgba(255,255,255,.65);border-color:#bea9d8}
+html[data-theme="light"] #resellerInfoView .uba-info-stat strong{color:#3e2677}
+html[data-theme="light"] #resellerInfoView .uba-info-stat span{color:#483856}
+html[data-theme="light"] #resellerInfoView .uba-info-eyebrow{color:#62438e}
+html[data-theme="light"] #resellerInfoView .uba-info-block-header h3{color:#251832}
+html[data-theme="light"] #resellerInfoView .uba-info-block-header p{color:#564763}
+html[data-theme="light"] #resellerInfoView .uba-info-step-number,
+html[data-theme="light"] #resellerInfoView .uba-info-feature-icon{color:#fff;background:#593e91}
+html[data-theme="light"] #resellerInfoView :is(.uba-info-step h4,.uba-info-feature h4,.uba-info-faq-list summary){color:#28183a}
+html[data-theme="light"] #resellerInfoView .uba-info-faq-list summary::after{color:#533587}
+html[data-theme="light"] #resellerInfoView .uba-info-finale{background:linear-gradient(135deg,#4d3388,#694ca6);color:#fff}
+html[data-theme="light"] #resellerInfoView .uba-info-finale :is(h3,p){color:#fff}
+
+/* iPad e telefone: empilhamento sem amontoar as informações. */
+@media(max-width:950px){
+  #resellerInfoView .uba-info-intro{grid-template-columns:1fr}
+  #resellerInfoView .uba-info-summary{grid-template-columns:repeat(3,minmax(0,1fr))}
+  #resellerInfoView .uba-info-stat:nth-child(1){grid-column:auto;min-height:130px}
+}
+@media(max-width:680px){
+  #resellerInfoView{margin:10px auto 130px;padding:0 3px}
+  #resellerInfoView .uba-info-intro{padding:25px 18px;border-radius:23px;gap:22px}
+  #resellerInfoView .uba-info-intro h2{font-size:clamp(35px,9vw,49px);margin-bottom:12px}
+  #resellerInfoView .uba-info-lead{font-size:15px;line-height:1.58;margin-bottom:18px}
+  #resellerInfoView .uba-info-kicker{font-size:10px;margin-bottom:13px}
+  #resellerInfoView .uba-info-actions{flex-direction:column;gap:9px}
+  #resellerInfoView .uba-info-actions button{width:100%}
+  #resellerInfoView .uba-info-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  #resellerInfoView .uba-info-stat{min-height:0;padding:17px 14px;border-radius:14px}
+  #resellerInfoView .uba-info-stat:nth-child(1){grid-column:1/-1;min-height:0}
+  #resellerInfoView .uba-info-stat strong{font-size:clamp(20px,6vw,29px)}
+  #resellerInfoView .uba-info-stat span{font-size:12px;line-height:1.46;margin-top:7px}
+  #resellerInfoView .uba-info-block{margin-top:29px}
+  #resellerInfoView .uba-info-block-header{margin-bottom:15px}
+  #resellerInfoView .uba-info-block-header h3{font-size:25px}
+  #resellerInfoView .uba-info-block-header p{font-size:14px}
+  #resellerInfoView .uba-info-steps,
+  #resellerInfoView .uba-info-feature-grid,
+  #resellerInfoView .uba-info-faq-list{grid-template-columns:1fr;gap:10px}
+  #resellerInfoView .uba-info-step{padding:21px;border-radius:18px}
+  #resellerInfoView .uba-info-step-number{margin-bottom:15px;width:42px;height:42px}
+  #resellerInfoView .uba-info-step h4{font-size:19px}
+  #resellerInfoView .uba-info-step p,
+  #resellerInfoView .uba-info-feature p{font-size:14px}
+  #resellerInfoView .uba-info-feature{padding:19px;border-radius:18px;gap:13px}
+  #resellerInfoView .uba-info-feature-icon{flex-basis:42px;width:42px;height:42px}
+  #resellerInfoView .uba-info-feature h4{font-size:17px}
+  #resellerInfoView .uba-info-faq-list details{padding:0 16px}
+  #resellerInfoView .uba-info-faq-list summary{padding:16px 28px 16px 0}
+  #resellerInfoView .uba-info-faq-list summary::after{top:12px}
+  #resellerInfoView .uba-info-finale{flex-direction:column;align-items:stretch;gap:17px;padding:23px 20px;margin-top:28px;border-radius:21px}
+  #resellerInfoView .uba-info-finale h3{font-size:23px}
+  #resellerInfoView .uba-info-finale p{font-size:14px}
+  #resellerInfoView .uba-info-finale button{width:100%;min-height:45px}
+}
+@media(prefers-reduced-motion:reduce){
+  #resellerInfoView .uba-info-actions button,
+  #resellerInfoView .uba-info-step,
+  #resellerInfoView .uba-info-feature,
+  #resellerInfoView .uba-info-finale button,
+  #mainResellerHero .uba-hero-info{transition:none!important;transform:none!important}
+}
+@media print{#resellerInfoView{display:none!important}}

@@ -20,7 +20,11 @@ try{
  const webSource=await readFile(new URL('../index.html',import.meta.url),'utf8');
  assert.equal((deliverySource.match(/, 499\]/g)||[]).length,16,'all served neighborhoods should cost R$ 4,99');
  assert.equal((pixSource.match(/:499\b/g)||[]).length,16,'Pix delivery fees must be consistent');
- assert.equal((webSource.match(/R\$ 4,99/g)||[]).length,2,'banner and advantages must show R$ 4,99');
+ assert.ok((webSource.match(/R\$ 4,99/g)||[]).length>=4,'banner and revendedor guide must keep the R$ 4,99 delivery fee');
+ assert.ok(webSource.includes('id="resellerInfoView" role="tabpanel"')&&webSource.includes('id="resellerInfoTab" role="tab"'),'public Informações must be navigable as a tab');
+ assert.equal((webSource.match(/id="reseller(?:Catalog|Tables|Info)Tab"/g)||[]).length,3,'shop Liquid Glass must have exactly 3 tabs');
+ assert.ok(webSource.includes('Como consigo meu login e senha?')&&webSource.includes('Como é definido meu preço?'),'information page must answer key reseller questions');
+ assert.ok(!webSource.includes('Como ver os preços de revenda e comprar?'),'hero should not repeat the long login instruction');
  // Change only in-memory test configuration. Never commit a plaintext password.
  const password='synthetic-test-password';access.passwordHash=scryptSync(password,access.salt,64).toString('hex');access.expiresAt=new Date(Date.now()+86400000).toISOString();
  let calls=0;globalThis.fetch=async()=>{calls++;throw Error('External access forbidden in test')};

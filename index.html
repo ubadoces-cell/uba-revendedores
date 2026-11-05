@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#4A388E" />
-<meta name="uba-app-version" content="2.1.0" />
+<meta name="uba-app-version" content="2.2.0" />
 <title>UBA Revendedores</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -866,6 +866,7 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
 <link rel="stylesheet" href="uba-marketplace-grid.css?v=20261103b">
 <link rel="stylesheet" href="uba-atelier-2026.css?v=20261105a">
 <link rel="stylesheet" href="uba-contrast-cart-fix.css?v=20261105a">
+<link rel="stylesheet" href="uba-informacoes.css?v=20261105a">
 
 </head>
 <body>
@@ -874,7 +875,7 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
 <div class="app">
   <div class="topbar">
     <header class="header">
-      <div class="brand"><img class="logo" src="logo.jpg" alt="UBA DOCES"><div><div class="brand-title-row"><h1>UBA Revendedores</h1><span class="app-version">v2.1</span></div><p>Produtos para revenda e consumo.</p></div></div>
+      <div class="brand"><img class="logo" src="logo.jpg" alt="UBA DOCES"><div><div class="brand-title-row"><h1>UBA Revendedores</h1><span class="app-version">v2.2</span></div><p>Produtos para revenda e consumo.</p></div></div>
       <div class="header-actions">
         <button class="login-btn ceo-header-login" onclick="openAdmin()"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 4v5c0 4.5-2.9 7.8-7 9-4.1-1.2-7-4.5-7-9V7l7-4z"></path><path d="M9.5 12.5l1.6 1.6 3.4-3.8"></path></svg><span class="btn-label">Painel CEO</span></button>
         <button class="icon-btn" id="themeBtn" data-theme-toggle onclick="toggleTheme()" title="Alternar tema" aria-label="Alternar tema"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"></path></svg></button>
@@ -889,28 +890,16 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
     <div class="hero-copy" data-hero-mode="catalog">
       <small>CATÁLOGO PARA REVENDEDORES</small>
       <h2><span>Escolha<br>seus sabores.</span><strong>A UBA cuida do resto.</strong></h2>
-      <p>Alfajores artesanais de alta qualidade, prontos para revenda. Monte seu carrinho, envie o pedido e receba com praticidade.</p>
-      <div class="access-guide" role="note" aria-label="Informações de acesso para revendedores">
-        <div class="access-guide-icon" aria-hidden="true">🔒</div>
-        <div class="access-guide-copy">
-          <strong>Como ver os preços de revenda e comprar?</strong>
-          <p>É necessário ter <b>login e senha</b>, fornecidos pelo <b>atendimento da UBA DOCES no WhatsApp</b>. Com seu acesso aprovado, você poderá consultar os valores exclusivos para revendedores e fazer seus pedidos pelo site.</p>
-        </div>
-        <button class="access-guide-button" type="button" onclick="openCustomerEntry()">Já tenho login</button>
+      <p>Alfajores artesanais para o seu comércio. Escolha os sabores e monte seu pedido com facilidade.</p>
+      <div class="uba-hero-actions">
+        <button class="hero-cta" type="button" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth',block:'start'})">Ver catálogo <span>→</span></button>
+        <button class="uba-hero-info" type="button" onclick="selectResellerView('info')">Como funciona <span aria-hidden="true">↗</span></button>
       </div>
-      <div class="hero-benefits" aria-label="Vantagens para revendedores">
-        <div class="hero-benefit"><span class="hero-benefit-icon">▣</span><span><b>Produtos</b><small>prontos para revenda</small></span></div>
-        <div class="hero-benefit"><span class="hero-benefit-icon">▱</span><span><b>Entrega segura</b><small>e no prazo</small></span></div>
-        <div class="hero-benefit"><span class="hero-benefit-icon">✓</span><span><b>Qualidade UBA</b><small>em cada sabor</small></span></div>
-      </div>
-      <button class="hero-cta" type="button" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth',block:'start'})">Ver catálogo <span>→</span></button>
     </div>
     <div class="hero-visual" data-hero-mode="catalog" aria-label="Alfajor UBA em destaque">
       <div class="hero-art">
         <div class="hero-purple-blob"></div>
         <img src="assets/alfajores-v2/chocolate50.jpg?v=20261102" alt="Alfajor chocolate 50% cacau com doce de leite UBA DOCES" loading="eager" decoding="async">
-        <div class="hero-speech">Venda<br>mais com<br><b>UBA DOCES.</b><span>♥</span></div>
-        <div class="hero-result-badge"><b>↗</b><span>Doces que dão <strong>resultado</strong><br>no seu negócio.</span></div>
       </div>
     </div>
     <div class="hero-copy hero-tables-copy" data-hero-mode="tables" hidden>
@@ -979,14 +968,114 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
     </div>
   </section>
 
+  <section id="resellerInfoView" role="tabpanel" aria-labelledby="resellerInfoTab" hidden>
+    <div class="uba-info-intro">
+      <div>
+        <span class="uba-info-kicker">GUIA DO REVENDEDOR UBA</span>
+        <h2>Seu próximo pedido começa <em>aqui.</em></h2>
+        <p class="uba-info-lead">Descubra como funciona a revenda, peça seu acesso e compre seus alfajores com praticidade.</p>
+        <div class="uba-info-actions">
+          <button class="uba-info-primary" type="button" onclick="openCustomerEntry()">Entrar ou solicitar acesso <span aria-hidden="true">↗</span></button>
+          <button class="uba-info-secondary" type="button" onclick="selectResellerView('catalog')">Explorar sabores <span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+      <div class="uba-info-summary" aria-label="Informações rápidas sobre a revenda">
+        <div class="uba-info-stat"><strong>25 unidades</strong><span>Pedido mínimo, contando todos os sabores juntos.</span></div>
+        <div class="uba-info-stat"><strong>R$ 4,99</strong><span>Frete nos bairros atendidos de Limoeiro do Norte.</span></div>
+        <div class="uba-info-stat"><strong>Mix livre</strong><span>Combine os sabores disponíveis no pedido.</span></div>
+      </div>
+    </div>
+    <div class="uba-info-block">
+      <div class="uba-info-block-header">
+        <div><span class="uba-info-eyebrow">COMECE POR AQUI</span><h3>Da primeira visita ao pedido.</h3></div>
+        <p>Três etapas para começar sua revenda com a UBA DOCES.</p>
+      </div>
+      <div class="uba-info-steps">
+        <article class="uba-info-step">
+          <span class="uba-info-step-number" aria-hidden="true">01</span>
+          <h4>Solicite seu acesso</h4>
+          <p>Fale com o atendimento da UBA DOCES pelo WhatsApp para receber orientações sobre login e senha. Você também pode criar sua conta pelo site e aguardar aprovação.</p>
+        </article>
+        <article class="uba-info-step">
+          <span class="uba-info-step-number" aria-hidden="true">02</span>
+          <h4>Escolha os alfajores</h4>
+          <p>Após a aprovação, entre na sua conta para consultar a tabela de revenda. Selecione os sabores disponíveis e ajuste a quantidade de cada um.</p>
+        </article>
+        <article class="uba-info-step">
+          <span class="uba-info-step-number" aria-hidden="true">03</span>
+          <h4>Finalize seu pedido</h4>
+          <p>Confira o resumo dos produtos, o bairro de entrega e o valor total. Depois, gere o Pix seguro para finalizar sua compra.</p>
+        </article>
+      </div>
+    </div>
+    <div class="uba-info-block">
+      <div class="uba-info-block-header">
+        <div><span class="uba-info-eyebrow">VANTAGENS DE REVENDA</span><h3>Condições pensadas para o seu negócio.</h3></div>
+      </div>
+      <div class="uba-info-feature-grid">
+        <article class="uba-info-feature">
+          <div class="uba-info-feature-icon" aria-hidden="true">◈</div>
+          <div><h4>Você escolhe os sabores</h4><p>Pode misturar os alfajores disponíveis no mesmo pedido. O mínimo é de 25 unidades no total, não por sabor.</p></div>
+        </article>
+        <article class="uba-info-feature">
+          <div class="uba-info-feature-icon" aria-hidden="true">%</div>
+          <div><h4>Valores por quantidade</h4><p>Os preços de revenda são progressivos e dependem da quantidade total. A tabela completa fica disponível após a aprovação comercial.</p></div>
+        </article>
+        <article class="uba-info-feature">
+          <div class="uba-info-feature-icon" aria-hidden="true">⌂</div>
+          <div><h4>Entrega em Limoeiro do Norte</h4><p>O frete é fixo em R$ 4,99 para os bairros atendidos da cidade. A disponibilidade do bairro é confirmada no pedido.</p></div>
+        </article>
+        <article class="uba-info-feature">
+          <div class="uba-info-feature-icon" aria-hidden="true">✓</div>
+          <div><h4>Pagamento com acompanhamento</h4><p>Você confere o total antes de pagar. O Pix é processado pelo Asaas, e o pedido só é confirmado após a confirmação do pagamento.</p></div>
+        </article>
+      </div>
+    </div>
+    <div class="uba-info-block">
+      <div class="uba-info-block-header">
+        <div><span class="uba-info-eyebrow">DÚVIDAS FREQUENTES</span><h3>Respostas sem complicação.</h3></div>
+      </div>
+      <div class="uba-info-faq-list">
+        <details>
+          <summary>Como consigo meu login e senha?</summary>
+          <p>Entre em contato com o atendimento da UBA DOCES pelo WhatsApp para obter orientações de acesso. Também é possível escolher “Entrar ou solicitar acesso” e criar uma conta. O cadastro comercial precisa de aprovação antes de liberar os preços.</p>
+        </details>
+        <details>
+          <summary>Todos podem ver a tabela de revenda?</summary>
+          <p>Não. O catálogo de sabores é público, mas os valores completos de revenda são exibidos somente a contas comerciais aprovadas e ao administrador.</p>
+        </details>
+        <details>
+          <summary>Posso comprar menos de 25 unidades?</summary>
+          <p>O pedido mínimo para revenda é de 25 alfajores no total. Você pode combinar diferentes sabores disponíveis para atingir essa quantidade.</p>
+        </details>
+        <details>
+          <summary>Como é definido meu preço?</summary>
+          <p>O valor unitário depende do sabor e da faixa de quantidade total do pedido. Faça login e abra “Tabelas” para consultar os preços válidos para sua compra.</p>
+        </details>
+        <details>
+          <summary>O frete custa R$ 4,99 em qualquer lugar?</summary>
+          <p>Não. O valor fixo de R$ 4,99 vale para os bairros atendidos de Limoeiro do Norte. Informe seu bairro durante a compra para conferir o atendimento.</p>
+        </details>
+        <details>
+          <summary>O que acontece depois que gero o Pix?</summary>
+          <p>O site apresenta um QR Code e um código copia e cola. O pedido fica aguardando a confirmação de pagamento pelo Asaas. Gerar o Pix não significa que o pedido já foi confirmado.</p>
+        </details>
+      </div>
+    </div>
+    <div class="uba-info-finale">
+      <div><h3>Pronto para revender UBA DOCES?</h3><p>Solicite seu acesso comercial ou entre na conta para conhecer as condições da sua próxima compra.</p></div>
+      <button type="button" onclick="openCustomerEntry()">Acessar minha conta <span aria-hidden="true">↗</span></button>
+    </div>
+  </section>
+
   <section id="resellerCatalogView" role="tabpanel" aria-labelledby="resellerCatalogTab">
     <div class="toolbar"><form id="catalogSearchForm" class="search" role="search" autocomplete="off" onsubmit="event.preventDefault()"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.4-3.4"></path></svg><input id="search" name="catalog-search" type="search" inputmode="search" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" aria-label="Buscar sabor no catálogo" data-lpignore="true" data-1p-ignore="true" placeholder="Buscar sabor..." oninput="filterProducts()"></form><div class="filters"><button class="filter active" onclick="setFilter(this,'all')">Todos</button><button class="filter" onclick="setFilter(this,'featured')">Destaques</button><button class="filter" onclick="setFilter(this,'popular')">Mais vendidos</button><button class="filter" onclick="setFilter(this,'new')">Novidades</button></div></div>
-  <div class="section-head"><div><h3>Alfajores artesanais</h3><p>Sabores prontos para revenda. Qualidade, sabor e alta procura.</p></div><div class="private-note" id="priceVisibilityNote">● Estoque em tempo real, sujeito à alteração.</div></div>
+  <div class="section-head"><div><h3>Alfajores artesanais</h3><p>Escolha os sabores para montar seu pedido.</p></div><div class="private-note" id="priceVisibilityNote">● Estoque em tempo real, sujeito à alteração.</div></div>
   <div class="test-mode-banner" id="testModeBanner" hidden role="status">MODO TESTE — pedidos sem cobrança e sem movimentação de estoque.</div><section class="products" id="products"></section>
   <section class="reseller-cta">
     <div class="reseller-heart">♥</div>
-    <div><strong>Seja um revendedor UBA DOCES</strong><span>Peça seu login e senha ao atendimento pelo WhatsApp. Com acesso aprovado, consulte preços exclusivos e faça pedidos.</span></div>
-    <button type="button" onclick="openCustomerEntry()">Quero revender <b>→</b></button>
+    <div><strong>Quer revender com a UBA DOCES?</strong><span>Descubra como funciona e conheça as vantagens na aba Informações.</span></div>
+    <button type="button" onclick="selectResellerView('info')">Saiba mais <b>→</b></button>
   </section>
   </section>
   <section id="resellerTablesView" role="tabpanel" aria-labelledby="resellerTablesTab" hidden>
@@ -1367,7 +1456,7 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
   </button>
 </nav>
 
-<nav class="uba-rev-bottom-tabs uba-rev-shop-tabs" aria-label="Navegação Catálogo e Tabelas da UBA DOCES" role="tablist">
+<nav class="uba-rev-bottom-tabs uba-rev-shop-tabs" aria-label="Navegação da loja: Catálogo, Tabelas e Informações" role="tablist">
   <button type="button" id="resellerCatalogTab" role="tab" aria-selected="true" aria-controls="resellerCatalogView" class="active" onclick="selectResellerView('catalog')">
     <svg class="uba-rev-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7l8-4 8 4-8 4-8-4z"></path><path d="M4 7v10l8 4 8-4V7"></path><path d="M12 11v10"></path></svg>
     <span>Catálogo</span>
@@ -1375,6 +1464,10 @@ body{background:radial-gradient(circle at 50% -10%,rgba(83,38,164,.16),transpare
   <button type="button" id="resellerTablesTab" role="tab" aria-selected="false" aria-controls="resellerTablesView" onclick="selectResellerView('tables')">
     <svg class="uba-rev-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3z"></path><path d="M9 8h6M9 12h6"></path></svg>
     <span>Tabelas</span><span class="reseller-lock" id="resellerTablesLock">🔒</span>
+  </button>
+  <button type="button" id="resellerInfoTab" role="tab" aria-selected="false" aria-controls="resellerInfoView" onclick="selectResellerView('info')">
+    <svg class="uba-rev-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></svg>
+    <span>Informações</span>
   </button>
 </nav>
 
@@ -2585,7 +2678,7 @@ renderAll();
 <script src="orders-sync.js?v=17"></script>
 <script src="customer-accounts-sync.js?v=15"></script>
 <script src="uba-liquid-glass-nav.js?v=5"></script>
-<script src="reseller-tables.js?v=20261104a"></script>
+<script src="reseller-tables.js?v=20261105-info"></script>
 <script src="uba-atelier-2026.js?v=20261105a"></script>
 </body>
 </html>
