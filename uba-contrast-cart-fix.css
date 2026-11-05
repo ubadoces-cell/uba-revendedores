@@ -1,0 +1,295 @@
+/* UBA DOCES | Revisão de contraste 2026-11-05
+   Tema claro: texto ameixa/índigo em superfícies lavanda frias.
+   Tema escuro: design Atelier permanece igual.
+   Nenhum ajuste em preços, estoque, login, Pix ou permissões. */
+
+/* 1. Loja no modo claro: texto sempre acima de fundo claro. */
+html[data-theme="light"]{
+  --bg:#efebf7;
+  --bg2:#e7e0f1;
+  --surface:#f8f6fc;
+  --surface2:#ece5f5;
+  --surface3:#e3dbef;
+  --field:#faf8fe;
+  --line:#c8bcdb;
+  --text:#241834;
+  --muted:#534660;
+}
+html[data-theme="light"] body{
+  color:#241834;
+  background:
+    radial-gradient(ellipse at 6% 2%,rgba(119,86,173,.16),transparent 45%),
+    linear-gradient(145deg,#efebf7,#e4daef);
+}
+html[data-theme="light"] #resellerCatalogView,
+html[data-theme="light"] #resellerTablesView{color:#241834}
+
+/* No banner principal, fundo claro com letras escuras (não branco sobre lilás). */
+html[data-theme="light"] #mainResellerHero.v2-hero:not(.tables-hero-active){
+  color:#21152f;
+  background:
+    radial-gradient(ellipse at 90% 16%,rgba(143,112,195,.23),transparent 50%),
+    radial-gradient(ellipse at 6% 90%,rgba(193,177,223,.26),transparent 52%),
+    linear-gradient(135deg,#f4effa,#e4d9f2 65%,#d9cbea);
+  border-color:#c9badd;
+  box-shadow:0 24px 52px rgba(38,24,70,.16);
+}
+html[data-theme="light"] #mainResellerHero.v2-hero:not(.tables-hero-active) .hero-copy>small{color:#503188!important}
+html[data-theme="light"] #mainResellerHero.v2-hero:not(.tables-hero-active) h2,
+html[data-theme="light"] #mainResellerHero.v2-hero:not(.tables-hero-active) h2 span{color:#20122e!important}
+html[data-theme="light"] #mainResellerHero.v2-hero:not(.tables-hero-active) h2 strong{
+  background:none!important;
+  -webkit-background-clip:initial!important;
+  background-clip:initial!important;
+  -webkit-text-fill-color:#5c3b9e!important;
+  color:#5c3b9e!important;
+}
+html[data-theme="light"] #mainResellerHero.v2-hero:not(.tables-hero-active) .hero-copy>p{color:#443654!important}
+html[data-theme="light"] #mainResellerHero:not(.tables-hero-active) .access-guide{
+  background:rgba(253,251,255,.87);
+  border-color:#bcaad5;
+  box-shadow:0 12px 28px rgba(46,28,89,.08);
+}
+html[data-theme="light"] #mainResellerHero:not(.tables-hero-active) .access-guide-icon{background:#e5d9f8;color:#4A388E}
+html[data-theme="light"] #mainResellerHero:not(.tables-hero-active) .access-guide-copy strong{color:#251534}
+html[data-theme="light"] #mainResellerHero:not(.tables-hero-active) .access-guide-copy p{color:#51435e}
+html[data-theme="light"] #mainResellerHero:not(.tables-hero-active) .access-guide-copy b{color:#4c2c83}
+html[data-theme="light"] #mainResellerHero:not(.tables-hero-active) .hero-benefit{
+  background:rgba(252,249,255,.74);
+  border-color:#c7b8df;
+}
+html[data-theme="light"] #mainResellerHero:not(.tables-hero-active) .hero-benefit b{color:#2c1a45}
+html[data-theme="light"] #mainResellerHero:not(.tables-hero-active) .hero-benefit small{color:#504060}
+html[data-theme="light"] #mainResellerHero:not(.tables-hero-active) .hero-benefit-icon{background:#583c92;color:#fff}
+
+/* O banner da Tabela continua propositalmente escuro: texto claro nele. */
+html[data-theme="light"] #mainResellerHero.tables-hero-active{color:#fff}
+html[data-theme="light"] #mainResellerHero.tables-hero-active .hero-copy>p{color:#eee7fa!important}
+html[data-theme="light"] #mainResellerHero.tables-hero-active .hero-tables-copy h2{color:#fff}
+html[data-theme="light"] #mainResellerHero.tables-hero-active .hero-tables-advantages-card{
+  background:linear-gradient(150deg,#eae3f6,#d7c9e9)!important;
+  color:#26183c;
+}
+html[data-theme="light"] #mainResellerHero.tables-hero-active .hero-tables-advantages-card :is(h3,li){color:#251637}
+
+/* Títulos, busca, filtros e detalhes. */
+html[data-theme="light"] #resellerCatalogView .section-head h3{color:#221533!important}
+html[data-theme="light"] #resellerCatalogView .section-head p,
+html[data-theme="light"] #resellerCatalogView .private-note{color:#4b3b62!important}
+html[data-theme="light"] #resellerCatalogView .toolbar{
+  background:linear-gradient(145deg,#f4effb,#e6dcf2);
+  border-color:#c9b9df;
+  box-shadow:0 10px 24px rgba(49,30,78,.10);
+}
+html[data-theme="light"] #resellerCatalogView .search{background:#fff;border-color:#bba9d2}
+html[data-theme="light"] #resellerCatalogView .search .ui-icon{color:#5a4b6b}
+html[data-theme="light"] #resellerCatalogView .search input{color:#211630!important}
+html[data-theme="light"] #resellerCatalogView .search input::placeholder{color:#675a73}
+html[data-theme="light"] #resellerCatalogView .filter{
+  background:#f8f6fc;
+  color:#37234e;
+  border-color:#bfb1d7;
+}
+html[data-theme="light"] #resellerCatalogView .filter.active{
+  background:#4A388E;
+  border-color:#4A388E;
+  color:#fff;
+}
+
+/* Produtos no modo claro: cards CLAROS, textos ESCUROS. */
+html[data-theme="light"] #products.products{
+  background:linear-gradient(150deg,#e6ddf0,#dcd1e9)!important;
+  border-color:#c8b9dc;
+}
+html[data-theme="light"] #products.products>.product{
+  background:linear-gradient(160deg,#fcfaff,#f1eaf8)!important;
+  border-color:#c9b9df!important;
+  box-shadow:0 10px 27px rgba(38,22,72,.13)!important;
+  color:#241834!important;
+}
+html[data-theme="light"] #products .product-img{
+  background:#eee6f6!important;
+  border-bottom-color:#d3c5e3!important;
+}
+html[data-theme="light"] #products .product h4{color:#241535!important}
+html[data-theme="light"] #products .product .desc{color:#4f425d!important}
+html[data-theme="light"] #products .private-price{color:#443853!important}
+html[data-theme="light"] #products .lock-dot{background:#e1d6f2!important;color:#4A388E!important;border-color:#b4a1d5!important}
+html[data-theme="light"] #products .price-public b{color:#3e2777!important}
+html[data-theme="light"] #products :is(.price-public small,.price-public .tier-mini,.min-order){color:#493a5a!important}
+html[data-theme="light"] #products .quantity-entry{border-top-color:#d3c4e5!important}
+html[data-theme="light"] #products .quantity-entry label{color:#302244!important}
+html[data-theme="light"] #products .quantity-input{
+  color:#211632!important;
+  background:#fff!important;
+  border:1px solid #a991cb!important;
+}
+html[data-theme="light"] #products .quantity-input:focus{background:#fff!important;border-color:#6044a0!important;box-shadow:0 0 0 3px rgba(93,61,154,.16)!important}
+html[data-theme="light"] #products .product.out-of-stock{opacity:.86}
+html[data-theme="light"] #products .coming-soon-card{
+  background:linear-gradient(145deg,#f9f6fe,#e9e0f3)!important;
+  color:#28173f!important;
+  border-color:#ae98d1!important;
+}
+html[data-theme="light"] #products .coming-soon-card .coming-copy h4{color:#28173f!important}
+html[data-theme="light"] #products .coming-soon-card .coming-copy p{color:#51415e!important}
+
+/* CTA e tabela (sem tornar valores públicos). */
+html[data-theme="light"] #resellerCatalogView .reseller-cta{background:linear-gradient(120deg,#463080,#6548a4);color:#fff}
+html[data-theme="light"] #resellerCatalogView .reseller-cta :is(h3,p,strong){color:#fff}
+html[data-theme="light"] #resellerTablesView .reseller-tables-page{
+  background:linear-gradient(150deg,#f4effb,#e8e0f2);
+  border-color:#cab9df;
+  box-shadow:0 14px 37px rgba(46,27,76,.11);
+  color:#27183b;
+}
+html[data-theme="light"] #resellerTablesView :is(.reseller-table-title,.reseller-table-header h2){color:#221533}
+html[data-theme="light"] #resellerTablesView :is(.reseller-table-kicker,.reseller-table-header p,.reseller-table-note){color:#4d3e5d}
+html[data-theme="light"] #resellerTablesView .reseller-table-fact{
+  background:#fbf8ff;
+  border-color:#cfbfdf;
+}
+html[data-theme="light"] #resellerTablesView .reseller-table-fact :is(span,strong){color:#291a3c}
+html[data-theme="light"] #resellerTablesView .reseller-table-scroll{background:#fbfaff;border-color:#c7b8dc}
+html[data-theme="light"] #resellerTablesView .reseller-price-matrix :is(td,.table-status){color:#30213f}
+html[data-theme="light"] #resellerTablesView .reseller-price-matrix th{background:#50358a;color:#fff}
+html[data-theme="light"] #resellerTablesView .reseller-price-matrix tbody tr:nth-child(even){background:#eee8f6}
+html[data-theme="light"] #resellerTablesView .reseller-price-matrix .table-unavailable td{color:#584966}
+html[data-theme="light"] #resellerTablesView .reseller-table-note{background:#efe8f7;border-color:#cbbbe2}
+
+/* 2. Todo o fluxo de compra no tema claro: texto escuro SOBRE cartões claros. */
+html[data-theme="light"] #drawer{
+  background:linear-gradient(150deg,#f6f2fb,#e6dfef);
+  border-color:#c1b1d9;
+  color:#231635;
+}
+html[data-theme="light"] #drawer .drawer-head,
+html[data-theme="light"] #drawer .drawer-foot{
+  background:#ece5f5;
+  border-color:#c8b9dc;
+}
+html[data-theme="light"] #drawer :is(h3,.cart-item b,.totals strong){color:#221632}
+html[data-theme="light"] #drawer :is(.cart-item small,.totals small,.tier-note,.empty){color:#514362}
+html[data-theme="light"] #drawer .cart-item{border-color:#cbbddc}
+html[data-theme="light"] #drawer .qty-chip{background:#e4d9f2;color:#332249;border-color:#c1aedc}
+html[data-theme="light"] #drawer .checkout-btn{background:#4A388E;color:#fff}
+
+html[data-theme="light"] #modal .checkout{
+  background:linear-gradient(150deg,#f7f3fc,#eae3f3)!important;
+  border-color:#c7b8dc;
+  color:#231633!important;
+}
+html[data-theme="light"] #modal .checkout-top{
+  background:rgba(248,245,252,.98)!important;
+  border-bottom-color:#cdbddf;
+}
+html[data-theme="light"] #modal .checkout :is(.checkout-title h3,.panel h4,.field label){color:#241632!important}
+html[data-theme="light"] #modal .checkout :is(.panel>.hint,.privacy-box,.pix-quote-feedback){color:#50415f!important}
+html[data-theme="light"] #modal .step-dot{background:#cbbbdc}
+html[data-theme="light"] #modal .step-dot.on{background:#67499c}
+html[data-theme="light"] #modal .field :is(input,select,textarea){
+  background:#fff!important;color:#231632!important;border-color:#b8a6d1!important;
+}
+html[data-theme="light"] #modal .field :is(input,select,textarea)::placeholder{color:#6f607e}
+html[data-theme="light"] #modal .checkout .back{background:#e3d9ef;color:#312147}
+html[data-theme="light"] #modal .checkout .next{background:linear-gradient(135deg,#7654b5,#493488);color:#fff}
+html[data-theme="light"] #modal .checkout .tab{background:#f8f5fc;color:#322246;border-color:#b7a5cf}
+html[data-theme="light"] #modal .checkout .tab.active{background:#4A388E;color:#fff}
+html[data-theme="light"] #modal .checkout :is(.doc-type button,.privacy-box){background:#eee8f6;color:#413252;border-color:#c2b0da}
+html[data-theme="light"] #modal .checkout .doc-type button.active{background:#4A388E;color:#fff}
+html[data-theme="light"] #modal .checkout .close{background:#e5dcf0;color:#302042;border-color:#bdacd4}
+
+html[data-theme="light"] #modal .pix-checkout-summary{
+  background:linear-gradient(155deg,#fff,#eee8f7)!important;
+  border-color:#c9bcdb!important;
+  color:#211530!important;
+}
+html[data-theme="light"] #modal .pix-summary-item{color:#211530}
+html[data-theme="light"] #modal .pix-summary-item+.pix-summary-item{border-color:#d1c2e0}
+html[data-theme="light"] #modal .pix-summary-item small,
+html[data-theme="light"] #modal .pix-summary-detail{color:#4e405d!important}
+html[data-theme="light"] #modal .pix-summary-item strong,
+html[data-theme="light"] #modal #pixProductsSummary,
+html[data-theme="light"] #modal #pixDeliverySummary{color:#241635!important}
+html[data-theme="light"] #modal .pix-summary-item.total strong{color:#4A388E!important}
+html[data-theme="light"] #modal .pix-quote-feedback,
+html[data-theme="light"] #modal #pixQuoteStatus{color:#503d64!important}
+html[data-theme="light"] #modal #pixQuoteStatus[data-state="error"]{color:#9a263a!important}
+html[data-theme="light"] #modal .pix-quote-feedback button{color:#fff;background:#493388}
+html[data-theme="light"] #modal .pix-generate-ready{
+  background:linear-gradient(145deg,#fdfaff,#eee7f6)!important;
+  border-color:#cdbde1!important;
+}
+html[data-theme="light"] #modal .pix-generate-ready b{color:#231632!important}
+html[data-theme="light"] #modal .pix-generate-ready p{color:#514362!important}
+html[data-theme="light"] #modal .pix-ready-icon{background:linear-gradient(140deg,#4A388E,#61429b);color:#fff}
+
+/* QR, valor pago, copia e cola e estado de pagamento: fundo e texto coerentes. */
+html[data-theme="light"] #modal .pix-box{
+  background:linear-gradient(155deg,#fff,#f1edf8)!important;
+  border-color:#c9bbdc!important;
+  color:#231634!important;
+}
+html[data-theme="light"] #modal .pix-box :is(.pix-info b,.pix-info p,.pix-info small){color:#372846!important}
+html[data-theme="light"] #modal #pixTotalReady{color:#291845!important}
+html[data-theme="light"] #modal .pix-copy-wrap .copy-line{
+  background:#e9e1f2!important;
+  color:#2b1d42!important;
+  border-color:#c9badd;
+  overflow-wrap:anywhere;
+}
+html[data-theme="light"] #modal .pix-waiting{
+  background:#e5dcf3!important;
+  color:#392452!important;
+  border-color:#9c83c5!important;
+}
+html[data-theme="light"] #modal .pix-generate-ready,
+html[data-theme="light"] #modal .pix-box,
+html[data-theme="light"] #modal .pix-checkout-summary{
+  box-shadow:0 9px 24px rgba(33,19,63,.08);
+}
+
+/* Loader escuro deliberado: letras claras nele também no tema claro. */
+html[data-theme="light"] #modal .pix-loading-card{color:#f8f3ff}
+html[data-theme="light"] #modal .pix-loading-copy :is(h5,p,.pix-progress-head,.pix-loading-status){color:#e9e0f8}
+html[data-theme="light"] #modal .pix-loading-status{color:#e9e0f8}
+
+/* 3. Carrinho resumido: acima (não atrás) da barra Liquid Glass. */
+#mobileCart.mobile-cart.active{
+  z-index:35;
+  background:linear-gradient(120deg,#2c1c4a,#422e71);
+  border-color:rgba(205,198,228,.62);
+  color:#fff;
+  box-shadow:0 18px 38px rgba(10,5,25,.42);
+}
+#mobileCart.mobile-cart :is(strong,small){color:#fff}
+#mobileCart.mobile-cart small{color:#e1d6ef}
+#mobileCart.mobile-cart button{background:#e6d9f7;color:#2b1c48}
+body:has(#overlay.show) #mobileCart,
+body:has(#drawer.show) #mobileCart,
+body:has(#modal.show) #mobileCart,
+body.uba-rev-admin-nav-visible #mobileCart{display:none!important}
+@media (max-width:900px){
+  #mobileCart.mobile-cart.active{
+    left:10px;
+    right:10px;
+    bottom:calc(79px + env(safe-area-inset-bottom,0px));
+    padding:11px 12px;
+    border-radius:17px;
+    min-height:60px;
+  }
+  #mobileCart.mobile-cart button{white-space:nowrap;padding:10px 12px}
+  body:has(#mobileCart.active) .app{padding-bottom:205px!important}
+}
+@media(min-width:901px){
+  #mobileCart.mobile-cart.active{bottom:88px}
+}
+@media (max-width:390px){
+  #mobileCart.mobile-cart.active{bottom:calc(76px + env(safe-area-inset-bottom,0px));gap:7px}
+  #mobileCart.mobile-cart strong{font-size:12px}
+  #mobileCart.mobile-cart small{font-size:10px}
+  #mobileCart.mobile-cart button{font-size:11px;padding:9px}
+}
+@media print{
+  #mobileCart,.uba-rev-shop-tabs{display:none!important}
+}
