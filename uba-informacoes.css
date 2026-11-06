@@ -189,6 +189,8 @@ html[data-theme="light"] #mainResellerHero:not(.tables-hero-active) .uba-hero-in
   background:rgba(205,198,228,.1);
   color:#f5efff;
 }
+#resellerInfoView .uba-info-support{text-decoration:none}
+#resellerInfoView .uba-info-support:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(9,3,29,.27)}
 #resellerInfoView .uba-info-actions button:hover{
   transform:translateY(-3px);
   box-shadow:0 14px 30px rgba(9,3,29,.27);
@@ -408,6 +410,7 @@ html[data-theme="light"] #resellerInfoView .uba-info-finale :is(h3,p){color:#fff
   #resellerInfoView .uba-info-kicker{font-size:10px;margin-bottom:13px}
   #resellerInfoView .uba-info-actions{flex-direction:column;gap:9px}
   #resellerInfoView .uba-info-actions button{width:100%}
+  #resellerInfoView .uba-info-support{width:100%}
   #resellerInfoView .uba-info-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
   #resellerInfoView .uba-info-stat{min-height:0;padding:17px 14px;border-radius:14px}
   #resellerInfoView .uba-info-stat:nth-child(1){grid-column:1/-1;min-height:0}
