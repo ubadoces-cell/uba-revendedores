@@ -30,6 +30,7 @@ Este arquivo documenta as cópias de segurança do site antes de alterações, p
 | 2026-11-05 | Corrigir contraste integral no modo claro (catálogo, banners, tabela, carrinho e Pix), reposicionando resumo móvel acima do Liquid Glass | `21df653662f43dd8a743fa1ee7fbfb01ca2606fb` | `backup/2026-11-05-antes-contraste-claro-carrinho` |
 | 2026-11-05 | Simplificar banner inicial e criar aba Informações no Liquid Glass, com guia de acesso, vantagens, dúvidas, frete e Pix sem expor tabela de revenda | `652ddde81133d5720d4078c736e8e5c61b035e22` | `backup/2026-11-05-antes-informacoes-liquid-glass` |
 | 2026-11-11 | Redesign visual "Noite UBA" v3.0: fundo noturno com grade fina, vidro, cápsulas, destaque lilás com brilho e Lora itálico; só CSS, sem mexer em dados, preços, estoque, pedidos ou Pix | `dac32b4b26004177936734364649f155b0ff9243` | `backup/2026-11-11-antes-noite-uba` |
+| 2026-11-11 | v3.1: mesmo visual no modo claro ("Dia UBA"), remoção da linha escura nas fotos dos alfajores e abas inferiores legíveis; só CSS | `3c341949dc504f07ca532a8a25d719b799b88805` | `backup/2026-11-11-antes-modo-claro` |
 
 ### Acesso rápido
 
@@ -49,6 +50,7 @@ Este arquivo documenta as cópias de segurança do site antes de alterações, p
 - [Backup antes de corrigir contraste do modo claro e carrinho](https://github.com/ubadoces-cell/uba-revendedores/tree/backup/2026-11-05-antes-contraste-claro-carrinho)
 - [Backup antes de incluir Informações no Liquid Glass](https://github.com/ubadoces-cell/uba-revendedores/tree/backup/2026-11-05-antes-informacoes-liquid-glass)
 - [Backup antes do visual Noite UBA v3.0](https://github.com/ubadoces-cell/uba-revendedores/tree/backup/2026-11-11-antes-noite-uba)
+- [Backup antes do modo claro v3.1](https://github.com/ubadoces-cell/uba-revendedores/tree/backup/2026-11-11-antes-modo-claro)
 - [Histórico de commits do site](https://github.com/ubadoces-cell/uba-revendedores/commits/main/)
 
 > Este é um backup **do código e dos arquivos do repositório**, não um backup automático dos pedidos, clientes ou dados da produção.
