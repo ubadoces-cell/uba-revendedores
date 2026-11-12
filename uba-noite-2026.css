@@ -404,8 +404,9 @@ html[data-theme] .uba-info-feature-icon{
 
 /* ---------- Carrinho, modais e campos (só cor e cantos) ---------- */
 html[data-theme] .checkout,
-html[data-theme] .panel,
 html[data-theme] .login-panel{background:var(--n-panel)!important;border:1px solid var(--n-edge-2)!important}
+/* v3.3: etapas do checkout sem moldura quadrada — o conteúdo fica direto no fundo do modal */
+html[data-theme] .checkout .panel{background:transparent!important;border:0!important;box-shadow:none!important}
 html[data-theme] .field input,
 html[data-theme] .field select,
 html[data-theme] .field textarea{
