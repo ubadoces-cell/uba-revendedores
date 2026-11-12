@@ -380,3 +380,5 @@
 @media print{
   #mainResellerHero{display:none!important}
 }
+/* v3.5: texto de cada vantagem em um bloco único (evita "R$ 4,99" quebrado em colunas) */
+#mainResellerHero .hero-tables-advantages-card li>.hero-adv-text{flex:1;min-width:0}
