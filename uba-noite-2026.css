@@ -62,11 +62,11 @@ html[data-theme="light"]{
   --n-edge:rgba(74,56,142,.12);
   --n-edge-2:rgba(74,56,142,.22);
   --n-text:#1d1336;
-  --n-muted:#6b5f86;
+  --n-muted:#5d5176;
   --n-soft:#4A388E;
   --n-accent:#4A388E;
   --n-on-accent:#ffffff;
-  --n-accent-ink:#5b3fc4;
+  --n-accent-ink:#5133b6;
   --n-accent-tint:rgba(74,56,142,.08);
   --n-accent-line:rgba(74,56,142,.25);
   --n-glow:0 0 0 1px rgba(74,56,142,.15),0 12px 32px -10px rgba(74,56,142,.55);
@@ -438,3 +438,71 @@ html[data-theme] body:not(.uba-rev-admin-nav-visible) .uba-rev-shop-tabs > butto
 html[data-theme] body:not(.uba-rev-admin-nav-visible) .uba-rev-shop-tabs > button:not(.active) span,
 html[data-theme] body:not(.uba-rev-admin-nav-visible) .uba-rev-shop-tabs > button:not(.active) svg{color:var(--n-muted)!important;opacity:1!important;text-shadow:none!important}
 html[data-theme] .uba-rev-shop-tabs > button, html[data-theme] .uba-rev-shop-tabs > button *{text-shadow:none!important}
+
+/* ==========================================================
+   v3.2 — Correções de leitura (auditoria de contraste)
+   O arquivo antigo uba-contrast-cart-fix.css deixava o texto do banner
+   da aba Tabelas branco no modo claro (o banner era roxo). Com o banner
+   claro, o texto sumia. Aqui o texto acompanha o tema.
+   ========================================================== */
+
+/* filtro ativo e contador do carrinho (os dois temas) */
+html[data-theme] #resellerCatalogView .filter.active{background:var(--n-accent)!important;color:var(--n-on-accent)!important}
+html[data-theme] .header-actions .icon-btn:last-child .cart-count,
+html[data-theme] #cartCount{background:var(--n-on-accent)!important;color:var(--n-accent)!important;-webkit-text-fill-color:var(--n-accent)!important}
+
+/* banner da aba Tabelas */
+html[data-theme] #mainResellerHero.tables-hero-active .hero-tables-copy h2{color:var(--n-text)!important}
+html[data-theme] #mainResellerHero.tables-hero-active .hero-tables-copy h2 strong{
+  display:block;font-family:"Lora",Georgia,serif;font-style:italic;font-weight:600;
+  background:var(--n-script)!important;-webkit-background-clip:text!important;background-clip:text!important;
+  color:transparent!important;-webkit-text-fill-color:transparent!important;filter:var(--n-script-glow);
+}
+html[data-theme] #mainResellerHero .hero-tables-copy small{
+  color:var(--n-soft)!important;background:var(--n-glass)!important;border:1px solid var(--n-edge)!important;
+}
+html[data-theme] #mainResellerHero.tables-hero-active .hero-tables-copy>p,
+html[data-theme] #mainResellerHero .hero-tables-social span,
+html[data-theme] #mainResellerHero .hero-tables-feature span,
+html[data-theme] #mainResellerHero .hero-tables-profit-heading p,
+html[data-theme] #mainResellerHero .hero-tables-profit-disclaimer,
+html[data-theme] #mainResellerHero .hero-tables-profit-metric:not(.hero-tables-profit-highlight),
+html[data-theme] #mainResellerHero .hero-tables-profit-metric:not(.hero-tables-profit-highlight) span,
+html[data-theme] #mainResellerHero .hero-tables-ideal{color:var(--n-muted)!important;-webkit-text-fill-color:currentColor!important}
+html[data-theme] #mainResellerHero .hero-tables-social b,
+html[data-theme] #mainResellerHero .hero-tables-feature b,
+html[data-theme] #mainResellerHero .hero-tables-feature strong,
+html[data-theme] #mainResellerHero #heroProfitTitle,
+html[data-theme] #mainResellerHero .hero-tables-profit-heading h3,
+html[data-theme] #mainResellerHero .hero-tables-profit-metric:not(.hero-tables-profit-highlight) strong,
+html[data-theme] #mainResellerHero .hero-tables-ideal strong,
+html[data-theme] #mainResellerHero .hero-tables-advantages-card h3,
+html[data-theme] #mainResellerHero .hero-tables-advantages-card li{color:var(--n-text)!important;-webkit-text-fill-color:currentColor!important}
+html[data-theme] #mainResellerHero .hero-tables-social-number,
+html[data-theme] #mainResellerHero .hero-tables-profit-return strong,
+html[data-theme] #mainResellerHero .hero-tables-advantages-card h3 span,
+html[data-theme] #mainResellerHero .hero-tables-advantages-card li b,
+html[data-theme] #mainResellerHero .hero-tables-advantages-card li strong{color:var(--n-accent-ink)!important;-webkit-text-fill-color:currentColor!important}
+html[data-theme] #mainResellerHero .hero-tables-profit-metric:not(.hero-tables-profit-highlight){
+  background:var(--n-glass-2)!important;border:1px solid var(--n-edge)!important;
+}
+html[data-theme] #mainResellerHero .hero-tables-profit-highlight,
+html[data-theme] #mainResellerHero .hero-tables-profit-highlight *{color:var(--n-on-accent)!important;-webkit-text-fill-color:currentColor!important}
+html[data-theme] #mainResellerHero .hero-tables-profit-highlight strong{background:transparent!important}
+html[data-theme] #mainResellerHero .hero-tables-advantages-card li>span:first-child{
+  background:var(--n-accent)!important;color:var(--n-on-accent)!important;-webkit-text-fill-color:currentColor!important;
+}
+
+/* tabela de preços e aba Informações */
+html[data-theme] .reseller-price-matrix th{color:#fff!important}
+html[data-theme] .availability-mark{color:var(--n-accent-ink)!important;background:var(--n-accent-tint)!important}
+html[data-theme] .uba-info-faq-list details p,
+html[data-theme] .uba-info-faq-list details{color:var(--n-muted)!important}
+html[data-theme] .uba-info-faq-list summary{color:var(--n-text)!important}
+html[data-theme] .quantity-input::placeholder{color:var(--n-muted)!important;opacity:1}
+
+/* cartão "Vantagens" acompanha o tema (antes era lavanda fixo e o texto sumia no escuro) */
+html[data-theme] #mainResellerHero .hero-tables-advantages-card{
+  background:var(--n-glass-2)!important;border:1px solid var(--n-edge)!important;box-shadow:var(--n-shadow),var(--n-inset)!important;
+}
+html[data-theme] #mainResellerHero .hero-tables-advantages-card h3{border-bottom-color:var(--n-edge)!important}

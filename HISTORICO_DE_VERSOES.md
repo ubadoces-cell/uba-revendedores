@@ -31,6 +31,7 @@ Este arquivo documenta as cópias de segurança do site antes de alterações, p
 | 2026-11-05 | Simplificar banner inicial e criar aba Informações no Liquid Glass, com guia de acesso, vantagens, dúvidas, frete e Pix sem expor tabela de revenda | `652ddde81133d5720d4078c736e8e5c61b035e22` | `backup/2026-11-05-antes-informacoes-liquid-glass` |
 | 2026-11-11 | Redesign visual "Noite UBA" v3.0: fundo noturno com grade fina, vidro, cápsulas, destaque lilás com brilho e Lora itálico; só CSS, sem mexer em dados, preços, estoque, pedidos ou Pix | `dac32b4b26004177936734364649f155b0ff9243` | `backup/2026-11-11-antes-noite-uba` |
 | 2026-11-11 | v3.1: mesmo visual no modo claro ("Dia UBA"), remoção da linha escura nas fotos dos alfajores e abas inferiores legíveis; só CSS | `3c341949dc504f07ca532a8a25d719b799b88805` | `backup/2026-11-11-antes-modo-claro` |
+| 2026-11-12 | v3.2: correção de leitura no modo claro (banner da aba Tabelas com texto branco sobre fundo claro, filtro ativo, contador do carrinho) e no escuro (cartão Vantagens, cabeçalho da tabela); auditoria de contraste em Catálogo, Tabelas e Informações; só CSS | `06961e8603dbf9e331225d93cfe5d080f0046ceb` | `backup/2026-11-12-antes-correcao-contraste` |
 
 ### Acesso rápido
 
