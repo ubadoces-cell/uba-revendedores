@@ -85,10 +85,12 @@
       '<div class="reseller-table-fact"><span>Pedido mínimo</span><strong>'+Number(data.minimumUnits)+' unidades</strong></div>'+
       '<div class="reseller-table-fact"><span>Frete fixo · '+safeText(data.deliveryLocation)+'</span><strong>'+brlCents(data.deliveryFeeCents)+'</strong></div>'+
       '<div class="reseller-table-fact"><span>Sabores</span><strong>'+(data.mixFlavors?'Pode misturar no mesmo pedido':'Consulte as regras do pedido')+'</strong></div></div>'+
+      '<section class="uba-sim" id="ubaSim" aria-label="Simulador de lucro"></section>'+
       '<h3 class="reseller-table-title">Sabores disponíveis</h3>'+matrix(available,tiers)+
       '<h3 class="reseller-table-title">Sabores indisponíveis no momento <span class="availability-mark">'+unavailable.length+' sabores</span></h3>'+
       matrix(unavailable,tiers)+
       '<p class="reseller-table-note">Preços por unidade em reais. A faixa é definida pela quantidade total do pedido, mesmo misturando sabores. Sabores indisponíveis não podem ser comprados até reposição do estoque. Valores sujeitos a atualização.</p>';
+    if(typeof window.renderUbaSimulator==='function')window.renderUbaSimulator(document.getElementById('ubaSim'),data);
   }
 
   async function loadTable(){

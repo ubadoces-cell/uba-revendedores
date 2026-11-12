@@ -33,6 +33,7 @@ Este arquivo documenta as cópias de segurança do site antes de alterações, p
 | 2026-11-11 | v3.1: mesmo visual no modo claro ("Dia UBA"), remoção da linha escura nas fotos dos alfajores e abas inferiores legíveis; só CSS | `3c341949dc504f07ca532a8a25d719b799b88805` | `backup/2026-11-11-antes-modo-claro` |
 | 2026-11-12 | v3.2: correção de leitura no modo claro (banner da aba Tabelas com texto branco sobre fundo claro, filtro ativo, contador do carrinho) e no escuro (cartão Vantagens, cabeçalho da tabela); auditoria de contraste em Catálogo, Tabelas e Informações; só CSS | `06961e8603dbf9e331225d93cfe5d080f0046ceb` | `backup/2026-11-12-antes-correcao-contraste` |
 | 2026-11-12 | v3.3: remover a moldura quadrada em volta das etapas do checkout (Pagamento Pix, dados, entrega); só CSS | `4f0e9dcc46f1992b83e4d8f294e35346ae6d8f05` | `backup/2026-11-12-antes-sem-moldura-checkout` |
+| 2026-11-12 | v3.4: Simulador de lucro na aba Tabelas — cliente escolhe sabores e quantidades e vê custo na UBA (só produtos, sem frete), venda pelo preço do cardápio e lucro estimado; botão leva a simulação ao carrinho. Só front-end, usa os mesmos dados protegidos da tabela | `dcdf58fbb126abb07b5f4a917acf6c141d00c3f7` | `backup/2026-11-12-antes-simulador-lucro` |
 
 ### Acesso rápido
 
@@ -54,6 +55,7 @@ Este arquivo documenta as cópias de segurança do site antes de alterações, p
 - [Backup antes do visual Noite UBA v3.0](https://github.com/ubadoces-cell/uba-revendedores/tree/backup/2026-11-11-antes-noite-uba)
 - [Backup antes do modo claro v3.1](https://github.com/ubadoces-cell/uba-revendedores/tree/backup/2026-11-11-antes-modo-claro)
 - [Backup antes de remover a moldura do checkout v3.3](https://github.com/ubadoces-cell/uba-revendedores/tree/backup/2026-11-12-antes-sem-moldura-checkout)
+- [Backup antes do Simulador de lucro v3.4](https://github.com/ubadoces-cell/uba-revendedores/tree/backup/2026-11-12-antes-simulador-lucro)
 - [Histórico de commits do site](https://github.com/ubadoces-cell/uba-revendedores/commits/main/)
 
 > Este é um backup **do código e dos arquivos do repositório**, não um backup automático dos pedidos, clientes ou dados da produção.
